@@ -11,7 +11,7 @@ const app = express();
 
 dbConnect();
 
-app.set("view", "./views");
+app.set("views", "./views");
 app.set("view engine", "pug");
 
 app.use(helmet());

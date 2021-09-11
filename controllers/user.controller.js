@@ -33,4 +33,3 @@ module.exports.getById = async (req, res) => {
     );
   }
 };
-
