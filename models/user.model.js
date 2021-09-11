@@ -24,6 +24,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       trim: true,
+      unique: [true, "Email đã tồn tại."],
       required: [true, "Email không được để trống."],
     },
     avatar_photo_path: {
