@@ -1,6 +1,6 @@
-const mongoose_delete = require("mongoose-delete");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoose_delete = require("../utils/Plugins/mongoseDelete.plugin");
 
 const conversationSchema = new Schema(
   {
@@ -18,13 +18,9 @@ const conversationSchema = new Schema(
       required: [true, "Nickname không được để trống."],
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
-conversationSchema.plugin(mongoose_delete, {
-  deletedAt: true,
-  deletedBy: true,
-  overrideMethods: true,
-});
+mongoose_delete(userSchema);
 
 module.exports = mongoose.model("Conversation", conversationSchema);

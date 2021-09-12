@@ -3,7 +3,7 @@ const {
   HttpResponse,
   HttpResponseError,
 } = require("../utils/Response/http.response");
-const HttpStatus = require("../constants/app.constant");
+const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {

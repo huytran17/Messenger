@@ -1,6 +1,6 @@
-const mongoose_delete = require("mongoose-delete");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoose_delete = require("../utils/Plugins/mongoseDelete.plugin");
 
 const spaceShema = new Schema(
   {
@@ -11,13 +11,9 @@ const spaceShema = new Schema(
       max: [100, "Tên space tối đa 100 ký tự."],
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
-spaceShema.plugin(mongoose_delete, {
-  deletedAt: true,
-  deletedBy: true,
-  overrideMethods: true,
-});
+mongoose_delete(userSchema);
 
 module.exports = mongoose.model("Space", spaceShema);

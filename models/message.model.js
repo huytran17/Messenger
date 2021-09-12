@@ -1,6 +1,6 @@
-const mongoose_delete = require("mongoose-delete");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const mongoose_delete = require("../utils/Plugins/mongoseDelete.plugin");
 
 const messageSchema = new Schema(
   {
@@ -22,13 +22,9 @@ const messageSchema = new Schema(
       alias: "filepath",
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
-messageSchema.plugin(mongoose_delete, {
-  deletedAt: true,
-  deletedBy: true,
-  overrideMethods: true,
-});
+mongoose_delete(userSchema);
 
 module.exports = mongoose.model("Message", messageSchema);

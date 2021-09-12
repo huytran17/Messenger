@@ -1,17 +1,9 @@
-const HttpResponseError = (
-  res,
-  code,
-  fullError = "",
-  msg = "",
-  location = "server"
-) => {
-  const errors = [];
-  errors[location] = {
+const HttpResponseError = (res, code, error = "", message = "") => {
+  return res.status(code).json({
     code,
-    fullError,
-    msg,
-  };
-  return res.status(code).json(errors);
+    error,
+    message,
+  });
 };
 
 const HttpResponse = (res, code, data = null) => {

@@ -15,4 +15,4 @@ const HttpStatus = Object.freeze({
   SERVICE_UNAVAILABLE: 503,
 });
 
-module.exports = HttpStatus;
+module.exports.HttpStatus = HttpStatus;
