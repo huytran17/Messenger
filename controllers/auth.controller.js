@@ -5,7 +5,7 @@ const {
   HttpResponse,
   HttpResponseError,
 } = require("../utils/Response/http.response");
-const { HttpStatus } = require("../constants/app.constant");
+const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
 module.exports.create = (req, res) => {
   return res.render("user/register");
@@ -21,24 +21,24 @@ module.exports.register = async (req, res) => {
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
-      error.details[0].message
+      error.details
     );
 
   const _emailExists = await emailExistsValidator(data.email);
+
   if (_emailExists)
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
-      "error.details[0].message"
+      ResponseMessage.EMAIL_ALREADY_EXISTS
     );
 
-  const user = new User(data);
-
   try {
-    let newUser = await user.save();
-    delete newUser.password;
+    const user = new User(data);
+    const _user = await user.save();
+    delete _user.password;
 
-    return HttpResponse(res, HttpStatus.CREATED, newUser);
+    return HttpResponse(res, HttpStatus.CREATED, _user);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err.message);
   }
