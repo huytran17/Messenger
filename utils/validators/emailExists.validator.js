@@ -1,6 +1,6 @@
 const User = require("../../models/user.model");
 
 module.exports = async (email) => {
-  const u = await User.exists({ email });
+  let u = await User.emailExists(email);
   return u;
 };

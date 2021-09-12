@@ -48,10 +48,28 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.pre("findOneAndUpdate", async function (next) {
-  const update = { ...this.getUpdate() };
+  let update = { ...this.getUpdate() };
   update.password = await hash(update.password, 10);
-  this.setUpdate(currentUpdate);
+  this.setUpdate(update);
   next();
 });
+
+userSchema.statics.findEmail = async function (email) {
+  try {
+    let user = await this.findOne({ email }, "+password").exec();
+    return user;
+  } catch (err) {
+    return new Error(err);
+  }
+};
+
+userSchema.statics.emailExists = async function (email) {
+  try {
+    let u = await this.exists({ email });
+    return u;
+  } catch (err) {
+    return new Error(err);
+  }
+};
 
 module.exports = mongoose.model("User", userSchema);
