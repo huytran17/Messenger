@@ -89,3 +89,15 @@ module.exports.login = async (req, res) => {
       ResponseMessage.INCORRECT_EMAIL
     );
 };
+
+module.exports.logout = async (req, res) => {
+  //clear session
+  await req.session.destroy((err) => {
+    if (err)
+      return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  });
+  //clear cookie
+  await res.clearCookie("token");
+
+  return res.redirect("/auth/login");
+};
