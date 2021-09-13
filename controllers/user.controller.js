@@ -16,14 +16,13 @@ module.exports.getAll = async (req, res) => {
     return HttpResponseError(
       res,
       HttpStatus.INTERNAL_SERVER_ERROR,
-      err.message
+      err
     );
   }
 };
 
 module.exports.getById = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
   try {
     const user = await User.findById(userId).exec();
 

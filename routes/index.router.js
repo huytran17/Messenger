@@ -6,6 +6,6 @@ const { verifyAccess } = require("../middlewares/auth.middleware");
 
 module.exports = (app) => {
   app.use("/", testRouter);
-  app.use("/user", [userRouter]);
   app.use("/auth", authRouter);
+  app.use("/users", [verifyAccess, userRouter]);
 };

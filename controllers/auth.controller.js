@@ -14,18 +14,22 @@ const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 const _CONF = require("../config/app");
 
 module.exports.create = (req, res) => {
-  return res.render("user/register");
+  return res.render("auth/register");
+};
+
+module.exports.getLogin = (req, res) => {
+  return res.render("auth/login");
 };
 
 module.exports.register = async (req, res) => {
   const data = { ...req.body };
 
-  //validate
+  //validate data
   const { error } = registerValidator(req.body);
 
   if (error)
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
-
+  //is email already registered?
   const _emailExists = await emailExistsValidator(data.email);
 
   if (_emailExists)
@@ -36,6 +40,7 @@ module.exports.register = async (req, res) => {
     );
 
   try {
+    //store user to db
     let user = await new User(data).save();
 
     return HttpResponse(res, HttpStatus.CREATED, user);
@@ -46,25 +51,28 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   const data = { ...req.body } || { ...req.decoded };
-
+  //validate date
   const { error } = loginValidator(data);
 
   if (error)
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
-
+  //is email exists?
   const _emailExists = await emailExistsValidator(data.email);
 
   if (_emailExists) {
+    //get user
     let user = await User.findEmail(data.email);
-
+    //validate password
     let isPassed = await comparePwdValidator(data.password, user.password);
 
     if (isPassed) {
+      //craete token
       const token = jwt.sign({ user }, _CONF.TOKEN_SECRET);
 
       if (data.remember_me === "true")
+        //store user to cookie
         await res.cookie("token", token, { signed: true });
-
+      //store user to session
       req.session.token = token;
 
       return HttpResponse(res, HttpStatus.OK, user);
