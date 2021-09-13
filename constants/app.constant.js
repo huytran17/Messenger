@@ -17,7 +17,8 @@ const HttpStatus = Object.freeze({
 
 const ResponseMessage = Object.freeze({
   EMAIL_ALREADY_EXISTS: "Email đã tồn tại trong hệ thống.",
-  INCORRECT_USER: "Email hoặc mật khẩu không chính xác.",
+  INCORRECT_EMAIL: "Email không chính xác.",
+  INCORRECT_PASSWORD: "Mật khẩu không chính xác.",
 });
 
 const ValidationMessage = Object.freeze({

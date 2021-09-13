@@ -1,7 +1,10 @@
 const User = require("../models/user.model");
-const registerValidator = require("../utils/Validators/register.validator");
-const emailExistsValidator = require("../utils/Validators/emailExists.validator");
-const comparePwdValidator = require("../utils/Validators/comparePwd.validator");
+const jwt = require("jsonwebtoken");
+const {
+  registerValidator,
+  emailExistsValidator,
+  comparePwdValidator,
+} = require("../utils/Validators/auth.validator");
 const {
   HttpResponse,
   HttpResponseError,
@@ -40,19 +43,27 @@ module.exports.register = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  const data = { ...req.body };
+  const data = { ...req.body } || { ...req.decoded };
+
   const _emailExists = await emailExistsValidator(data.email);
 
-  let user = await User.findEmail(data.email);
+  if (_emailExists) {
+    let user = await User.findEmail(data.email);
 
-  let isPassed = await comparePwdValidator(data.password, user.password);
-  
-  if (_emailExists && isPassed) {
-    return HttpResponse(res, HttpStatus.OK, user);
+    let isPassed = await comparePwdValidator(data.password, user.password);
+
+    if (isPassed) {
+      return HttpResponse(res, HttpStatus.OK, user);
+    } else
+      return HttpResponseError(
+        res,
+        HttpStatus.BAD_REQUEST,
+        ResponseMessage.INCORRECT_PASSWORD
+      );
   } else
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
-      ResponseMessage.INCORRECT_USER
+      ResponseMessage.INCORRECT_EMAIL
     );
 };

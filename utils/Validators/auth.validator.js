@@ -1,7 +1,9 @@
 const Joi = require("joi");
+const bcrypt = require("bcryptjs");
+const User = require("../../models/user.model");
 const { ValidationMessage } = require("../../constants/app.constant");
 
-module.exports = (data) => {
+module.exports.registerValidator = (data) => {
   const schema = Joi.object({
     username: Joi.string().min(6).max(32).trim().required().messages({
       "string.base": ValidationMessage.STRING_BASE,
@@ -28,4 +30,35 @@ module.exports = (data) => {
     abortEarly: false,
     errors: { escapeHtml: true },
   });
+};
+
+module.exports.loginValidator = (data) => {
+  const schema = Joi.object({
+    email: Joi.string().email().trim().required().messages({
+      "string.empty": ValidationMessage.REQUIRED,
+      "string.email": ValidationMessage.TYPE_EMAIL,
+    }),
+    password: Joi.required().messages({
+      "string.empty": ValidationMessage.REQUIRED,
+    }),
+  });
+
+  return schema.validate(data, {
+    abortEarly: false,
+    errors: { escapeHtml: true },
+  });
+};
+
+module.exports.comparePwdValidator = async (pwd, hpwd) => {
+  try {
+    const isPassed = await bcrypt.compare(pwd, hpwd);
+    return isPassed;
+  } catch (err) {
+    return new Error(err);
+  }
+};
+
+module.exports.emailExistsValidator = async (email) => {
+  let u = await User.emailExists(email);
+  return u;
 };
