@@ -70,9 +70,9 @@ module.exports.login = async (req, res) => {
       const token = jwt.sign({ user }, _CONF.TOKEN_SECRET);
 
       if (data.remember_me === "true")
-        //store user to cookie
+        //store token to cookie
         await res.cookie("token", token, { signed: true });
-      //store user to session
+      //store token to session
       req.session.token = token;
 
       return HttpResponse(res, HttpStatus.OK, user);
