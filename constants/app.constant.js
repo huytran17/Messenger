@@ -11,6 +11,7 @@ const HttpStatus = Object.freeze({
   METHOD_NOT_ALLOWED: 405,
   REQUEST_TIMEOUT: 407,
   INTERNAL_SERVER_ERROR: 500,
+  NOT_IMPLEMENTED: 501,
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
 });
@@ -19,6 +20,7 @@ const ResponseMessage = Object.freeze({
   EMAIL_ALREADY_EXISTS: "Email đã tồn tại trong hệ thống.",
   INCORRECT_EMAIL: "Email không chính xác.",
   INCORRECT_PASSWORD: "Mật khẩu không chính xác.",
+  UNAUTHORIZED_ACCESS: "UNAUTHORIZED ACCESS",
 });
 
 const ValidationMessage = Object.freeze({

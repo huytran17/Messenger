@@ -4,12 +4,14 @@ const {
   registerValidator,
   emailExistsValidator,
   comparePwdValidator,
+  loginValidator,
 } = require("../utils/Validators/auth.validator");
 const {
   HttpResponse,
   HttpResponseError,
 } = require("../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
+const _CONF = require("../config/app");
 
 module.exports.create = (req, res) => {
   return res.render("user/register");
@@ -45,6 +47,11 @@ module.exports.register = async (req, res) => {
 module.exports.login = async (req, res) => {
   const data = { ...req.body } || { ...req.decoded };
 
+  const { error } = loginValidator(data);
+
+  if (error)
+    return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
+
   const _emailExists = await emailExistsValidator(data.email);
 
   if (_emailExists) {
@@ -53,6 +60,13 @@ module.exports.login = async (req, res) => {
     let isPassed = await comparePwdValidator(data.password, user.password);
 
     if (isPassed) {
+      const token = jwt.sign({ user }, _CONF.TOKEN_SECRET);
+
+      if (data.remember_me === "true")
+        await res.cookie("token", token, { signed: true });
+
+      req.session.token = token;
+
       return HttpResponse(res, HttpStatus.OK, user);
     } else
       return HttpResponseError(
