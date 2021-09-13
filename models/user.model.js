@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const hash = require("../utils/Encrypt/password.encrypt");
-const mongoose_delete = require("../utils/Plugins/mongoseDelete.plugin");
+const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 
 const userSchema = new Schema(
   {
@@ -34,7 +34,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-mongoose_delete(userSchema);
+mongoose_delete_plugin(userSchema);
 
 userSchema.set("toJSON", {
   transform: (doc, ret, options) => {
