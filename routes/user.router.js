@@ -1,8 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { getAll, getById } = require("../controllers/user.controller");
+const {
+  getAll,
+  edit,
+  update,
+  _delete,
+} = require("../controllers/user.controller");
 
 router.route("/").get(getAll);
-router.route("/:userId").get(getById);
+router.route("/:id").get(edit).patch(update).delete(_delete);
 
 module.exports = router;

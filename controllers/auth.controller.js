@@ -40,9 +40,8 @@ module.exports.register = async (req, res) => {
     );
 
   try {
-    //store user to db
     let user = await new User(data).save();
-
+    
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err.message);
@@ -60,7 +59,6 @@ module.exports.login = async (req, res) => {
   const _emailExists = await emailExistsValidator(data.email);
 
   if (_emailExists) {
-    //get user
     let user = await User.findEmail(data.email);
     //validate password
     let isPassed = await comparePwdValidator(data.password, user.password);
@@ -70,9 +68,7 @@ module.exports.login = async (req, res) => {
       const token = jwt.sign({ user }, _CONF.TOKEN_SECRET);
 
       if (data.remember_me === "true")
-        //store token to cookie
         await res.cookie("token", token, { signed: true });
-      //store token to session
       req.session.token = token;
 
       return HttpResponse(res, HttpStatus.OK, user);
@@ -91,12 +87,10 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.logout = async (req, res) => {
-  //clear session
   await req.session.destroy((err) => {
     if (err)
       return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   });
-  //clear cookie
   await res.clearCookie("token");
 
   return res.redirect("/auth/login");

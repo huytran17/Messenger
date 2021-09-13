@@ -7,18 +7,22 @@ const messageSchema = new Schema(
     uid: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: [true, "Không được để trống."],
     },
     rid: {
       type: Schema.Types.ObjectId,
       ref: "Room",
+      required: [true, "Không được để trống."],
     },
     content: {
       type: String,
       trim: true,
+      required: [true, "Không được để trống."],
     },
     file_path: {
       type: String,
       trim: true,
+      default: "",
       alias: "filepath",
     },
   },

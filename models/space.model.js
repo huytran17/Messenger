@@ -9,6 +9,7 @@ const spaceShema = new Schema(
       trim: true,
       min: [1, "Tên space tối thiểu 1 ký tự."],
       max: [100, "Tên space tối đa 100 ký tự."],
+      required: [true, "Không được để trống."],
     },
   },
   { timestamps: true }

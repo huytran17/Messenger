@@ -7,15 +7,18 @@ const conversationSchema = new Schema(
     uid: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: [true, "Không được để trống."],
     },
     rid: {
       type: Schema.Types.ObjectId,
       ref: "Room",
+      required: [true, "Không được để trống."],
     },
     nickname: {
       type: String,
       trim: true,
-      required: [true, "Nickname không được để trống."],
+      default: "",
+      required: [true, "Không được để trống."],
     },
   },
   { timestamps: true }
