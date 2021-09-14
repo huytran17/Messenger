@@ -48,15 +48,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.pre("findOneAndUpdate", async function (next) {
-  let update = { ...this.getUpdate() };
-  if (update.password) {
-    update.password = await hash(update.password, 10);
-  }
-  this.setUpdate(update);
-  next();
-});
-
 userSchema.statics.findEmail = async function (email) {
   try {
     let user = await this.findOne({ email }, "+password").exec();

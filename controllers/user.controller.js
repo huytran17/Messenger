@@ -29,20 +29,24 @@ module.exports.edit = async (req, res) => {
 };
 
 module.exports.update = async (req, res) => {
-  const { id } = { ...req.params };
+  const { id } = req.params;
 
   const data = { ...req.body };
 
-  const _emailExists = await emailExistsValidator(data.email);
-
-  if (_emailExists)
-    return HttpResponseError(
-      res,
-      HttpStatus.BAD_REQUEST,
-      ResponseMessage.EMAIL_ALREADY_EXISTS
-    );
-
   try {
+    let u = await User.findById(id, "email").exec();
+
+    if (u.email !== data.email) {
+      const _emailExists = await emailExistsValidator(data.email);
+
+      if (_emailExists)
+        return HttpResponseError(
+          res,
+          HttpStatus.BAD_REQUEST,
+          ResponseMessage.EMAIL_ALREADY_EXISTS
+        );
+    }
+
     let user = await User.findByIdAndUpdate(id, data, { new: true }).exec();
 
     return HttpResponse(res, HttpStatus.CREATED, user);
@@ -52,10 +56,11 @@ module.exports.update = async (req, res) => {
 };
 
 module.exports._delete = async (req, res) => {
-  const { id } = { ...req.params };
+  const { id } = req.params;
 
   try {
     let user = await User.findByIdAndDelete(id).exec();
+
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
