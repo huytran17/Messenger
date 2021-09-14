@@ -5,6 +5,7 @@ const {
 } = require("../utils/Response/http.response");
 const { emailExistsValidator } = require("../utils/Validators/auth.validator");
 const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
+const mailer = require("nodemailer");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -17,10 +18,8 @@ module.exports.getAll = async (req, res) => {
 };
 
 module.exports.edit = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    let user = await User.findById(id).exec();
+    let user = await req.decoded.user;
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
@@ -34,7 +33,7 @@ module.exports.update = async (req, res) => {
   const data = { ...req.body };
 
   try {
-    let u = await User.findById(id, "email").exec();
+    let u = await req.decoded.user;
 
     if (u.email !== data.email) {
       const _emailExists = await emailExistsValidator(data.email);
@@ -45,6 +44,9 @@ module.exports.update = async (req, res) => {
           HttpStatus.BAD_REQUEST,
           ResponseMessage.EMAIL_ALREADY_EXISTS
         );
+      else {
+        //mailer, verify email update
+      }
     }
 
     let user = await User.findByIdAndUpdate(id, data, { new: true }).exec();

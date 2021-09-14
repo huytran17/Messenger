@@ -11,12 +11,14 @@ const _CONF = require("../config/app");
 module.exports.verifyAccess = async (req, res, next) => {
   //get the current jwt token in the session or cookie storage
   const token = await (req.session.token || req.signedCookies.token);
+
   if (token) {
     //verify token
     jwt.verify(token, _CONF.TOKEN_SECRET, function (err, decoded) {
       if (err) return res.redirect("/auth/login");
       //save for the next request
       req.decoded = decoded;
+      
       next();
     });
   } else return res.redirect("/auth/login");
