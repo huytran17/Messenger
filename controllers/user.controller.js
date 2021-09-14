@@ -3,9 +3,7 @@ const {
   HttpResponse,
   HttpResponseError,
 } = require("../utils/Response/http.response");
-const { emailExistsValidator } = require("../utils/Validators/auth.validator");
-const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
-const mailer = require("nodemailer");
+const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -33,22 +31,6 @@ module.exports.update = async (req, res) => {
   const data = { ...req.body };
 
   try {
-    let u = await req.decoded.user;
-
-    if (u.email !== data.email) {
-      const _emailExists = await emailExistsValidator(data.email);
-
-      if (_emailExists)
-        return HttpResponseError(
-          res,
-          HttpStatus.BAD_REQUEST,
-          ResponseMessage.EMAIL_ALREADY_EXISTS
-        );
-      else {
-        //mailer, verify email update
-      }
-    }
-
     let user = await User.findByIdAndUpdate(id, data, { new: true }).exec();
 
     return HttpResponse(res, HttpStatus.CREATED, user);
