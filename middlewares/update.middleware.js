@@ -6,16 +6,19 @@ const _CONF = require("../config/app");
 const pug = require("pug");
 const otp = require("otp-generator");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
 module.exports.verifyEmail = async (req, res, next) => {
   let { email } = { ...req.body };
   //get current logged in user's id
   let uid = await req.decoded.user._id;
 
-  let u = await User.findById(uid).exec();
+  var user = await User.findById(uid).exec();
+
   //if the new email is not equals the current logged in user's email (changed)
-  if (u.email !== email) {
+  if (user.email !== email) {
     let _emailExists = await emailExistsValidator(email);
+
     //if the new email already exists
     if (_emailExists)
       return HttpResponseError(
@@ -49,6 +52,18 @@ module.exports.verifyEmail = async (req, res, next) => {
       };
 
       sendMail(data, next);
+
+      //encode the verify email code and  set to cookie
+      // const verifyToken = jwt.sign({ user, verifyCode }, _CONF.TOKEN_SECRET);
+
+      // let expires = new Date(
+      //   new Date().getTime() + _CONF.COOKIE_VERIFY_EXPIRES
+      // );
+
+      // await res.cookie("verifyToken", verifyToken, {
+      //   signed: true,
+      //   expires: expires,
+      // });
     }
   }
 

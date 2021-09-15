@@ -49,6 +49,7 @@ module.exports.l_validatePwd = async (req, res) => {
 
     if (data.remember_me === "true") {
       let expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
+
       await res.cookie("token", token, {
         signed: true,
         expires: expires,
