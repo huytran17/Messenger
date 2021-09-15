@@ -30,6 +30,10 @@ const userSchema = new Schema(
       default: "",
       alias: "avatar",
     },
+    role: {
+      type: Number,
+      default: 3,
+    },
   },
   { timestamps: true }
 );

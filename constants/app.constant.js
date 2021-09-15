@@ -21,6 +21,7 @@ const ResponseMessage = Object.freeze({
   INCORRECT_EMAIL: "Email không chính xác.",
   INCORRECT_PASSWORD: "Mật khẩu không chính xác.",
   UNAUTHORIZED_ACCESS: "UNAUTHORIZED ACCESS",
+  SEND_MAIL_ERROR: "Không thể gửi email vào lúc này, bạn vui lòng thử lại sau.",
 });
 
 const ValidationMessage = Object.freeze({

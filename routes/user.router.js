@@ -6,16 +6,9 @@ const {
   update,
   _delete,
 } = require("../controllers/user.controller");
-const {
-  verifyEmail,
-  sendVerifyEmail,
-} = require("../middlewares/update.middleware");
+const { verifyEmail } = require("../middlewares/update.middleware");
 
 router.route("/").get(getAll);
-router
-  .route("/:id")
-  .get(edit)
-  .patch(verifyEmail, sendVerifyEmail, update)
-  .delete(_delete);
+router.route("/:id").get(edit).patch(verifyEmail, update).delete(_delete);
 
 module.exports = router;

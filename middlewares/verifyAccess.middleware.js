@@ -18,7 +18,7 @@ module.exports.verifyAccess = async (req, res, next) => {
       if (err) return res.redirect("/auth/login");
       //save for the next request
       req.decoded = decoded;
-      
+
       next();
     });
   } else return res.redirect("/auth/login");
