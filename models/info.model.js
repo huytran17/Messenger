@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 
-const messageSchema = new Schema(
+const infoSchema = new Schema(
   {
     uid: {
       type: Schema.Types.ObjectId,
@@ -14,21 +14,16 @@ const messageSchema = new Schema(
       ref: "Conversation",
       required: [true, "Không được để trống."],
     },
-    content: {
-      type: String,
-      trim: true,
-      required: [true, "Không được để trống."],
-    },
-    file_path: {
+    nickname: {
       type: String,
       trim: true,
       default: "",
-      alias: "filepath",
+      required: [true, "Không được để trống."],
     },
   },
   { timestamps: true }
 );
 
-mongoose_delete_plugin(userSchema);
+mongoose_delete_plugin(infoSchema);
 
-module.exports = mongoose.model("Message", messageSchema);
+module.exports = mongoose.model("Info", infoSchema);
