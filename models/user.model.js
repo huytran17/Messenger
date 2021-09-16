@@ -77,7 +77,7 @@ userSchema.statics.findEmail = async function (email) {
 userSchema.statics.emailExists = async function (email) {
   try {
     let u = await this.exists({ email });
-
+    
     return u;
   } catch (err) {
     return new Error(err);

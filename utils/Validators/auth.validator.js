@@ -59,6 +59,7 @@ module.exports.loginValidator = (data) => {
 module.exports.comparePwdValidator = async (pwd, hpwd) => {
   try {
     const isPassed = await bcrypt.compare(pwd, hpwd);
+    
     return isPassed;
   } catch (err) {
     return new Error(err);
@@ -66,6 +67,7 @@ module.exports.comparePwdValidator = async (pwd, hpwd) => {
 };
 
 module.exports.emailExistsValidator = async (email) => {
-  let user = await User.emailExists(email);
-  return user;
+  let u = await User.emailExists(email);
+
+  return u;
 };

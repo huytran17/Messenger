@@ -4,7 +4,6 @@ const { ValidationMessage } = require("../../constants/app.constant");
 module.exports.changePwdValidator = (data) => {
   const schema = Joi.object({
     email: Joi.string().email().trim().required().messages({
-      "string.base": ValidationMessage.STRING_BASE,
       "string.empty": ValidationMessage.REQUIRED,
       "any.required": ValidationMessage.REQUIRED,
       "string.email": ValidationMessage.TYPE_EMAIL,

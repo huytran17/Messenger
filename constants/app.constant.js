@@ -22,6 +22,9 @@ const ResponseMessage = Object.freeze({
   INCORRECT_PASSWORD: "Mật khẩu không chính xác.",
   UNAUTHORIZED_ACCESS: "UNAUTHORIZED ACCESS",
   SEND_MAIL_ERROR: "Không thể gửi email vào lúc này, bạn vui lòng thử lại sau.",
+  USER_NOT_FOUND: "Không tìm thấy thông tin tài khoản.",
+  MAIL_SENT:
+    "Một E-mail đã được gửi đến địa chỉ E-mail của bạn. Vui lòng kiểm tra và làm theo hướng dẫn.",
 });
 
 const ValidationMessage = Object.freeze({
@@ -33,7 +36,6 @@ const ValidationMessage = Object.freeze({
   MISMATCH_REPWD: "Mật khẩu nhập lại không khớp.",
   MIME_TYPE: "File không đúng định dạng.",
   AVATAR_SIZE: "Kích thước tối đa 5MB",
-  USER_NOT_FOUND: "Không tìm thấy thông tin tài khoản.",
 });
 
 module.exports.HttpStatus = HttpStatus;

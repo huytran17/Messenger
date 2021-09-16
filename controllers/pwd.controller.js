@@ -1,21 +1,28 @@
+const User = require("../models/user.model");
 const sendMail = require("../utils/mailer/mailgun");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
 const otp = require("otp-generator");
 const pug = require("pug");
+const { HttpResponse } = require("../utils/Response/http.response");
+const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
 module.exports.forgetPwd = async (req, res) => {
   return res.render("auth/pwd/forget");
 };
 
-module.exports.changePwd = async (req, res) => {
+module.exports.changePwd = async (req, res, next) => {
+  const { email } = { ...req.query };
+
+  const user = await User.findEmail(email);
+
   const otpCode = otp.generate(6, {
     alphabets: false,
     upperCase: false,
     specialChars: false,
   });
 
-  const verifyToken = jwt.sign({ _id, otpCode }, _CONF.TOKEN_SECRET);
+  const verifyToken = jwt.sign({ user, otpCode }, _CONF.TOKEN_SECRET);
 
   let expires = new Date(new Date().getTime() + _CONF.COOKIE_VERIFY_EXPIRES);
 
@@ -26,13 +33,10 @@ module.exports.changePwd = async (req, res) => {
 
   //send email
   //get mail's view
-  let html = pug.renderFile(
-    `${__dirname}/../views/mail/verifyToken.pug`,
-    { pretty: true },
-    {
-      verifyCode,
-    }
-  );
+  let html = pug.renderFile(`${__dirname}/../views/mail/verifyToken.pug`, {
+    pretty: true,
+    otpCode,
+  });
 
   const data = {
     from: _CONF.MAIL_FROM,
@@ -42,6 +46,8 @@ module.exports.changePwd = async (req, res) => {
   };
 
   sendMail(data, next);
+
+  return HttpResponse(res, HttpStatus.OK, ResponseMessage.MAIL_SENT);
 };
 
 module.exports.resetPwd = async (req, res) => {};
