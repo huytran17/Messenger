@@ -4,7 +4,6 @@ const {
   HttpResponseError,
 } = require("../utils/Response/http.response");
 const { HttpStatus } = require("../constants/app.constant");
-const multer = require("multer");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -43,7 +42,25 @@ module.exports.updateInfo = async (req, res) => {
 };
 
 module.exports.updateAvatar = async (req, res) => {
-  const upload = multer({ dest: "../public/uploads/users" });
+  const { id } = { ...req.params };
+
+  const file = await req.target.toString("base64");
+
+  const avatar_photo_path = new Buffer(file, "base64");
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      id,
+      { avatar_photo_path },
+      { new: true }
+    ).exec();
+
+    return HttpResponse(res, HttpStatus.CREATED, user);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
+  }
+
+  return HttpResponse(res, HttpStatus.CREATED, target);
 };
 
 module.exports._delete = async (req, res) => {

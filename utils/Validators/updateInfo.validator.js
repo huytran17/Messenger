@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { ValidationMessage } = require("../../constants/app.constant");
 
-module.exports.updateInfoValidator = (data) => {
+module.exports = (data) => {
   const schema = Joi.object({
     username: Joi.string().min(6).max(32).trim().required().messages({
       "string.base": ValidationMessage.STRING_BASE,

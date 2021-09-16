@@ -31,6 +31,8 @@ const ValidationMessage = Object.freeze({
   MAX: `Tối đa {#limit} ký tự.`,
   TYPE_EMAIL: "Không đúng định dạng.",
   MISMATCH_REPWD: "Mật khẩu nhập lại không khớp.",
+  MIME_TYPE: "File không đúng định dạng.",
+  AVATAR_SIZE: "Kích thước tối đa 5MB",
 });
 
 module.exports.HttpStatus = HttpStatus;
