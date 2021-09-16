@@ -16,8 +16,10 @@ module.exports.getAll = async (req, res) => {
 };
 
 module.exports.edit = async (req, res) => {
+  const { id } = { ...req.params };
+
   try {
-    let user = await req.decoded.user;
+    let user = await User.findById(id);
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
@@ -59,8 +61,6 @@ module.exports.updateAvatar = async (req, res) => {
   } catch (err) {
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
   }
-
-  return HttpResponse(res, HttpStatus.CREATED, target);
 };
 
 module.exports._delete = async (req, res) => {
@@ -74,7 +74,3 @@ module.exports._delete = async (req, res) => {
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
   }
 };
-
-module.exports.changePwd = async (req, res) => {};
-module.exports.resetPwd = async (req, res) => {};
-module.exports.forgetPwd = async (req, res) => {};

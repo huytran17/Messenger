@@ -66,6 +66,6 @@ module.exports.comparePwdValidator = async (pwd, hpwd) => {
 };
 
 module.exports.emailExistsValidator = async (email) => {
-  let u = await User.emailExists(email);
-  return u;
+  let user = await User.emailExists(email);
+  return user;
 };

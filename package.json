@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "formidable": "^1.2.2",
+    "generate-avatar": "^1.4.10",
     "helmet": "^4.6.0",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",

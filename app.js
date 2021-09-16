@@ -37,3 +37,5 @@ router(app);
 app.listen(_CONF.SERVER_PORT, () => {
   console.log(`Server started on port ${_CONF.SERVER_PORT}`);
 });
+
+//TODO display user's default avatar
