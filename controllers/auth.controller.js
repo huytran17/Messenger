@@ -32,6 +32,7 @@ module.exports.logout = async (req, res) => {
   });
 
   await res.clearCookie("token");
+  await res.clearCookie("verifyToken");
 
   return res.redirect("/auth/login");
 };

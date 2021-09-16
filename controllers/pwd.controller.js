@@ -14,7 +14,7 @@ module.exports.forgetPwd = async (req, res) => {
   return res.render("auth/pwd/forget");
 };
 
-module.exports.changePwd = async (req, res, next) => {
+module.exports.changePwdEmail = async (req, res, next) => {
   const { email } = { ...req.query };
 
   const user = await User.findEmail(email);
@@ -53,13 +53,31 @@ module.exports.changePwd = async (req, res, next) => {
   return HttpResponse(res, HttpStatus.OK, ResponseMessage.MAIL_SENT);
 };
 
-module.exports.resetPwd = async (req, res) => {
+module.exports.verifyCode = async (req, res) => {
   const verifyToken = req.signedCookies.verifyToken;
+
+  const { code } = { ...req.body };
 
   if (verifyToken) {
     jwt.verify(verifyToken, _CONF.TOKEN_SECRET, (err, decoded) => {
       if (err) return HttpResponseError(res, HttpStatus.UNAUTHORIZED, err);
+
+      if (code == decoded.otpCode) return res.render("auth/pwd/reset");
+      else
+        return HttpResponseError(
+          res,
+          HttpStatus.UNAUTHORIZED,
+          ResponseMessage.UNAUTHORIZED
+        );
     });
   }
+
+  return HttpResponseError(
+    res,
+    HttpStatus.BAD_REQUEST,
+    ResponseMessage.VERIFY_CODE_EXPIRED
+  );
 };
+
+module.exports.resetPwd = (req, res, next) => {};
 //TODO verify token and reset pwd
