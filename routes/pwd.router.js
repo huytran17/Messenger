@@ -5,7 +5,12 @@ const {
   changePwd,
   resetPwd,
 } = require("../controllers/pwd.controller");
+const verifyChangePwd = require("../middlewares/verifyChangePwd.middleware");
 
-router.route("/").get(forgetPwd).post(changePwd).patch(resetPwd);
+router
+  .route("/")
+  .get(forgetPwd)
+  .post(verifyChangePwd, changePwd)
+  .patch(resetPwd);
 
 module.exports = router;

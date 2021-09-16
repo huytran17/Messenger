@@ -1,13 +1,4 @@
-const User = require("../models/user.model");
-const {
-  HttpResponse,
-  HttpResponseError,
-} = require("../utils/Response/http.response");
-const { ValidationMessage } = require("../constants/app.constant");
-const { HttpStatus } = require("../constants/app.constant");
-const { emailExistsValidator } = require("../utils/Validators/auth.validator");
-const { changePwdValidator } = require("../utils/Validators/pwd.validator");
-const mailer = require("../utils/mailer/mailgun");
+const sendMail = require("../utils/mailer/mailgun");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
 const otp = require("otp-generator");
@@ -18,23 +9,7 @@ module.exports.forgetPwd = async (req, res) => {
 };
 
 module.exports.changePwd = async (req, res) => {
-  const { email } = { ...req.body };
-
-  const { error } = changePwdValidator(email);
-
-  if (error)
-    return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
-
-  const { emailExists } = emailExistsValidator(email);
-
-  if (!emailExists)
-    return HttpResponseError(
-      res,
-      HttpStatus.BAD_REQUEST,
-      ValidationMessage.USER_NOT_FOUND
-    );
-
-  const otpCode = await otp.generate(6, {
+  const otpCode = otp.generate(6, {
     alphabets: false,
     upperCase: false,
     specialChars: false,
@@ -51,7 +26,7 @@ module.exports.changePwd = async (req, res) => {
 
   //send email
   //get mail's view
-  let html = await pug.renderFile(
+  let html = pug.renderFile(
     `${__dirname}/../views/mail/verifyToken.pug`,
     { pretty: true },
     {
@@ -62,8 +37,11 @@ module.exports.changePwd = async (req, res) => {
   const data = {
     from: _CONF.MAIL_FROM,
     to: email,
+    subject: _CONF.MAIL_ONCHANGE_SUBJECT,
+    html: html,
   };
-  //TODO send reset pwd email to user
+
+  sendMail(data, next);
 };
 
 module.exports.resetPwd = async (req, res) => {};
