@@ -3,12 +3,19 @@ const router = express.Router();
 const {
   getAll,
   edit,
-  update,
+  updateInfo,
   _delete,
 } = require("../controllers/user.controller");
-const { verifyEmail } = require("../middlewares/update.middleware");
+const {
+  verifyUpdateInfo,
+} = require("../middlewares/verifyUpdateInfo.middleware");
 
 router.route("/").get(getAll);
-router.route("/:id").get(edit).patch(verifyEmail, update).delete(_delete);
+
+router
+  .route("/:id")
+  .get(edit)
+  .patch(verifyUpdateInfo, updateInfo)
+  .delete(_delete);
 
 module.exports = router;

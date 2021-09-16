@@ -43,18 +43,31 @@ mongoose_delete_plugin(userSchema);
 userSchema.set("toJSON", {
   transform: (doc, ret, options) => {
     delete ret.password;
+
     return ret;
   },
 });
 
 userSchema.pre("save", async function (next) {
   this.password = await hash(this.password, 10);
+
+  next();
+});
+
+userSchema.pre("findOneAndUpdate", async function (next) {
+  const update = { ...this.getUpdate() };
+
+  if (update.password) update.password = await hash(update.password, 10);
+
+  this.setUpdate(update);
+
   next();
 });
 
 userSchema.statics.findEmail = async function (email) {
   try {
     let user = await this.findOne({ email }, "+password").exec();
+
     return user;
   } catch (err) {
     return new Error(err);
@@ -64,6 +77,7 @@ userSchema.statics.findEmail = async function (email) {
 userSchema.statics.emailExists = async function (email) {
   try {
     let u = await this.exists({ email });
+
     return u;
   } catch (err) {
     return new Error(err);

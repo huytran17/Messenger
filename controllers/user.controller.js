@@ -4,6 +4,7 @@ const {
   HttpResponseError,
 } = require("../utils/Response/http.response");
 const { HttpStatus } = require("../constants/app.constant");
+const multer = require("multer");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -25,18 +26,24 @@ module.exports.edit = async (req, res) => {
   }
 };
 
-module.exports.update = async (req, res) => {
+module.exports.updateInfo = async (req, res) => {
   const { id } = req.params;
 
   const data = { ...req.body };
 
   try {
-    let user = await User.findByIdAndUpdate(id, data, { new: true }).exec();
+    let user = await User.findOneAndUpdate({ _id: id }, data, {
+      new: true,
+    }).exec();
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
   }
+};
+
+module.exports.updateAvatar = async (req, res) => {
+  const upload = multer({ dest: "../public/uploads/users" });
 };
 
 module.exports._delete = async (req, res) => {
