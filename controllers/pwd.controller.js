@@ -4,7 +4,10 @@ const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
 const otp = require("otp-generator");
 const pug = require("pug");
-const { HttpResponse } = require("../utils/Response/http.response");
+const {
+  HttpResponse,
+  HttpResponseError,
+} = require("../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
 module.exports.forgetPwd = async (req, res) => {
@@ -50,4 +53,13 @@ module.exports.changePwd = async (req, res, next) => {
   return HttpResponse(res, HttpStatus.OK, ResponseMessage.MAIL_SENT);
 };
 
-module.exports.resetPwd = async (req, res) => {};
+module.exports.resetPwd = async (req, res) => {
+  const verifyToken = req.signedCookies.verifyToken;
+
+  if (verifyToken) {
+    jwt.verify(verifyToken, _CONF.TOKEN_SECRET, (err, decoded) => {
+      if (err) return HttpResponseError(res, HttpStatus.UNAUTHORIZED, err);
+    });
+  }
+};
+//TODO verify token and reset pwd
