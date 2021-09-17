@@ -102,4 +102,3 @@ module.exports.resetPwd = async (req, res, next) => {
     );
   }
 };
-//TODO verify token and reset pwd
