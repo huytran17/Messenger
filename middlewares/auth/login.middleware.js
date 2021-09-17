@@ -1,11 +1,11 @@
-const User = require("../models/user.model");
+const User = require("../../models/user.model");
 const {
   emailExistsValidator,
   comparePwdValidator,
   loginValidator,
-} = require("../utils/Validators/auth.validator");
-const { HttpResponseError } = require("../utils/Response/http.response");
-const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
+} = require("../../utils/Validators/auth.validator");
+const { HttpResponseError } = require("../../utils/Response/http.response");
+const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
 
 module.exports._validateData = async (req, res, next) => {
   const data = { ...req.body } || { ...req.decoded };

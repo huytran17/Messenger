@@ -7,8 +7,8 @@ const {
   updateAvatar,
   _delete,
 } = require("../controllers/user.controller");
-const verifyUpdateInfo = require("../middlewares/verifyUpdateInfo.middleware");
-const verifyUpdateAvatar = require("../middlewares/verifyUpdateAvatar.middleware");
+const verifyUpdateInfo = require("../middlewares/user/verifyUpdateInfo.middleware");
+const verifyUpdateAvatar = require("../middlewares/user/verifyUpdateAvatar.middleware");
 
 router.route("/").get(getAll);
 

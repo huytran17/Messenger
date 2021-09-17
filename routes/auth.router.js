@@ -3,12 +3,12 @@ const router = express.Router();
 const {
   validateData,
   validateEmail,
-} = require("../middlewares/register.middleware");
+} = require("../middlewares/auth/register.middleware");
 const {
   _validateData,
   _validateEmail,
   _validatePwd,
-} = require("../middlewares/login.middleware");
+} = require("../middlewares/auth/login.middleware");
 const {
   create,
   register,

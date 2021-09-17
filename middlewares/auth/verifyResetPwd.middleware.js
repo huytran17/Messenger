@@ -1,7 +1,7 @@
-const { HttpResponseError } = require("../utils/Response/http.response");
-const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
-const { resetPwdValidator } = require("../utils/Validators/pwd.validator");
-const { emailExistsValidator } = require("../utils/Validators/auth.validator");
+const { HttpResponseError } = require("../../utils/Response/http.response");
+const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
+const { resetPwdValidator } = require("../../utils/Validators/pwd.validator");
+const { emailExistsValidator } = require("../../utils/Validators/auth.validator");
 
 module.exports = async (req, res, next) => {
   const data = { ...req.body };

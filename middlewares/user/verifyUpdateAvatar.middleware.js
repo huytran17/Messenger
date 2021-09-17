@@ -1,9 +1,9 @@
-const { HttpResponseError } = require("../utils/Response/http.response");
-const { HttpStatus } = require("../constants/app.constant");
-const updateAvatarValidator = require("../utils/Validators/updateAvatar.validator");
+const { HttpResponseError } = require("../../utils/Response/http.response");
+const { HttpStatus } = require("../../constants/app.constant");
+const updateAvatarValidator = require("../../utils/Validators/updateAvatar.validator");
 const formidable = require("formidable");
 const mv = require("mv");
-const { ValidationMessage } = require("../constants/app.constant");
+const { ValidationMessage } = require("../../constants/app.constant");
 
 module.exports = async (req, res, next) => {
   const form = formidable.IncomingForm();
