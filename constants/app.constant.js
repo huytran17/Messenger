@@ -25,9 +25,9 @@ const ResponseMessage = Object.freeze({
   USER_NOT_FOUND: "Không tìm thấy thông tin tài khoản.",
   MAIL_SENT:
     "Một E-mail đã được gửi đến địa chỉ E-mail của bạn. Vui lòng kiểm tra và làm theo hướng dẫn.",
-  VERIFY_CODE_INVALID: "Mã xác thực không đúng hoặc đã hết hạn",
-  INTERNAL_SERVER_ERROR: "INTERNAL SERVER ERROR",
-  FORBIDDEN: "FORBIDDEN",
+  VERIFY_CODE_INVALID: "Mã xác thực không đúng hoặc đã hết hạn.",
+  INTERNAL_SERVER_ERROR: "INTERNAL SERVER ERROR.",
+  FORBIDDEN: "Không có quyền truy cập.",
 });
 
 const ValidationMessage = Object.freeze({
@@ -38,7 +38,7 @@ const ValidationMessage = Object.freeze({
   TYPE_EMAIL: "Không đúng định dạng.",
   MISMATCH_REPWD: "Mật khẩu nhập lại không khớp.",
   MIME_TYPE: "File không đúng định dạng.",
-  AVATAR_SIZE: "Kích thước tối đa 5MB",
+  AVATAR_SIZE: "Kích thước tối đa 5MB.",
 });
 
 module.exports.HttpStatus = HttpStatus;
