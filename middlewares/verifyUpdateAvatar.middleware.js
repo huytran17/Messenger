@@ -39,12 +39,11 @@ module.exports = async (req, res, next) => {
 
         next();
       });
-    }
-
-    return HttpResponseError(
-      res,
-      HttpStatus.BAD_REQUEST,
-      ValidationMessage.REQUIRED
-    );
+    } else
+      return HttpResponseError(
+        res,
+        HttpStatus.BAD_REQUEST,
+        ValidationMessage.REQUIRED
+      );
   });
 };

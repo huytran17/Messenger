@@ -43,7 +43,7 @@ module.exports.loginValidator = (data) => {
       "any.required": ValidationMessage.REQUIRED,
       "string.email": ValidationMessage.TYPE_EMAIL,
     }),
-    password: Joi.required().messages({
+    password: Joi.string().required().messages({
       "string.empty": ValidationMessage.REQUIRED,
       "any.required": ValidationMessage.REQUIRED,
     }),
@@ -59,7 +59,7 @@ module.exports.loginValidator = (data) => {
 module.exports.comparePwdValidator = async (pwd, hpwd) => {
   try {
     const isPassed = await bcrypt.compare(pwd, hpwd);
-    
+
     return isPassed;
   } catch (err) {
     return new Error(err);

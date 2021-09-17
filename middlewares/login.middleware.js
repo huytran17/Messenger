@@ -4,10 +4,7 @@ const {
   comparePwdValidator,
   loginValidator,
 } = require("../utils/Validators/auth.validator");
-const {
-  HttpResponse,
-  HttpResponseError,
-} = require("../utils/Response/http.response");
+const { HttpResponseError } = require("../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
 module.exports._validateData = async (req, res, next) => {
@@ -17,6 +14,7 @@ module.exports._validateData = async (req, res, next) => {
 
   if (error)
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
+
   next();
 };
 
@@ -31,6 +29,7 @@ module.exports._validateEmail = async (req, res, next) => {
       HttpStatus.BAD_REQUEST,
       ResponseMessage.INCORRECT_EMAIL
     );
+
   next();
 };
 
@@ -41,11 +40,12 @@ module.exports._validatePwd = async (req, res, next) => {
   //validate password
   let isPassed = await comparePwdValidator(data.password, user.password);
 
-  if (isPassed) next();
-  else
+  if (!isPassed)
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
       ResponseMessage.INCORRECT_PASSWORD
     );
+
+  next();
 };

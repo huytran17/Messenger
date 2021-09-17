@@ -48,7 +48,7 @@ module.exports.updateAvatar = async (req, res) => {
 
   const file = await req.target.toString("base64");
 
-  const avatar_photo_path = new Buffer(file, "base64");
+  const avatar_photo_path = new Buffer.from(file, "base64");
 
   try {
     const user = await User.findByIdAndUpdate(
