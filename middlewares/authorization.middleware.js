@@ -1,7 +1,4 @@
-const {
-  HttpResponse,
-  HttpResponseError,
-} = require("../utils/Response/http.response");
+const { HttpResponseError } = require("../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
 module.exports.isAdmin = (req, res, next) => {
@@ -16,4 +13,3 @@ module.exports.isMod = (req, res, next) => {
       ? next()
       : HttpResponseError(res, HttpStatus.FORBIDDEN, ResponseMessage.FORBIDDEN);
 };
-module.exports.isMe = (req, res, next) => {};
