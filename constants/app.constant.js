@@ -27,6 +27,7 @@ const ResponseMessage = Object.freeze({
     "Một E-mail đã được gửi đến địa chỉ E-mail của bạn. Vui lòng kiểm tra và làm theo hướng dẫn.",
   VERIFY_CODE_INVALID: "Mã xác thực không đúng hoặc đã hết hạn",
   INTERNAL_SERVER_ERROR: "INTERNAL SERVER ERROR",
+  FORBIDDEN: "FORBIDDEN",
 });
 
 const ValidationMessage = Object.freeze({
