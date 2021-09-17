@@ -13,6 +13,7 @@ const {
   create,
   register,
   login,
+  _login,
   logout,
 } = require("../controllers/auth.controller");
 
@@ -24,7 +25,7 @@ router
 router
   .route("/login")
   .get(login)
-  .post(_validateData, _validateEmail, _validatePwd);
+  .post(_validateData, _validateEmail, _validatePwd, _login);
 
 router.route("/logout").post(logout);
 

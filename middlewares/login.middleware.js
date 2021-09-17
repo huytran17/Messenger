@@ -1,6 +1,4 @@
 const User = require("../models/user.model");
-const jwt = require("jsonwebtoken");
-const _CONF = require("../config/app");
 const {
   emailExistsValidator,
   comparePwdValidator,
@@ -36,30 +34,15 @@ module.exports._validateEmail = async (req, res, next) => {
   next();
 };
 
-module.exports._validatePwd = async (req, res) => {
+module.exports._validatePwd = async (req, res, next) => {
   const data = { ...req.body } || { ...req.decoded };
 
   let user = await User.findEmail(data.email);
   //validate password
   let isPassed = await comparePwdValidator(data.password, user.password);
 
-  if (isPassed) {
-    //craete token
-    const token = jwt.sign({ user }, _CONF.TOKEN_SECRET);
-
-    if (data.remember_me === "true") {
-      let expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
-
-      await res.cookie("token", token, {
-        signed: true,
-        expires: expires,
-      });
-    } else await res.clearCookie("token");
-
-    req.session.token = token;
-
-    return HttpResponse(res, HttpStatus.OK, user);
-  } else
+  if (isPassed) next();
+  else
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
