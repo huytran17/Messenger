@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
-const User = require("../../models/user.model");
-const { ValidationMessage } = require("../../constants/app.constant");
+const User = require("../../../models/user.model");
+const { ValidationMessage } = require("../../../constants/app.constant");
 
 module.exports.registerValidator = (data) => {
   const schema = Joi.object({

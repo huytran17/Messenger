@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { ValidationMessage } = require("../../constants/app.constant");
+const { ValidationMessage } = require("../../../constants/app.constant");
 
 module.exports.changePwdValidator = (data) => {
   const schema = Joi.object({

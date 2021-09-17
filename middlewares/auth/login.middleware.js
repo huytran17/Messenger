@@ -3,7 +3,7 @@ const {
   emailExistsValidator,
   comparePwdValidator,
   loginValidator,
-} = require("../../utils/Validators/auth.validator");
+} = require("../../utils/Validators/auth/auth.validator");
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
 

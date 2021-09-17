@@ -1,6 +1,6 @@
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus } = require("../../constants/app.constant");
-const updateInfoValidator = require("../../utils/Validators/updateInfo.validator");
+const updateInfoValidator = require("../../utils/Validators/user/updateInfo.validator");
 
 module.exports = async (req, res, next) => {
   const { error } = updateInfoValidator(req.body);

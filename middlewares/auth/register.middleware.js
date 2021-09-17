@@ -3,7 +3,7 @@ const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
 const {
   registerValidator,
   emailExistsValidator,
-} = require("../../utils/Validators/auth.validator");
+} = require("../../utils/Validators/auth/auth.validator");
 
 module.exports.validateData = async (req, res, next) => {
   //validate data
