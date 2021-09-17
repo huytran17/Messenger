@@ -25,7 +25,8 @@ const ResponseMessage = Object.freeze({
   USER_NOT_FOUND: "Không tìm thấy thông tin tài khoản.",
   MAIL_SENT:
     "Một E-mail đã được gửi đến địa chỉ E-mail của bạn. Vui lòng kiểm tra và làm theo hướng dẫn.",
-  VERIFY_CODE_EXPIRED: "Mã xác thực đã hết hạn",
+  VERIFY_CODE_INVALID: "Mã xác thực không đúng hoặc đã hết hạn",
+  INTERNAL_SERVER_ERROR: "INTERNAL SERVER ERROR",
 });
 
 const ValidationMessage = Object.freeze({

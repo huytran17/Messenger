@@ -6,14 +6,14 @@ const {
   verifyCode,
   resetPwd,
 } = require("../controllers/pwd.controller");
-const { verifyAccess } = require("../middlewares/verifyAccess.middleware");
 const verifyChangePwdEmail = require("../middlewares/verifyChangePwdEmail.middleware");
+const verifyResetPwd = require("../middlewares/verifyResetPwd.middleware");
 
 router
   .route("/")
   .get(forgetPwd)
-  .post(verifyAccess, verifyChangePwdEmail, changePwdEmail)
-  .put(verifyAccess, verifyCode)
-  .patch(verifyAccess, resetPwd);
+  .post(verifyChangePwdEmail, changePwdEmail)
+  .put(verifyCode)
+  .patch(verifyResetPwd, resetPwd);
 
 module.exports = router;

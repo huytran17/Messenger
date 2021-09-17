@@ -39,7 +39,7 @@ module.exports.updateInfo = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
 
@@ -59,7 +59,7 @@ module.exports.updateAvatar = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
 
@@ -71,6 +71,6 @@ module.exports._delete = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.BAD_REQUEST, err);
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };

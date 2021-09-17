@@ -60,24 +60,46 @@ module.exports.verifyCode = async (req, res) => {
 
   if (verifyToken) {
     jwt.verify(verifyToken, _CONF.TOKEN_SECRET, (err, decoded) => {
-      if (err) return HttpResponseError(res, HttpStatus.UNAUTHORIZED, err);
+      if (err)
+        return HttpResponseError(res, HttpStatus.UNAUTHORIZED_ACCESS, err);
 
       if (code == decoded.otpCode) return res.render("auth/pwd/reset");
       else
         return HttpResponseError(
           res,
-          HttpStatus.UNAUTHORIZED,
-          ResponseMessage.UNAUTHORIZED
+          HttpStatus.BAD_REQUEST,
+          ResponseMessage.VERIFY_CODE_INVALID
         );
     });
-  }
-
-  return HttpResponseError(
-    res,
-    HttpStatus.BAD_REQUEST,
-    ResponseMessage.VERIFY_CODE_EXPIRED
-  );
+  } else
+    return HttpResponseError(
+      res,
+      HttpStatus.BAD_REQUEST,
+      ResponseMessage.VERIFY_CODE_INVALID
+    );
 };
 
-module.exports.resetPwd = (req, res, next) => {};
+module.exports.resetPwd = async (req, res, next) => {
+  const { email, password } = { ...req.body };
+
+  const user = await User.findEmail(email);
+
+  try {
+    let _user = await User.findByIdAndUpdate(
+      user._id,
+      { password },
+      { new: true }
+    ).exec();
+
+    await res.clearCookie("verifyToken");
+
+    return HttpResponse(res, HttpStatus.OK, _user);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      ResponseMessage.INTERNAL_SERVER_ERROR
+    );
+  }
+};
 //TODO verify token and reset pwd

@@ -21,7 +21,7 @@ module.exports.register = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.BAD_REQUEST, err.message);
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err.message);
   }
 };
 
@@ -32,7 +32,6 @@ module.exports.logout = async (req, res) => {
   });
 
   await res.clearCookie("token");
-  await res.clearCookie("verifyToken");
 
   return res.redirect("/auth/login");
 };

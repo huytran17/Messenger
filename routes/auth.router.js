@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const {
-  r_validateData,
-  r_validateEmail,
+  validateData,
+  validateEmail,
 } = require("../middlewares/register.middleware");
 const {
-  l_validateData,
-  l_validateEmail,
-  l_validatePwd,
+  _validateData,
+  _validateEmail,
+  _validatePwd,
 } = require("../middlewares/login.middleware");
 const {
   create,
@@ -19,12 +19,12 @@ const {
 router
   .route("/register")
   .get(create)
-  .post(r_validateData, r_validateEmail, register);
+  .post(validateData, validateEmail, register);
 
 router
   .route("/login")
   .get(login)
-  .post(l_validateData, l_validateEmail, l_validatePwd);
+  .post(_validateData, _validateEmail, _validatePwd);
 
 router.route("/logout").post(logout);
 

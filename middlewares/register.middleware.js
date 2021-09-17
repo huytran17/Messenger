@@ -5,7 +5,7 @@ const {
   emailExistsValidator,
 } = require("../utils/Validators/auth.validator");
 
-module.exports.r_validateData = async (req, res, next) => {
+module.exports.validateData = async (req, res, next) => {
   //validate data
   const { error } = registerValidator(req.body);
 
@@ -15,7 +15,7 @@ module.exports.r_validateData = async (req, res, next) => {
   next();
 };
 
-module.exports.r_validateEmail = async (req, res, next) => {
+module.exports.validateEmail = async (req, res, next) => {
   const { email } = { ...req.body };
   //is email already registered?
   const _emailExists = await emailExistsValidator(email);

@@ -12,7 +12,7 @@ const {
 } = require("../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
-module.exports.l_validateData = async (req, res, next) => {
+module.exports._validateData = async (req, res, next) => {
   const data = { ...req.body } || { ...req.decoded };
   //validate date
   const { error } = loginValidator(data);
@@ -22,7 +22,7 @@ module.exports.l_validateData = async (req, res, next) => {
   next();
 };
 
-module.exports.l_validateEmail = async (req, res, next) => {
+module.exports._validateEmail = async (req, res, next) => {
   const data = { ...req.body } || { ...req.decoded };
   //is email exists?
   const _emailExists = await emailExistsValidator(data.email);
@@ -36,7 +36,7 @@ module.exports.l_validateEmail = async (req, res, next) => {
   next();
 };
 
-module.exports.l_validatePwd = async (req, res) => {
+module.exports._validatePwd = async (req, res) => {
   const data = { ...req.body } || { ...req.decoded };
 
   let user = await User.findEmail(data.email);
