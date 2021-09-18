@@ -29,7 +29,7 @@ const conversationSchema = new Schema(
     },
     type: {
       type: Number,
-      default: 1,
+      default: 2,
     },
     created_by: {
       type: Schema.Types.ObjectId,
