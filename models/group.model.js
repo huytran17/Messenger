@@ -23,13 +23,14 @@ const groupSchema = new Schema(
       trim: true,
       defaul: "#dddddd",
     },
-    background_photo_path: {
+    background_photo: {
       type: String,
-      trim: true,
       default: "",
+      alias: "bg",
     },
-    chathead_photo_path: {
+    chathead_photo: {
       type: String,
+      default: "",
       alias: "photohead",
     },
     created_by: {

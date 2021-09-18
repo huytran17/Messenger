@@ -36,15 +36,13 @@ const userSchema = new Schema(
       unique: [true, "Đã tồn tại."],
       required: [true, "Không được để trống."],
     },
-    avatar_photo_path: {
+    avatar_photo: {
       type: String,
-      trim: true,
       default: "",
       alias: "avatar",
     },
-    cover_photo_path: {
+    cover_photo: {
       type: String,
-      trim: true,
       default: "",
       alias: "avatar",
     },

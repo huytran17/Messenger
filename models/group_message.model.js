@@ -19,9 +19,8 @@ const groupMessageSchema = new Schema(
       trim: true,
       required: [true, "Không được để trống."],
     },
-    file_path: {
+    file: {
       type: String,
-      trim: true,
       default: "",
       alias: "filepath",
     },
