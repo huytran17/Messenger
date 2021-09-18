@@ -9,7 +9,8 @@ module.exports.getAll = async (req, res) => {
   try {
     const conversations = await Conversation.find({}).exec();
 
-    return HttpResponse(res, HttpStatus.OK, conversations);
+    if (conversations.length) return HttpResponse(res, HttpStatus.OK, conversations);
+    else return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
@@ -19,18 +20,33 @@ module.exports.getById = async (req, res) => {
   const { id } = { ...req.params };
 
   try {
-    const conversations = await Conversation.findById(id).exec();
+    const conversation = await Conversation.findById(id).exec();
 
-    return HttpResponse(res, HttpStatus.OK, conversations);
+    if (conversation) return HttpResponse(res, HttpStatus.OK, conversation);
+    else return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
 
-module.exports.store = (req, res) => {
-    
+module.exports.store = async (req, res) => {
+  const data = { ...req.body };
+
+  try {
+    const conversation = await new Conversation(data).save();
+
+    return HttpResponse(res, HttpStatus.CREATED, conversation);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
+  }
 };
 
-module.exports.update = (req, res) => {};
+module.exports.update = (req, res) => {
+  
+};
 
 module.exports.delete = (req, res) => {};

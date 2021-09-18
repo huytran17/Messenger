@@ -9,7 +9,8 @@ module.exports.getAll = async (req, res) => {
   try {
     let users = await User.find({}).exec();
 
-    return HttpResponse(res, HttpStatus.OK, users);
+    if (users.length) return HttpResponse(res, HttpStatus.OK, users);
+    else return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
@@ -19,9 +20,10 @@ module.exports.getById = async (req, res) => {
   const { id } = { ...req.params };
 
   try {
-    let user = await User.findById(id);
+    let user = await User.findById(id).exec();
 
-    return HttpResponse(res, HttpStatus.OK, user);
+    if (user) return HttpResponse(res, HttpStatus.OK, user);
+    else return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }

@@ -11,10 +11,6 @@ const conversationSchema = new Schema(
         required: [true, "Không được để trống."],
       },
     ],
-    name: {
-      type: String,
-      trim: true,
-    },
     color: {
       type: String,
       trim: true,
@@ -22,19 +18,6 @@ const conversationSchema = new Schema(
     background: {
       type: String,
       alias: "bg",
-    },
-    chathead_photo_path: {
-      type: String,
-      alias: "headphoto",
-    },
-    type: {
-      type: Number,
-      default: 2,
-    },
-    created_by: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Không được để trống."],
     },
   },
   { timestamps: true }

@@ -42,6 +42,12 @@ const userSchema = new Schema(
       default: "",
       alias: "avatar",
     },
+    cover_photo_path: {
+      type: String,
+      trim: true,
+      default: "",
+      alias: "avatar",
+    },
     role: {
       type: Number,
       default: 3,
