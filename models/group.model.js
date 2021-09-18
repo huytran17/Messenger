@@ -21,10 +21,12 @@ const groupSchema = new Schema(
     color: {
       type: String,
       trim: true,
+      defaul: "#dddddd",
     },
-    background: {
+    background_photo_path: {
       type: String,
       trim: true,
+      default: "",
     },
     chathead_photo_path: {
       type: String,

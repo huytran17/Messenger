@@ -5,7 +5,7 @@ const {
   getById,
   updateInfo,
   updateAvatar,
-  _delete,
+  destroy,
 } = require("../controllers/user.controller");
 const verifyUpdateInfo = require("../middlewares/user/verifyUpdateInfo.middleware");
 const verifyUpdateAvatar = require("../middlewares/user/verifyUpdateAvatar.middleware");
@@ -18,6 +18,6 @@ router
   .get(getById)
   .post(verifyUpdateAvatar, updateAvatar)
   .patch(verifyUpdateInfo, updateInfo)
-  .delete(isAdmin, _delete);
+  .delete(isAdmin, destroy);
 
 module.exports = router;

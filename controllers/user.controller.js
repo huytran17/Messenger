@@ -46,9 +46,9 @@ module.exports.updateInfo = async (req, res) => {
 };
 
 module.exports.updateAvatar = async (req, res) => {
-  const { id } = { ...req.params };
+  const { id } = { ...req.params };console.log(req.source);
 
-  const file = await req.target.toString("base64");
+  const file = await req.source.toString("base64");
 
   const avatar_photo_path = new Buffer.from(file, "base64");
 
@@ -65,7 +65,7 @@ module.exports.updateAvatar = async (req, res) => {
   }
 };
 
-module.exports._delete = async (req, res) => {
+module.exports.destroy = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -76,3 +76,13 @@ module.exports._delete = async (req, res) => {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
+
+//TODO create join and leave conversation for user
+
+module.exports.joinConversation = async (req, res) => {};
+
+module.exports.leaveConversation = async (req, res) => {};
+
+module.exports.joinGroup = async (req, res) => {};
+
+module.exports.leaveGruop = async (req, res) => {};

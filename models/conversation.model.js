@@ -14,9 +14,11 @@ const conversationSchema = new Schema(
     color: {
       type: String,
       trim: true,
+      default: "#dddddd",
     },
-    background: {
+    background_photo_path: {
       type: String,
+      default: "",
       alias: "bg",
     },
   },

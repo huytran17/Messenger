@@ -1,22 +1,20 @@
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus } = require("../../constants/app.constant");
 const mimeVaildator = require("../../utils/Validators/image/mime.validator");
-const formidable = require("formidable");
-// const mv = require("mv");
 const { ValidationMessage } = require("../../constants/app.constant");
-const fs = require("fs");
+// const mv = require("mv");
+const formidable = require("formidable");
 
 module.exports = async (req, res, next) => {
   const form = formidable.IncomingForm();
 
   await form.parse(req, (err, fields, files) => {
-    if (files && files.avatar.size) {
-      let source = files.avatar.path;
-      // let target = `${__dirname}/../../public/uploads/users/${files.avatar.name}`;
+    if (files && files.background_photo.size) {
+      let source = files.background_photo.path;
+      // let target = `${__dirname}/../../public/uploads/conversations/${files.background_photo.name}`;
 
       const validateMIME = mimeVaildator(source);
 
-      //check mime type
       if (!validateMIME.ok)
         return HttpResponseError(
           res,
@@ -24,22 +22,21 @@ module.exports = async (req, res, next) => {
           ValidationMessage.MIME_TYPE
         );
 
-      //check file size: <=5MB
-      if (files.avatar.size > 5242880)
+      if (files.background_photo.size > 1048576)
         return HttpResponseError(
           res,
           HttpStatus.BAD_REQUEST,
-          ValidationMessage.AVATAR_SIZE
+          ValidationMessage.BACKGROUND_SIZE
         );
 
-      // mv(source, target, (err) => {
-      //   if (err)
-      //     return HttpResponseError(res, HttpStatus.BAD_REQUEST, err.stack);
+      //   mv(source, target, (err) => {
+      //     if (err)
+      //       return HttpResponseError(res, HttpStatus.BAD_REQUEST, err.stack);
 
-      //   req.target = target;
+      //     req.target = target;
 
-      //   next();
-      // });
+      //     next();
+      //   });
 
       req.source = fs.readFileSync(source);
 

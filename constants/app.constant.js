@@ -39,6 +39,7 @@ const ValidationMessage = Object.freeze({
   MISMATCH_REPWD: "Mật khẩu nhập lại không khớp.",
   MIME_TYPE: "File không đúng định dạng.",
   AVATAR_SIZE: "Kích thước tối đa 5MB.",
+  BACKGROUND_SIZE: "Kích thước tối đa 1MB.",
 });
 
 module.exports.HttpStatus = HttpStatus;
