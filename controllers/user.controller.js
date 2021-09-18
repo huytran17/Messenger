@@ -15,7 +15,7 @@ module.exports.getAll = async (req, res) => {
   }
 };
 
-module.exports.edit = async (req, res) => {
+module.exports.getById = async (req, res) => {
   const { id } = { ...req.params };
 
   try {

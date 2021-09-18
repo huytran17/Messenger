@@ -5,6 +5,18 @@ const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 
 const userSchema = new Schema(
   {
+    rooms: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Conversation",
+      },
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     username: {
       type: String,
       trim: true,
@@ -77,7 +89,7 @@ userSchema.statics.findEmail = async function (email) {
 userSchema.statics.emailExists = async function (email) {
   try {
     let u = await this.exists({ email });
-    
+
     return u;
   } catch (err) {
     return new Error(err);
