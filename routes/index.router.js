@@ -12,7 +12,7 @@ module.exports = (app) => {
 
   app.use("/conversations", [verifyAccess, conversationRouter]);
 
-  app.use("/group", [verifyAccess, groupRouter]);
+  app.use("/groups", [verifyAccess, groupRouter]);
 
   app.use("/forget-pwd", pwdRouter);
 };

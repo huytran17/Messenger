@@ -1,9 +1,9 @@
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus } = require("../../constants/app.constant");
-const updateInfoValidator = require("../../utils/Validators/group/updateInfo.validator");
+const storeValidator = require("../../utils/Validators/group/store.validator");
 
 module.exports = (req, res, next) => {
-  const { error } = updateInfoValidator(req.body);
+  const { error } = storeValidator(req.body);
 
   if (error)
     return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
