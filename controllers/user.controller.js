@@ -17,9 +17,9 @@ module.exports.getAll = async (req, res) => {
 };
 
 module.exports.getById = async (req, res) => {
-  const { id } = { ...req.params };
-
   try {
+    const { id } = { ...req.params };
+
     let user = await User.findById(id).exec();
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
@@ -30,11 +30,11 @@ module.exports.getById = async (req, res) => {
 };
 
 module.exports.updateInfo = async (req, res) => {
-  const { id } = req.params;
-
-  const data = { ...req.body };
-
   try {
+    const { id } = req.params;
+
+    const data = { ...req.body };
+
     let user = await User.findOneAndUpdate({ _id: id }, data, {
       new: true,
     }).exec();
@@ -46,13 +46,13 @@ module.exports.updateInfo = async (req, res) => {
 };
 
 module.exports.updateAvatar = async (req, res) => {
-  const { id } = { ...req.params };console.log(req.source);
-
-  const file = await req.source.toString("base64");
-
-  const avatar_photo_path = new Buffer.from(file, "base64");
-
   try {
+    const { id } = { ...req.params };
+
+    const file = await req.source.toString("base64");
+
+    const avatar_photo_path = new Buffer.from(file, "base64");
+
     const user = await User.findByIdAndUpdate(
       id,
       { avatar_photo_path },
@@ -66,9 +66,9 @@ module.exports.updateAvatar = async (req, res) => {
 };
 
 module.exports.destroy = async (req, res) => {
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
+
     let user = await User.findByIdAndDelete(id).exec();
 
     return HttpResponse(res, HttpStatus.OK, user);

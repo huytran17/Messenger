@@ -9,9 +9,14 @@ const messageSchema = new Schema(
       ref: "User",
       required: [true, "Không được để trống."],
     },
-    cid: {
+    on: {
       type: Schema.Types.ObjectId,
-      ref: "Conversation",
+      refPath: "onModel",
+      required: [true, "Không được để trống."],
+    },
+    onModel: {
+      type: String,
+      enum: ["Conversation", "Group"],
       required: [true, "Không được để trống."],
     },
     content: {

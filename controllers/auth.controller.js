@@ -38,9 +38,9 @@ module.exports._login = async (req, res) => {
 };
 
 module.exports.register = async (req, res) => {
-  const data = { ...req.body };
-
   try {
+    const data = { ...req.body };
+
     let user = await new User(data).save();
 
     return HttpResponse(res, HttpStatus.CREATED, user);

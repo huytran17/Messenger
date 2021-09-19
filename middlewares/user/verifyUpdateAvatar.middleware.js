@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
   const form = formidable.IncomingForm();
 
   await form.parse(req, (err, fields, files) => {
-    if (files && files.avatar.size) {
+    if (files && files.avatar) {
       let source = files.avatar.path;
       // let target = `${__dirname}/../../public/uploads/users/${files.avatar.name}`;
 
