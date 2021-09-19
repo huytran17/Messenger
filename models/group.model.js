@@ -28,11 +28,6 @@ const groupSchema = new Schema(
       default: "",
       alias: "bg",
     },
-    chathead_photo: {
-      type: String,
-      default: "",
-      alias: "photohead",
-    },
     created_by: {
       type: Schema.Types.ObjectId,
       ref: "User",

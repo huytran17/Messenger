@@ -6,8 +6,6 @@ const {
   store,
   updateBackground,
   updateInfo,
-  kick,
-  add,
 } = require("../controllers/conversation.controller");
 const verifyUpdateBackground = require("../middlewares/conversation/verifyUpdateBackground.middleware");
 const verifyUpdateInfo = require("../middlewares/conversation/verifyUpdateInfo.middleware");
@@ -19,7 +17,5 @@ router
   .get(getById)
   .patch(verifyUpdateBackground, updateBackground)
   .put(verifyUpdateInfo, updateInfo);
-
-router.route("/:cid/:uid").put(add).post(kick);
 
 module.exports = router;
