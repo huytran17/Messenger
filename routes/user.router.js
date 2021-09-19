@@ -7,8 +7,10 @@ const {
   updateAvatar,
   destroy,
 } = require("../controllers/user.controller");
-const verifyUpdateInfo = require("../middlewares/user/verifyUpdateInfo.middleware");
-const verifyUpdateAvatar = require("../middlewares/user/verifyUpdateAvatar.middleware");
+const {
+  verifyUpdateInfo,
+  verifyUpdateAvatar,
+} = require("../middlewares/user/verify.middleware");
 const { isAdmin } = require("../middlewares/authorization.middleware");
 
 router.route("/").get(getAll);

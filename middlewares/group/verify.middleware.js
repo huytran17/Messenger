@@ -1,11 +1,22 @@
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus } = require("../../constants/app.constant");
+const updateInfoValidator = require("../../utils/Validators/group/updateInfo.validator");
+const storeValidator = require("../../utils/Validators/group/store.validator");
 const mimeVaildator = require("../../utils/Validators/image/mime.validator");
 const { ValidationMessage } = require("../../constants/app.constant");
 const formidable = require("formidable");
 const fs = require("fs");
 
-module.exports = async (req, res, next) => {
+module.exports.verifyStore = (req, res, next) => {
+  const { error } = storeValidator(req.body);
+
+  if (error)
+    return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
+
+  next();
+};
+
+module.exports.verifyUpdateBackground = async (req, res, next) => {
   const form = formidable.IncomingForm();
 
   await form.parse(req, (err, fields, files) => {
@@ -28,7 +39,7 @@ module.exports = async (req, res, next) => {
           ValidationMessage.BACKGROUND_SIZE
         );
 
-      req.source = fs.readFileSync(source);
+      req.source = fs.readFileSync(source, "base64");
 
       next();
     } else
@@ -38,4 +49,13 @@ module.exports = async (req, res, next) => {
         ValidationMessage.REQUIRED
       );
   });
+};
+
+module.exports.verifyUpdateInfo = (req, res, next) => {
+  const { error } = updateInfoValidator(req.body);
+
+  if (error)
+    return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
+
+  next();
 };

@@ -80,11 +80,3 @@ module.exports.destroy = async (req, res) => {
 };
 
 //TODO create join and leave conversation for user
-
-module.exports.joinConversation = async (req, res) => {};
-
-module.exports.leaveConversation = async (req, res) => {};
-
-module.exports.joinGroup = async (req, res) => {};
-
-module.exports.leaveGruop = async (req, res) => {};

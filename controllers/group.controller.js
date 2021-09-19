@@ -73,15 +73,51 @@ module.exports.updateInfo = async (req, res) => {
   }
 };
 
-module.exports.updateBackground = async (req, res) => {};
+module.exports.updateBackground = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-module.exports.destroy = async (req, res) => {};
+    const file = req.source.toString("base64");
 
-module.exports.kick = async (req, res) => {
+    const background_photo = new Buffer.from(file, "base64");
+
+    let group = await Group.findByIdAndUpdate(
+      id,
+      { background_photo },
+      { new: true }
+    ).exec();
+
+    return HttpResponse(res, HttpStatus.CREATED, group);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
+  }
+};
+
+module.exports.destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const group = await Group.findByIdAndDelete(id).exec();
+
+    return HttpResponse(res, HttpStatus.CREATED, group);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
+  }
+};
+
+module.exports.leave = async (req, res) => {
   try {
     const { gid, uid } = req.params;
 
-    const group = Group.findById(gid).exec();
+    const group = await Group.findById(gid).exec();
 
     group.mems = await group.mems.filter(
       (mem) => mem.id.toString("hex") !== uid
@@ -99,15 +135,17 @@ module.exports.kick = async (req, res) => {
   }
 };
 
-module.exports.add = async (req, res) => {
+module.exports.join = async (req, res) => {
   try {
     const { gid, uid } = req.params;
 
-    const group = await Group.findById(gid).exec();
-
-    group.mems.push(uid);
-
-    group.save();
+    const group = await Group.findByIdAndUpdate(
+      gid,
+      {
+        $addToSet: { mems: uid },
+      },
+      { new: true }
+    ).exec();
 
     return HttpResponse(res, HttpStatus.OK, group);
   } catch (err) {

@@ -7,12 +7,14 @@ const {
   updateBackground,
   updateInfo,
   destroy,
-  kick,
-  add,
+  leave,
+  join,
 } = require("../controllers/group.controller");
-const verifyUpdateBackground = require("../middlewares/group/verifyUpdateBackground.middleware");
-const verifyUpdateInfo = require("../middlewares/group/verifyUpdateInfo.middleware");
-const verifyStore = require("../middlewares/group/verifyStore.middleware");
+const {
+  verifyUpdateBackground,
+  verifyUpdateInfo,
+  verifyStore,
+} = require("../middlewares/group/verify.middleware");
 
 router.route("/").get(getAll).post(verifyStore, store);
 
@@ -23,6 +25,6 @@ router
   .put(verifyUpdateInfo, updateInfo)
   .delete(destroy);
 
-router.route("/:gid/:uid").put(add).post(kick);
+router.route("/:gid/:uid").put(join).post(leave);
 
 module.exports = router;

@@ -8,9 +8,11 @@ const {
   updateInfo,
   destroy,
 } = require("../controllers/conversation.controller");
-const verifyUpdateBackground = require("../middlewares/conversation/verifyUpdateBackground.middleware");
-const verifyUpdateInfo = require("../middlewares/conversation/verifyUpdateInfo.middleware");
-const verifyStore = require("../middlewares/conversation/verifyStore.middleware");
+const {
+  verifyUpdateBackground,
+  verifyUpdateInfo,
+  verifyStore,
+} = require("../middlewares/conversation/verify.middleware");
 
 router.route("/").get(getAll).post(verifyStore, store);
 
