@@ -67,15 +67,13 @@ module.exports.updateAvatar = async (req, res) => {
   }
 };
 
-module.exports.updateCover = async (req, res) => {
-  
-}
+module.exports.updateCover = async (req, res) => {};
 
 module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let user = await User.findByIdAndDelete(id).exec();
+    let user = await User.delete({ _id: id }).exec();
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {

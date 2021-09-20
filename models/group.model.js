@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 const User = require("./user.model");
 const Message = require("./message.model");
 
@@ -38,8 +37,6 @@ const groupSchema = new Schema(
   },
   { timestamps: true }
 );
-
-mongoose_delete_plugin(groupSchema);
 
 groupSchema.post("save", async function (doc) {
   await User.findByIdAndUpdate(doc.created_by, {

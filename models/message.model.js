@@ -9,7 +9,7 @@ const messageSchema = new Schema(
       ref: "User",
       required: [true, "Không được để trống."],
     },
-    onModelId: {
+    mid: {
       type: Schema.Types.ObjectId,
       refPath: "onModel",
       required: [true, "Không được để trống."],

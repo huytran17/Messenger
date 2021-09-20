@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 const User = require("./user.model");
 const Message = require("./message.model");
 
@@ -26,8 +25,6 @@ const conversationSchema = new Schema(
   },
   { timestamps: true }
 );
-
-mongoose_delete_plugin(conversationSchema);
 
 conversationSchema.post("save", async function (doc) {
   for (const memid of doc.mems) {

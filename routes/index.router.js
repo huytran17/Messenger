@@ -3,6 +3,7 @@ const authRouter = require("./auth.router");
 const pwdRouter = require("./pwd.router");
 const conversationRouter = require("./conversation.router");
 const groupRouter = require("./group.router");
+const messageRouter = require("./message.router");
 const { verifyAccess } = require("../middlewares/verifyAccess.middleware");
 
 module.exports = (app) => {
@@ -13,6 +14,8 @@ module.exports = (app) => {
   app.use("/conversations", [verifyAccess, conversationRouter]);
 
   app.use("/groups", [verifyAccess, groupRouter]);
+
+  app.use("/messages", [verifyAccess, messageRouter]);
 
   app.use("/forget-pwd", pwdRouter);
 };
