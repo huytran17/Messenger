@@ -9,7 +9,7 @@ const messageSchema = new Schema(
       ref: "User",
       required: [true, "Không được để trống."],
     },
-    on: {
+    onModelId: {
       type: Schema.Types.ObjectId,
       refPath: "onModel",
       required: [true, "Không được để trống."],
@@ -34,6 +34,6 @@ const messageSchema = new Schema(
   { timestamps: true }
 );
 
-mongoose_delete_plugin(userSchema);
+mongoose_delete_plugin(messageSchema);
 
 module.exports = mongoose.model("Message", messageSchema);

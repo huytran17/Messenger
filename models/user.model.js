@@ -11,6 +11,12 @@ const userSchema = new Schema(
         ref: "Conversation",
       },
     ],
+    grs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
     friends: [
       {
         type: Schema.Types.ObjectId,

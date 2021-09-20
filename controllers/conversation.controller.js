@@ -98,7 +98,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let conversation = await Conversation.findByIdAndDelete(id).exec();
+    let conversation = await Conversation.findOneAndDelete({ _id: id }).exec();
 
     return HttpResponse(res, HttpStatus.OK, conversation);
   } catch (err) {

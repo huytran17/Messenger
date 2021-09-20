@@ -101,7 +101,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const group = await Group.findByIdAndDelete(id).exec();
+    const group = await Group.findOneAndDelete({ _id: id }).exec();
 
     return HttpResponse(res, HttpStatus.CREATED, group);
   } catch (err) {
@@ -117,13 +117,13 @@ module.exports.leave = async (req, res) => {
   try {
     const { gid, uid } = req.params;
 
-    const group = await Group.findById(gid).exec();
-
-    group.mems = await group.mems.filter(
-      (mem) => mem.id.toString("hex") !== uid
-    );
-
-    group.save();
+    const group = await Group.findOneAndUpdate(
+      { _id: gid },
+      {
+        $pull: { mems: uid },
+      },
+      { new: true }
+    ).exec();
 
     return HttpResponse(res, HttpStatus.OK, group);
   } catch (err) {
@@ -139,8 +139,8 @@ module.exports.join = async (req, res) => {
   try {
     const { gid, uid } = req.params;
 
-    const group = await Group.findByIdAndUpdate(
-      gid,
+    const group = await Group.findOneAndUpdate(
+      { _id: gid },
       {
         $addToSet: { mems: uid },
       },
