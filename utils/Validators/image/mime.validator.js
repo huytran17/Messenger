@@ -1,6 +1,6 @@
 const { validateMIMEType } = require("validate-image-type");
 
-module.exports = (source) => {
+module.exports.validateImageMIME = (source) => {
   return validateMIMEType(source, {
     allowMimeTypes: [
       "image/jpeg",

@@ -5,7 +5,7 @@ const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 
 const userSchema = new Schema(
   {
-    rooms: [
+    convs: [
       {
         type: Schema.Types.ObjectId,
         ref: "Conversation",

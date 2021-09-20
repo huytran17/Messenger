@@ -6,8 +6,6 @@ module.exports = (data) => {
     mems: Joi.required().messages({
       "any.required": ValidationMessage.REQUIRED,
     }),
-    background_photo: Joi.string().empty(""),
-    color: Joi.string().empty(""),
   });
 
   return schema.validate(data, {

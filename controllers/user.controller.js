@@ -57,7 +57,7 @@ module.exports.updateAvatar = async (req, res) => {
 
     const user = await User.findByIdAndUpdate(
       id,
-      { avatar_photo_path },
+      { avatar_photo },
       { new: true }
     ).exec();
 
@@ -66,6 +66,10 @@ module.exports.updateAvatar = async (req, res) => {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
 };
+
+module.exports.updateCover = async (req, res) => {
+  
+}
 
 module.exports.destroy = async (req, res) => {
   try {
@@ -80,3 +84,7 @@ module.exports.destroy = async (req, res) => {
 };
 
 //TODO create join and leave conversation for user
+
+module.exports.acceptFriend = async (req, res) => {};
+
+module.exports.deleteFriend = async (req, res) => {};
