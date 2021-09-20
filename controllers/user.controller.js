@@ -49,11 +49,11 @@ module.exports.updateInfo = async (req, res) => {
 
 module.exports.updateAvatar = async (req, res) => {
   try {
-    const { id } = { ...req.params };
+    const { id } = req.params;
 
     const file = await req.source.toString("base64");
 
-    const avatar_photo_path = new Buffer.from(file, "base64");
+    const avatar_photo = new Buffer.from(file, "base64");
 
     const user = await User.findByIdAndUpdate(
       id,
@@ -67,7 +67,25 @@ module.exports.updateAvatar = async (req, res) => {
   }
 };
 
-module.exports.updateCover = async (req, res) => {};
+module.exports.updateCover = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = req.source.toString("base64");
+
+    const cover_photo = new Buffer.from(file, "base64");
+
+    const user = await User.findByIdAndUpdate(
+      id,
+      { cover_photo },
+      { new: true }
+    ).exec();
+
+    return HttpResponse(res, HttpStatus.CREATED, user);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
 
 module.exports.destroy = async (req, res) => {
   try {
