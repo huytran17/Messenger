@@ -4,7 +4,7 @@ const {
   storeValidator,
   updateInfoValidator,
 } = require("../../utils/Validators/conversation/conversation.validator");
-const { verifyUploadImage } = require("../file/verify.middleware");
+const { verifyUpload } = require("../file/verify.middleware");
 
 module.exports.verifyStore = (req, res, next) => {
   const { error } = storeValidator(req.body);
@@ -16,7 +16,7 @@ module.exports.verifyStore = (req, res, next) => {
 };
 
 module.exports.verifyUpdateBackground = async (req, res, next) => {
-  verifyUploadImage(req, res, next, "background_photo", 1048576);
+  verifyUpload(req, res, next, "background_photo", 1048576);
 };
 
 module.exports.verifyUpdateInfo = (req, res, next) => {

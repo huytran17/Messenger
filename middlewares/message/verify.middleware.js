@@ -2,7 +2,7 @@ const {
   storeTextValidator,
 } = require("../../utils/Validators/message/message.validator");
 const { HttpResponseError } = require("../../utils/Response/http.response");
-const { verifyUploadFile } = require("../file/verify.middleware");
+const { verifyUpload } = require("../file/verify.middleware");
 const { HttpStatus } = require("../../constants/app.constant");
 
 module.exports.verifyStore = async (req, res, next) => {
@@ -19,5 +19,5 @@ module.exports.verifyStore = async (req, res, next) => {
 };
 
 module.exports.verifyStoreFile = async (req, res, next) => {
-  verifyUploadFile(req, res, next, "file_path", 1048576);
+  verifyUpload(req, res, next, "file_path", 1048576, false);
 };

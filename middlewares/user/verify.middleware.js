@@ -3,14 +3,14 @@ const { HttpStatus } = require("../../constants/app.constant");
 const {
   updateInfoValidator,
 } = require("../../utils/Validators/user/user.validator");
-const { verifyUploadImage } = require("../file/verify.middleware");
+const { verifyUpload } = require("../file/verify.middleware");
 
 module.exports.verifyUpdateAvatar = async (req, res, next) => {
-  verifyUploadImage(req, res, next, "avatar_photo", 1048576);
+  verifyUpload(req, res, next, "avatar_photo", 1048576);
 };
 
 module.exports.verifyUpdateCover = async (req, res, next) => {
-  verifyUploadImage(req, res, next, "cover_photo", 1048576);
+  verifyUpload(req, res, next, "cover_photo", 1048576);
 };
 
 //TODO xem xét: gộp update info với avatar vào 1, trong middleware update avatar khi ko chọn file thì next(),
