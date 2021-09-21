@@ -1,6 +1,6 @@
 const {
   storeTextValidator,
-} = require("../../utils/Validators/message/store.validator");
+} = require("../../utils/Validators/message/message.validator");
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { verifyUploadFile } = require("../file/verify.middleware");
 const { HttpStatus } = require("../../constants/app.constant");
