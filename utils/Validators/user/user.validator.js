@@ -1,20 +1,24 @@
 const Joi = require("joi");
 const { ValidationMessage } = require("../../../constants/app.constant");
 
-module.exports = (data) => {
+module.exports.updateInfoValidator = (data) => {
   const schema = Joi.object({
-    name: Joi.string().min(1).max(255).required().messages({
+    username: Joi.string().min(6).max(32).trim().required().messages({
+      "string.base": ValidationMessage.STRING_BASE,
+      "string.empty": ValidationMessage.REQUIRED,
+      "any.required": ValidationMessage.REQUIRED,
+      "string.min": ValidationMessage.MIN,
+    }),
+    password: Joi.string().min(8).max(32).required().messages({
       "string.base": ValidationMessage.STRING_BASE,
       "string.empty": ValidationMessage.REQUIRED,
       "any.required": ValidationMessage.REQUIRED,
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
     }),
-    mems: Joi.required().messages({
+    re_password: Joi.any().required().valid(Joi.ref("password")).messages({
       "any.required": ValidationMessage.REQUIRED,
-    }),
-    created_by: Joi.required().messages({
-      "any.required": ValidationMessage.REQUIRED,
+      "any.only": ValidationMessage.MISMATCH_REPWD,
     }),
   });
 

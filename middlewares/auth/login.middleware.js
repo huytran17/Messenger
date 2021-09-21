@@ -1,11 +1,10 @@
 const User = require("../../models/user.model");
 const {
-  emailExistsValidator,
-  comparePwdValidator,
   loginValidator,
 } = require("../../utils/Validators/auth/auth.validator");
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
+const bcrypt = require("bcryptjs");
 
 module.exports._validateData = async (req, res, next) => {
   const data = { ...req.body } || { ...req.decoded };
@@ -21,7 +20,7 @@ module.exports._validateData = async (req, res, next) => {
 module.exports._validateEmail = async (req, res, next) => {
   const data = { ...req.body } || { ...req.decoded };
   //is email exists?
-  const _emailExists = await emailExistsValidator(data.email);
+  const _emailExists = await User.emailExists(data.email);
 
   if (!_emailExists)
     return HttpResponseError(
@@ -38,7 +37,7 @@ module.exports._validatePwd = async (req, res, next) => {
 
   let user = await User.findEmail(data.email);
   //validate password
-  let isPassed = await comparePwdValidator(data.password, user.password);
+  const isPassed = await bcrypt.compare(data.password, user.password);
 
   if (!isPassed)
     return HttpResponseError(

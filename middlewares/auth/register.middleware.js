@@ -2,7 +2,6 @@ const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
 const {
   registerValidator,
-  emailExistsValidator,
 } = require("../../utils/Validators/auth/auth.validator");
 
 module.exports.validateData = async (req, res, next) => {
@@ -18,7 +17,7 @@ module.exports.validateData = async (req, res, next) => {
 module.exports.validateEmail = async (req, res, next) => {
   const { email } = { ...req.body };
   //is email already registered?
-  const _emailExists = await emailExistsValidator(email);
+  const _emailExists = await User.emailExists(data.email);
 
   if (_emailExists)
     return HttpResponseError(
