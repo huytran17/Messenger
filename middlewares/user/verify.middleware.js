@@ -1,7 +1,7 @@
 const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus } = require("../../constants/app.constant");
 const updateInfoValidator = require("../../utils/Validators/user/updateInfo.validator");
-const { verifyUploadImage } = require("../image/verify.middleware");
+const { verifyUploadImage } = require("../file/verify.middleware");
 
 module.exports.verifyUpdateAvatar = async (req, res, next) => {
   verifyUploadImage(req, res, next, "avatar_photo", 1048576);

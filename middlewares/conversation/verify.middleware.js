@@ -2,7 +2,7 @@ const { HttpResponseError } = require("../../utils/Response/http.response");
 const { HttpStatus } = require("../../constants/app.constant");
 const storeValidator = require("../../utils/Validators/conversation/store.validator");
 const updateInfoValidator = require("../../utils/Validators/conversation/updateInfo.validator");
-const { verifyUploadImage } = require("../image/verify.middleware");
+const { verifyUploadImage } = require("../file/verify.middleware");
 
 module.exports.verifyStore = (req, res, next) => {
   const { error } = storeValidator(req.body);

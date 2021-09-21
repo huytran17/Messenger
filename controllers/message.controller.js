@@ -50,7 +50,33 @@ module.exports.store = async (req, res) => {
   }
 };
 
-module.exports.storeUploadFile = async (req, res) => {};
+module.exports.storeUploadFile = async (req, res) => {
+  try {
+    const { onModel, uid, mid } = req.params;
+
+    const { content } = req.body;
+
+    const file = req.source.toString("base64");
+
+    const file_path = new Buffer.from(file, "base64");
+
+    const message = await new Message({
+      uid,
+      mid,
+      onModel,
+      content,
+      file_path,
+    }).save();
+
+    return HttpResponse(res, HttpStatus.CREATED, message);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
+  }
+};
 
 module.exports.destroy = async (req, res) => {
   try {

@@ -22,7 +22,6 @@ const messageSchema = new Schema(
     content: {
       type: String,
       trim: true,
-      required: [true, "Không được để trống."],
     },
     file_path: {
       type: String,

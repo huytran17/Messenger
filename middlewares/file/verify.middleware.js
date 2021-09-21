@@ -42,11 +42,13 @@ module.exports.verifyUploadImage = (req, res, next, name, size) => {
   });
 };
 
-module.exports.verifyUploadFile = async (req, res, next) => {
+module.exports.verifyUploadFile = async (req, res, next, name, size) => {
   const form = formidable.IncomingForm();
 
   form.parse(req, (err, fields, files) => {
     if (files && files[name]) {
+      const source = files[name].path;
+
       if (files[name].size > size)
         return HttpResponseError(
           res,

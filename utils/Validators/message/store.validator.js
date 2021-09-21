@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { ValidationMessage } = require("../../../constants/app.constant");
 
-module.exports = (data) => {
+module.exports.storeTextValidator = (data) => {
   const schema = Joi.object({
     uid: Joi.string().required().messages({
       "string.base": ValidationMessage.STRING_BASE,
