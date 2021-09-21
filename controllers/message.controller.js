@@ -5,15 +5,18 @@ const {
 } = require("../utils/Response/http.response");
 const { HttpStatus } = require("../constants/app.constant");
 
-module.exports.getAll = async (req, res) => {
+module.exports.getByModelId = async (req, res) => {
   try {
-    const { onModel, uid, mid } = req.params;
+    const { mid } = req.params;
 
-    const messages = await Message.find({
-      uid,
-      mid,
-      onModel,
-    }).exec();
+    const messages = await Message.findWithDeleted({ mid })
+      .populate({
+        path: "mid",
+        populate: {
+          path: "mems",
+        },
+      })
+      .exec();
 
     if (messages.length) return HttpResponse(res, HttpStatus.OK, messages);
 
@@ -54,8 +57,6 @@ module.exports.storeUploadFile = async (req, res) => {
   try {
     const { onModel, uid, mid } = req.params;
 
-    const { content } = req.body;
-
     const file = req.source.toString("base64");
 
     const file_path = new Buffer.from(file, "base64");
@@ -64,7 +65,6 @@ module.exports.storeUploadFile = async (req, res) => {
       uid,
       mid,
       onModel,
-      content,
       file_path,
     }).save();
 

@@ -7,7 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const conversations = await Conversation.find({}).exec();
+    const conversations = await Conversation.find({}).populate("mems").exec();
 
     if (conversations.length)
       return HttpResponse(res, HttpStatus.OK, conversations);
@@ -22,7 +22,9 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = { ...req.params };
 
-    const conversation = await Conversation.findById(id).exec();
+    const conversation = await Conversation.findById(id)
+      .populate("mems")
+      .exec();
 
     if (conversation) return HttpResponse(res, HttpStatus.OK, conversation);
 

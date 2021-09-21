@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
 
 const infoSchema = new Schema(
   {
@@ -9,9 +8,14 @@ const infoSchema = new Schema(
       ref: "User",
       required: [true, "Không được để trống."],
     },
-    cid: {
+    mid: {
       type: Schema.Types.ObjectId,
-      ref: "Conversation",
+      refPath: "onModel",
+      required: [true, "Không được để trống."],
+    },
+    onModel: {
+      type: String,
+      enum: ["Conversation", "Group"],
       required: [true, "Không được để trống."],
     },
     nickname: {
@@ -23,7 +27,5 @@ const infoSchema = new Schema(
   },
   { timestamps: true }
 );
-
-mongoose_delete_plugin(infoSchema);
 
 module.exports = mongoose.model("Info", infoSchema);

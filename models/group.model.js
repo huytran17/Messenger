@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require("./user.model");
 const Message = require("./message.model");
+const Info = require("./info.model");
 
 const groupSchema = new Schema(
   {
@@ -51,7 +52,8 @@ groupSchema.post("findOneAndDelete", async function (doc) {
     }).exec();
   }
 
-  await Message.deleteMany({ onModelId: doc._id }).exec();
+  await Message.deleteMany({ mid: doc._id }).exec();
+  await Info.deleteMany({ mid: doc._id }).exec();
 });
 
 groupSchema.post("findOneAndUpdate", async function (doc) {

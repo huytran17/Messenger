@@ -7,7 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    let users = await User.find({}).exec();
+    let users = await User.find({}).populate("convs").populate("grs").exec();
 
     if (users.length) return HttpResponse(res, HttpStatus.OK, users);
 
@@ -21,7 +21,10 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = { ...req.params };
 
-    let user = await User.findById(id).exec();
+    let user = await User.findOne({ _id: id })
+      .populate("convs")
+      .populate("grs")
+      .exec();
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
 

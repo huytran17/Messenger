@@ -7,7 +7,10 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const groups = await Group.find({}).exec();
+    const groups = await Group.find({})
+      .populate("mems")
+      .populate({ path: "created_by", select: "_id" })
+      .exec();
 
     if (groups.length) return HttpResponse(res, HttpStatus.OK, groups);
 
@@ -25,7 +28,10 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const group = await Group.findById(id).exec();
+    const group = await Group.findById(id)
+      .populate("mems")
+      .populate({ path: "created_by", select: "_id" })
+      .exec();
 
     if (group) return HttpResponse(res, HttpStatus.OK, group);
 
