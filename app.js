@@ -7,7 +7,8 @@ const cookieParser = require("cookie-parser");
 
 const _CONF = require("./config/app");
 const dbConnect = require("./database/connect.database");
-const router = require("./routes/index.router");
+const router = require("./routes/router");
+const socket = require("./socket.io/socket");
 
 const app = express();
 
@@ -16,7 +17,23 @@ dbConnect();
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefault: true,
+    directives: {
+      "script-src": [
+        "'self'",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
+        _CONF.APP_URL,
+      ],
+      "style-src": ["'self'", "'unsafe-inline'"],
+      "default-src": "*",
+    },
+  })
+);
+app.use(helmet.xssFilter());
+app.use(helmet.hidePoweredBy());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -34,8 +51,10 @@ app.use(express.static("./public/css"));
 
 router(app);
 
-app.listen(_CONF.SERVER_PORT, () => {
+const server = app.listen(_CONF.SERVER_PORT, () => {
   console.log(`Server started on port ${_CONF.SERVER_PORT}`);
 });
+
+socket.listen(server);
 
 //TODO display user's default avatar
