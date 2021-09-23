@@ -9,7 +9,7 @@ const homeRouter = require("./home.router");
 const { verifyAccess } = require("../middlewares/verifyAccess.middleware");
 
 module.exports = (app) => {
-  app.use("/", homeRouter);
+  app.use("/home", [verifyAccess, homeRouter]);
   
   app.use("/auth", authRouter);
 
