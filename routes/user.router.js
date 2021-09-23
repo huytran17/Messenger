@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getAll,
   getById,
+  getByEmail,
   updateInfo,
   updateAvatar,
   updateCover,
@@ -24,5 +25,7 @@ router
   .put(verifyUpdateCover, updateCover)
   .patch(verifyUpdateInfo, updateInfo)
   .delete(isAdmin, destroy);
+
+router.route("/:email").get(getByEmail);
 
 module.exports = router;

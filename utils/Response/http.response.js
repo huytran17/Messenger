@@ -1,13 +1,13 @@
-const HttpResponseError = (res, status, error = "", message = "") => {
+const HttpResponseError = (res, status, errors = "") => {
   return res.status(status).json({
+    error: true,
     status,
-    error,
-    message,
+    errors,
   });
 };
 
 const HttpResponse = (res, status, data = null) => {
-  return res.status(status).json(data);
+  return res.status(status).json({ error: false, data });
 };
 
 module.exports.HttpResponse = HttpResponse;

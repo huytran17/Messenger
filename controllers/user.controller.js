@@ -34,6 +34,23 @@ module.exports.getById = async (req, res) => {
   }
 };
 
+module.exports.getByEmail = async (req, res) => {
+  try {
+    const { email } = { ...req.params };
+
+    let user = await User.findOne({ email })
+      .populate("convs")
+      .populate("grs")
+      .exec();
+
+    if (user) return HttpResponse(res, HttpStatus.OK, user);
+
+    return HttpResponse(res, HttpStatus.NO_CONTENT);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
+
 module.exports.updateInfo = async (req, res) => {
   try {
     const { id } = req.params;

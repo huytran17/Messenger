@@ -16,7 +16,7 @@ module.exports.login = (req, res) => {
 };
 
 module.exports._login = async (req, res) => {
-  const data = { ...req.body } || { ...req.decoded };
+  const data = { ...req.body };
 
   let user = await User.findEmail(data.email);
 

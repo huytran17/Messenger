@@ -7,7 +7,8 @@ const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
 const bcrypt = require("bcryptjs");
 
 module.exports._validateData = async (req, res, next) => {
-  const data = { ...req.body } || { ...req.decoded };
+  const data = { ...req.body };
+
   //validate date
   const { error } = loginValidator(data);
 
