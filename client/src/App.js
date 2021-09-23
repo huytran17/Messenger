@@ -2,11 +2,15 @@ import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 import React from "react";
+import { io } from "socket.io-client";
 
 class App extends React.Component {
   componentDidMount() {
+    // eslint-disable-next-line
+    const socket = io("http://localhost:4000");
+
     axios
-      .get("/users")
+      .get("/test")
       .then((res) => console.log(res))
       .catch((error) => console.log(error));
   }
