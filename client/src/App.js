@@ -2,7 +2,7 @@ import "./App.css";
 import axios from "axios";
 import React from "react";
 import { io } from "socket.io-client";
-import { AppBar } from "./components/Layout/index";
+import { Home } from "./components/Layout/index";
 
 class App extends React.Component {
   componentDidMount() {
@@ -17,7 +17,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <AppBar />
+        <Home />
       </div>
     );
   }
