@@ -1,5 +1,5 @@
 # ChatApp_NodeJS
 # Server: ExpressJS, Socket.io
-# Client: ReactJS
+# Client: ReactJS, MUI
 # Engine: Pug
 # Building...
