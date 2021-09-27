@@ -1,35 +1,51 @@
-import * as React from "react";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Header, Footer, Image, Form } from "./index";
+import * as React from "react";
+import { Footer, Form, Header, SideImage } from "./index";
+import PanelImage from "../../../images/loginPanel.webp";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
 
-export default function Login() {
+export default function Login({ panelImage }) {
+  const BoxContainer = styled(Box)({
+    "& > :not(style)": { m: 1 },
+    margin: "30px auto auto auto",
+    width: "800px",
+    height: "600px",
+    display: "flex",
+    justifyContent: "space-between",
+    borderRadius: "30px",
+    overflow: "hidden",
+    boxShadow:
+      "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
+  });
+
   return (
-    <Box
-      sx={{
-        "& > :not(style)": { m: 1 },
-        border: "1px solid red",
-        margin: "50px auto auto auto",
-        width: "500px",
-        display: "flex",
-        justifyContent: "space-between",
-        padding: 10,
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <Image />
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <BoxContainer>
+      <SideImage />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: 9,
+          backgroundImage: `url(${panelImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <Header />
         <Form />
         <Footer />
       </Box>
-    </Box>
+    </BoxContainer>
   );
 }
+
+Login.prototype = {
+  panelImage: PropTypes.string,
+};
+
+Login.defaultProps = {
+  panelImage: PanelImage,
+};

@@ -1,17 +1,24 @@
 import * as React from "react";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import Image from "../../Image";
+import Typography from "@mui/material/Typography";
+import PropTypes from "prop-types";
 
-export default function Login() {
+export default function Header({ caption }) {
   return (
     <Box>
-      <h1>3</h1>
+      <Image size={{ w: 85, h: 85 }} />
+      <Typography variant="caption" display="block" gutterBottom>
+        {caption}
+      </Typography>
     </Box>
   );
 }
+
+Header.propTypes = {
+  caption: PropTypes.string,
+};
+
+Header.defaultProps = {
+  caption: "caption text",
+};

@@ -1,29 +1,29 @@
-import * as React from "react";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import Link from "@mui/material/Link";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
-import { useSelector, useDispatch } from "react-redux";
-import { _String } from "../../../constants/index";
-import PropTypes from "prop-types";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
+import axios from "axios";
+import PropTypes from "prop-types";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  changeData,
-  validate,
-  selectError,
-  selectData,
+  changeData, selectData, selectError, selectIsAllValid, validate
 } from "../../../app/slices/loginSlice";
+import { _String } from "../../../constants/index";
 
 export default function Login(props) {
   const error = useSelector(selectError);
-
+  
   const data = useSelector(selectData);
+
+  const isAllValid = useSelector(selectIsAllValid);
 
   const dispatch = useDispatch();
 
@@ -32,21 +32,46 @@ export default function Login(props) {
     dispatch(validate(prop));
   };
 
+  const login = () => (event) => {
+    if (isAllValid) {
+      console.log("valid");
+    }
+  };
+
+  const ErrorHelperText = (props) => {
+    return props.error ? (
+      <FormHelperText error>{props.error}</FormHelperText>
+    ) : (
+      _String.EMPTY
+    );
+  };
+
+  const InputLabelForError = (props) => {
+    return error[props.field] ? (
+      <InputLabel htmlFor={props.for} error>
+        {props.label}
+      </InputLabel>
+    ) : (
+      <InputLabel htmlFor={props.for}>{props.label}</InputLabel>
+    );
+  };
+
   const {
     emailLabel,
     passwordLabel,
     rememberMeLabel,
     btnLoginLabel,
-    fogetPwdLabel,
+    fogetPwdLinkLabel,
+    registerLinkLabel,
   } = props;
 
-  const ContainerBox = styled(Box)({
+  const sxContainerBox = {
     width: "250px",
     "& .MuiFormControl-root": { width: "100%" },
     "& .MuiButton-root": { width: 115 },
     "& .MuiInputBase-input": { padding: "10px" },
     "& .MuiBox-root": { marginTop: "8px" },
-  });
+  };
 
   const ButtonBox = styled(Box)({
     display: "flex",
@@ -61,19 +86,20 @@ export default function Login(props) {
   const BtnLogin = styled(Button)({
     borderRadius: "20px",
     flexShrink: 1,
+    boxShadow: "none",
   });
 
-  const ForgotPwdLink = styled(Link)({
+  const FormLink = styled(Link)({
     fontSize: 13,
     textAlign: "right",
   });
 
   return (
-    <ContainerBox component="form">
+    <Box component="form" sx={sxContainerBox}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <FormControl variant="standard">
-            <InputLabel htmlFor="email">{emailLabel}</InputLabel>
+            <InputLabelForError for="email" field="email" label={emailLabel} />
             <Input
               id="email"
               name="email"
@@ -83,30 +109,27 @@ export default function Login(props) {
               inputProps={{
                 form: {
                   autoComplete: "off",
+                  error: true,
                 },
               }}
             />
-            {error.email ? (
-              <FormHelperText error>{error.email}</FormHelperText>
-            ) : (
-              ""
-            )}
+            <ErrorHelperText error={error.email} />
           </FormControl>
         </Grid>
         <Grid item xs={12}>
           <FormControl variant="standard">
-            <InputLabel htmlFor="password">{passwordLabel}</InputLabel>
+            <InputLabelForError
+              for="password"
+              field="password"
+              label={passwordLabel}
+            />
             <Input
               id="password"
               name="password"
               value={data.password}
               onChange={handleChange(_String.PASSWORD)}
             />
-            {error.password ? (
-              <FormHelperText error>{error.password}</FormHelperText>
-            ) : (
-              ""
-            )}
+            <ErrorHelperText error={error.password} />
           </FormControl>
         </Grid>
         <Grid item xs={12}>
@@ -119,20 +142,25 @@ export default function Login(props) {
         </Grid>
         <Grid item xs={12} sx={{ paddingTop: "0px !important" }}>
           <FormControl>
-            <ForgotPwdLink href="#" underline="hover">
-              {fogetPwdLabel}
-            </ForgotPwdLink>
+            <FormLink href="#" underline="hover">
+              {fogetPwdLinkLabel}
+            </FormLink>
+            <FormLink href="#" underline="hover">
+              {registerLinkLabel}
+            </FormLink>
           </FormControl>
         </Grid>
         <Grid item xs={12}>
           <FormControl>
             <ButtonBox>
-              <BtnLogin variant="contained">{btnLoginLabel}</BtnLogin>
+              <BtnLogin variant="contained" onClick={login()}>
+                {btnLoginLabel}
+              </BtnLogin>
             </ButtonBox>
           </FormControl>
         </Grid>
       </Grid>
-    </ContainerBox>
+    </Box>
   );
 }
 
@@ -141,7 +169,8 @@ Login.propTypes = {
   passwordLabel: PropTypes.string,
   rememberMeLabel: PropTypes.string,
   btnLoginLabel: PropTypes.string,
-  fogetPwdLabel: PropTypes.string,
+  fogetPwdLinkLabel: PropTypes.string,
+  registerLinkLabel: PropTypes.string,
 };
 
 Login.defaultProps = {
@@ -149,5 +178,6 @@ Login.defaultProps = {
   passwordLabel: "Password",
   rememberMeLabel: "Remember me",
   btnLoginLabel: "Login",
-  fogetPwdLabel: "Forgot password?",
+  fogetPwdLinkLabel: "Forgot password?",
+  registerLinkLabel: "Register",
 };

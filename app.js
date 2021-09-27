@@ -4,7 +4,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-
 const _CONF = require("./config/app");
 const dbConnect = require("./database/connect.database");
 const router = require("./routes/router");
