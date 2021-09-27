@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { _Reducer } from "../../constants/index";
 
 const initialState = {
   openLeft: false,
@@ -6,7 +7,7 @@ const initialState = {
 };
 
 export const appBarSlice = createSlice({
-  name: "appBar",
+  name: _Reducer.NAME.APPBAR,
   initialState,
   reducers: {
     toggleStatusLeft: (state) => {

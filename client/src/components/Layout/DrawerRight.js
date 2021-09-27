@@ -3,7 +3,6 @@ import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
@@ -84,12 +83,14 @@ export default function DrawerRight() {
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
-      <DrawerHeader sx={{ justifyContent: "start" }}>
-        <IconButton onClick={handleDrawerClose}>
-          {status ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
+      <DrawerHeader sx={{ justifyContent: "start", padding: 0 }}>
+        <ListItem button key="chevron" onClick={handleDrawerClose}>
+          <ListItemIcon>
+            {status ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </ListItemIcon>
+          <ListItemText primary="Hide" />
+        </ListItem>
       </DrawerHeader>
-      <Divider />
       <List>
         {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
           <ListItem button key={text}>
