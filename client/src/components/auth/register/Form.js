@@ -37,7 +37,8 @@ export default function Form(props) {
   const register = () => async (event) => {
     if (isAllValid) {
       await axios
-        .post(`${Server.URL}:${Server.PORT}`, {
+        .post(`${Server.URL}:${Server.PORT}/auth/register`, {
+          username: data.username,
           email: data.email,
           password: data.password,
           re_password: data.re_password,
@@ -46,6 +47,7 @@ export default function Form(props) {
           console.log(res);
         })
         .catch((err) => {
+          console.log(err);
           dispatch(
             setError({
               path: err.response.data.path,
@@ -62,6 +64,7 @@ export default function Form(props) {
     btnRegisterLabel,
     loginLinkLabel,
     repasswordLabel,
+    usernameLabel,
   } = props;
 
   const sxContainerBox = {
@@ -91,6 +94,23 @@ export default function Form(props) {
   return (
     <Box component="form" sx={sxContainerBox}>
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <FormControl variant="standard">
+            <InputLabelForError
+              for="username"
+              field="username"
+              label={usernameLabel}
+            />
+            <Input
+              id="username"
+              type="username"
+              value={data.username}
+              onChange={handleChange(_String.formFields.USERNAME)}
+              required
+            />
+            <ErrorHelperText error={error.username} />
+          </FormControl>
+        </Grid>
         <Grid item xs={12}>
           <FormControl variant="standard">
             <InputLabelForError
@@ -171,6 +191,7 @@ export default function Form(props) {
 }
 
 Form.propTypes = {
+  usernameLabel: PropTypes.string,
   emailLabel: PropTypes.string,
   passwordLabel: PropTypes.string,
   repasswordLabel: PropTypes.string,
@@ -180,6 +201,7 @@ Form.propTypes = {
 };
 
 Form.defaultProps = {
+  usernameLabel: "Username",
   emailLabel: "Email",
   passwordLabel: "Password",
   repasswordLabel: "Re-type Password",

@@ -5,11 +5,13 @@ const initialState = {
   isAllValid: false,
   remember_me: false,
   data: {
+    username: _String.EMPTY,
     email: _String.EMPTY,
     password: _String.EMPTY,
     re_password: _String.EMPTY,
   },
   error: {
+    username: _String.EMPTY,
     email: _String.EMPTY,
     password: _String.EMPTY,
     re_password: _String.EMPTY,
@@ -53,28 +55,43 @@ export const authSlice = createSlice({
       if (state.data[attr] === _String.EMPTY)
         state.error[attr] = ValidateError.REQUIRED;
       //validate email
-      else if (
-        attr === _String.formFields.EMAIL &&
-        !validateEmail(state.data[attr])
-      )
-        state.error[attr] = ValidateError.INVALID_EMAIL;
-      //validate re-password
-      else if (
-        (attr === _String.formFields.RE_PASSWORD ||
-          attr === _String.formFields.PASSWORD) &&
-        type === Action.TYPE.REGISTER
-      ) {
-        if (
-          state.data.re_password &&
-          state.data.re_password !== state.data.password
-        )
-          state.error[_String.formFields.RE_PASSWORD] = ValidateError.MISMATCH;
-        else {
-          state.error[_String.formFields.RE_PASSWORD] = _String.EMPTY;
-        }
+      else if (attr === _String.formFields.EMAIL) {
+        if (!validateEmail(state.data[attr]))
+          state.error[attr] = ValidateError.INVALID_EMAIL;
+        else state.error[attr] = _String.EMPTY;
       }
-      //no errors
-      else state.error[attr] = _String.EMPTY;
+      //validate for register
+      else if (type === Action.TYPE.REGISTER) {
+        //validate username
+        if (attr === _String.formFields.USERNAME) {
+          if (state.data.username.length < 6)
+            state.error[_String.formFields.USERNAME] =
+              ValidateError.USERNAME_MIN_LENGTH;
+          else state.error[_String.formFields.USERNAME] = _String.EMPTY;
+        }
+        //validate password & re-password
+        else if (
+          attr === _String.formFields.RE_PASSWORD ||
+          attr === _String.formFields.PASSWORD
+        ) {
+          //password length
+          if (attr === _String.formFields.PASSWORD) {
+            if (state.data.password.length < 8)
+              state.error[_String.formFields.PASSWORD] =
+                ValidateError.PASSWORD_MIN_LENGTH;
+            else state.error[_String.formFields.PASSWORD] = _String.EMPTY;
+          }
+
+          //match re-pasword
+          if (
+            state.data.re_password &&
+            state.data.re_password !== state.data.password
+          )
+            state.error[_String.formFields.RE_PASSWORD] =
+              ValidateError.MISMATCH;
+          else state.error[_String.formFields.RE_PASSWORD] = _String.EMPTY;
+        }
+      } else state.error[attr] = _String.EMPTY;
 
       //validate login
       if (type === Action.TYPE.LOGIN) {
