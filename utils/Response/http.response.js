@@ -1,8 +1,9 @@
-const HttpResponseError = (res, status, errors = "") => {
+const HttpResponseError = (res, status, errors = "", path = "") => {
   return res.status(status).json({
     error: true,
     status,
     errors,
+    path,
   });
 };
 

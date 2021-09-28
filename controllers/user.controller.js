@@ -51,6 +51,16 @@ module.exports.getByEmail = async (req, res) => {
   }
 };
 
+module.exports.getCurrent = async (req, res) => {
+  try {
+    if (req.decoded) return HttpResponse(res, HttpStatus.OK, req.decoded);
+
+    return HttpResponse(res, HttpStatus.NO_CONTENT);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
+
 module.exports.updateInfo = async (req, res) => {
   try {
     const { id } = req.params;

@@ -3,6 +3,7 @@ import { ValidateError, _String, _Reducer } from "../../constants/index";
 
 const initialState = {
   isAllValid: false,
+  remember_me: false,
   data: {
     email: _String.EMPTY,
     password: _String.EMPTY,
@@ -53,15 +54,26 @@ export const loginSlice = createSlice({
       state.isAllValid =
         checkDataProperties(state.data) && checkErrorProperties(state.error);
     },
+    setError: (state, action) => {
+      const payload = action.payload;
+      state.error[payload.path] = payload.error;
+      state.isAllValid = false;
+    },
+    rememberMeCheck: (state) => {
+      state.remember_me = !state.remember_me;
+    },
   },
 });
 
-export const { changeData, validate } = loginSlice.actions;
+export const { changeData, validate, setError, rememberMeCheck } =
+  loginSlice.actions;
 
 export const selectData = (state) => state.login.data;
 
 export const selectError = (state) => state.login.error;
 
 export const selectIsAllValid = (state) => state.login.isAllValid;
+
+export const selectRememberMe = (state) => state.login.remember_me;
 
 export default loginSlice.reducer;

@@ -42,6 +42,12 @@ const ValidationMessage = Object.freeze({
   INVALID: "Dữ liệu không hợp lệ.",
 });
 
+const Path = Object.freeze({
+  EMAIL: "email",
+  PASSWORD: "password",
+});
+
 module.exports.HttpStatus = HttpStatus;
 module.exports.ResponseMessage = ResponseMessage;
 module.exports.ValidationMessage = ValidationMessage;
+module.exports.Path = Path;

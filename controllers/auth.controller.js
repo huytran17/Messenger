@@ -23,7 +23,7 @@ module.exports._login = async (req, res) => {
   //craete token
   const token = jwt.sign({ user }, _CONF.TOKEN_SECRET);
 
-  if (data.remember_me === "true") {
+  if (data.remember_me === true) {
     let expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
 
     await res.cookie("token", token, {

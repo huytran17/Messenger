@@ -5,9 +5,11 @@ const env = process.env;
 module.exports = {
   APP_NAME: env.APP_NAME || "NODEJS CHAT APP",
   APP_MAIL: env.APP_MAIL,
-  APP_URL: env.APP_URL || "http://localhost:3000",
+  APP_URL: env.APP_URL || "http://localhost",
+  APP_PORT: env.APP_PORT || 8000,
+  CLIENT_URL: env.CLIENT_URL || "http://localhost",
+  CLIENT_PORT: env.CLIENT_PORT || 3000,
   DATABASE_URL: env.DATABASE_URL,
-  SERVER_PORT: env.SERVER_PORT || 3000,
   TOKEN_SECRET: env.TOKEN_SECRET,
   SESSION_SECRET: env.SESSION_SECRET,
   COOKIE_SECRET: env.COOKIE_SECRET,

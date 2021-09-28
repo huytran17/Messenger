@@ -8,7 +8,7 @@ import { Login } from "./components/auth/index";
 class App extends React.Component {
   componentDidMount() {
     // eslint-disable-next-line
-    const socket = io("http://localhost:1302");
+    const socket = io("http://localhost:8000");
   }
   render() {
     return (

@@ -15,3 +15,8 @@ export const _Reducer = Object.freeze({
     APPBAR: "APPBAR",
   },
 });
+
+export const Server = Object.freeze({
+  PORT: 8000,
+  URL: "http://localhost",
+});

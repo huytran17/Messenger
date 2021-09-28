@@ -3,7 +3,11 @@ const {
   loginValidator,
 } = require("../../utils/Validators/auth/auth.validator");
 const { HttpResponseError } = require("../../utils/Response/http.response");
-const { HttpStatus, ResponseMessage } = require("../../constants/app.constant");
+const {
+  HttpStatus,
+  ResponseMessage,
+  Path,
+} = require("../../constants/app.constant");
 const bcrypt = require("bcryptjs");
 
 module.exports._validateData = async (req, res, next) => {
@@ -12,8 +16,14 @@ module.exports._validateData = async (req, res, next) => {
   //validate date
   const { error } = loginValidator(data);
 
-  if (error)
-    return HttpResponseError(res, HttpStatus.BAD_REQUEST, error.details);
+  if (error) {
+    return HttpResponseError(
+      res,
+      HttpStatus.BAD_REQUEST,
+      error.details[0].message,
+      error.details[0].path[0]
+    );
+  }
 
   next();
 };
@@ -27,7 +37,8 @@ module.exports._validateEmail = async (req, res, next) => {
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
-      ResponseMessage.INCORRECT_EMAIL
+      ResponseMessage.INCORRECT_EMAIL,
+      Path.EMAIL
     );
 
   next();
@@ -44,7 +55,8 @@ module.exports._validatePwd = async (req, res, next) => {
     return HttpResponseError(
       res,
       HttpStatus.BAD_REQUEST,
-      ResponseMessage.INCORRECT_PASSWORD
+      ResponseMessage.INCORRECT_PASSWORD,
+      Path.PASSWORD
     );
 
   next();

@@ -14,14 +14,23 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeData, selectData, selectError, selectIsAllValid, validate
+  changeData,
+  selectData,
+  selectError,
+  selectIsAllValid,
+  validate,
+  setError,
+  selectRememberMe,
+  rememberMeCheck,
 } from "../../../app/slices/loginSlice";
-import { _String } from "../../../constants/index";
+import { _String, Server } from "../../../constants/index";
 
 export default function Login(props) {
   const error = useSelector(selectError);
-  
+
   const data = useSelector(selectData);
+
+  const remember_me = useSelector(selectRememberMe);
 
   const isAllValid = useSelector(selectIsAllValid);
 
@@ -32,10 +41,33 @@ export default function Login(props) {
     dispatch(validate(prop));
   };
 
-  const login = () => (event) => {
-    if (isAllValid) {
-      console.log("valid");
-    }
+  const handleChecked = (event) => {
+    dispatch(rememberMeCheck());
+  };
+
+  const login = () => async (event) => {
+    if (isAllValid)
+      await axios
+        .post(
+          `${Server.URL}:${Server.PORT}/auth/login`,
+          {
+            email: data.email,
+            password: data.password,
+            remember_me: remember_me,
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          window.location.href = "/";
+        })
+        .catch((err) => {
+          dispatch(
+            setError({
+              path: err.response.data.path,
+              error: err.response.data.errors,
+            })
+          );
+        });
   };
 
   const ErrorHelperText = (props) => {
@@ -76,11 +108,6 @@ export default function Login(props) {
   const ButtonBox = styled(Box)({
     display: "flex",
     justifyContent: "center",
-  });
-
-  const FormLabel = styled(FormControlLabel)({
-    "& .MuiSvgIcon-root": { fontSize: 18 },
-    "& .MuiTypography-root": { fontSize: 14 },
   });
 
   const BtnLogin = styled(Button)({
@@ -125,6 +152,7 @@ export default function Login(props) {
             />
             <Input
               id="password"
+              type="password"
               name="password"
               value={data.password}
               onChange={handleChange(_String.PASSWORD)}
@@ -134,8 +162,18 @@ export default function Login(props) {
         </Grid>
         <Grid item xs={12}>
           <FormControl>
-            <FormLabel
-              control={<Checkbox defaultChecked />}
+            <FormControlLabel
+              sx={{
+                "& .MuiSvgIcon-root": { fontSize: 18 },
+                "& .MuiTypography-root": { fontSize: 14 },
+              }}
+              control={
+                <Checkbox
+                  checked={remember_me}
+                  onChange={handleChecked}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              }
               label={rememberMeLabel}
             />
           </FormControl>

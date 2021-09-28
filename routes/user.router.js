@@ -8,6 +8,7 @@ const {
   updateAvatar,
   updateCover,
   destroy,
+  getCurrent,
 } = require("../controllers/user.controller");
 const {
   verifyUpdateInfo,
@@ -17,6 +18,8 @@ const {
 const { isAdmin } = require("../middlewares/authorization.middleware");
 
 router.route("/").get(getAll);
+
+router.route("/user").get(getCurrent);
 
 router
   .route("/:id")

@@ -45,7 +45,12 @@ app.use(
 );
 app.use(helmet.xssFilter());
 app.use(helmet.hidePoweredBy());
-app.use(cors());
+app.use(
+  cors({
+    origin: `${_CONF.CLIENT_URL}:${_CONF.CLIENT_PORT}`,
+    credentials: true,
+  })
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
@@ -61,8 +66,8 @@ app.use(express.static("./public"));
 
 router(app);
 
-const server = app.listen(_CONF.SERVER_PORT, () => {
-  console.log(`Server started on port ${_CONF.SERVER_PORT}`);
+const server = app.listen(_CONF.APP_PORT, () => {
+  console.log(`Server started on port ${_CONF.APP_PORT}`);
 });
 
 socket.listen(server);
