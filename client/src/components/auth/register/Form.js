@@ -44,10 +44,9 @@ export default function Form(props) {
           re_password: data.re_password,
         })
         .then((res) => {
-          console.log(res);
+          window.location.href = "/auth/login";
         })
         .catch((err) => {
-          console.log(err);
           dispatch(
             setError({
               path: err.response.data.path,
@@ -171,7 +170,7 @@ export default function Form(props) {
         </Grid>
         <Grid item xs={12}>
           <FormControl>
-            <FormLink href="#" underline="hover">
+            <FormLink href="/auth/login" underline="hover">
               {loginLinkLabel}
             </FormLink>
           </FormControl>

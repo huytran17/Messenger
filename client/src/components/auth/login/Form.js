@@ -12,9 +12,14 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeData, rememberMeCheck, selectData,
+  changeData,
+  rememberMeCheck,
+  selectData,
   selectError,
-  selectIsAllValid, selectRememberMe, setError, validate
+  selectIsAllValid,
+  selectRememberMe,
+  setError,
+  validate,
 } from "../../../app/slices/authSlice";
 import { Action, Server, _String } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
@@ -164,7 +169,7 @@ export default function Form(props) {
             <FormLink href="#" underline="hover">
               {fogetPwdLinkLabel}
             </FormLink>
-            <FormLink href="#" underline="hover">
+            <FormLink href="/auth/register" underline="hover">
               {registerLinkLabel}
             </FormLink>
           </FormControl>
