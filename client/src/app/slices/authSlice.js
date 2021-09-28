@@ -57,25 +57,27 @@ export const authSlice = createSlice({
 
       const type = action.payload.type.toUpperCase();
 
+      const setState = setStateError(state);
+
       //validate all data is not empty
       if (state.data[attr] === _String.EMPTY)
-        setStateError(state)(attr, ValidateError.REQUIRED);
+        setState(attr, ValidateError.REQUIRED);
       //validate email
       else if (attr === _String.formFields.EMAIL) {
         if (!validateEmail(state.data[attr]))
-          setStateError(state)(attr, ValidateError.INVALID_EMAIL);
-        else setStateError(state)(attr, _String.EMPTY);
+          setState(attr, ValidateError.INVALID_EMAIL);
+        else setState(attr, _String.EMPTY);
       }
       //validate for register
       else if (type === Action.TYPE.REGISTER) {
         //validate username
         if (attr === _String.formFields.USERNAME) {
           if (state.data.username.length < 6)
-            setStateError(state)(
+            setState(
               _String.formFields.USERNAME,
               ValidateError.USERNAME_MIN_LENGTH
             );
-          else setStateError(state)(_String.formFields.USERNAME, _String.EMPTY);
+          else setState(_String.formFields.USERNAME, _String.EMPTY);
         }
         //validate password & re-password
         else if (
@@ -85,12 +87,11 @@ export const authSlice = createSlice({
           //password length
           if (attr === _String.formFields.PASSWORD) {
             if (state.data.password.length < 8)
-              setStateError(state)(
+              setState(
                 _String.formFields.PASSWORD,
                 ValidateError.PASSWORD_MIN_LENGTH
               );
-            else
-              setStateError(state)(_String.formFields.PASSWORD, _String.EMPTY);
+            else setState(_String.formFields.PASSWORD, _String.EMPTY);
           }
 
           //match re-pasword
@@ -98,14 +99,10 @@ export const authSlice = createSlice({
             state.data.re_password &&
             state.data.re_password !== state.data.password
           )
-            setStateError(state)(
-              _String.formFields.RE_PASSWORD,
-              ValidateError.MISMATCH
-            );
-          else
-            setStateError(state)(_String.formFields.RE_PASSWORD, _String.EMPTY);
+            setState(_String.formFields.RE_PASSWORD, ValidateError.MISMATCH);
+          else setState(_String.formFields.RE_PASSWORD, _String.EMPTY);
         }
-      } else setStateError(state)(attr, _String.EMPTY);
+      } else setState(attr, _String.EMPTY);
 
       //validate login
       if (type === Action.TYPE.LOGIN) {
