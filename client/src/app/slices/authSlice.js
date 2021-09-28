@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ValidateError, _String, _Reducer } from "../../constants/index";
+import { ValidateError, _String, Reducer, Action } from "../../constants/index";
 
 const initialState = {
   isAllValid: false,
@@ -7,10 +7,12 @@ const initialState = {
   data: {
     email: _String.EMPTY,
     password: _String.EMPTY,
+    re_password: _String.EMPTY,
   },
   error: {
     email: _String.EMPTY,
     password: _String.EMPTY,
+    re_password: _String.EMPTY,
   },
 };
 
@@ -35,24 +37,42 @@ function checkErrorProperties(obj) {
   return true;
 }
 
-export const loginSlice = createSlice({
-  name: _Reducer.NAME.LOGIN,
+export const authSlice = createSlice({
+  name: Reducer.NAME.AUTH,
   initialState,
   reducers: {
     changeData: (state, action) => {
       state.data = { ...state.data, ...action.payload };
     },
     validate: (state, action) => {
-      const attr = action.payload.toLowerCase();
+      const attr = action.payload.path.toLowerCase();
+
+      const type = action.payload.type.toUpperCase();
 
       if (state.data[attr] === _String.EMPTY)
         state.error[attr] = ValidateError.REQUIRED;
-      else if (attr === _String.EMAIL && !validateEmail(state.data[attr])) {
+      else if (
+        attr === _String.formFields.EMAIL &&
+        !validateEmail(state.data[attr])
+      )
         state.error[attr] = ValidateError.INVALID_EMAIL;
-      } else state.error[attr] = _String.EMPTY;
+      else if (
+        (attr === _String.formFields.RE_PASSWORD ||
+          attr === _String.formFields.PASSWORD) &&
+        state.data.password !== state.data.re_password
+      )
+        state.error[attr] = ValidateError.MISMATCH;
+      else state.error[attr] = _String.EMPTY;
 
-      state.isAllValid =
-        checkDataProperties(state.data) && checkErrorProperties(state.error);
+      if (type === Action.TYPE.LOGIN) {
+        const { email, password } = state.data;
+
+        state.isAllValid =
+          checkDataProperties({ email, password }) &&
+          checkErrorProperties(state.error);
+      } else if (type === Action.TYPE.REGISTER)
+        state.isAllValid =
+          checkDataProperties(state.data) && checkErrorProperties(state.error);
     },
     setError: (state, action) => {
       const payload = action.payload;
@@ -66,14 +86,14 @@ export const loginSlice = createSlice({
 });
 
 export const { changeData, validate, setError, rememberMeCheck } =
-  loginSlice.actions;
+  authSlice.actions;
 
-export const selectData = (state) => state.login.data;
+export const selectData = (state) => state.auth.data;
 
-export const selectError = (state) => state.login.error;
+export const selectError = (state) => state.auth.error;
 
-export const selectIsAllValid = (state) => state.login.isAllValid;
+export const selectIsAllValid = (state) => state.auth.isAllValid;
 
-export const selectRememberMe = (state) => state.login.remember_me;
+export const selectRememberMe = (state) => state.auth.remember_me;
 
-export default loginSlice.reducer;
+export default authSlice.reducer;

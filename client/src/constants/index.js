@@ -1,18 +1,29 @@
 export const ValidateError = Object.freeze({
   INVALID_EMAIL: "Không đúng định dạng.",
-  REQUIRED: "Bắt buộc",
+  REQUIRED: "Bắt buộc.",
+  MISMATCH: "Không khớp.",
 });
 
 export const _String = Object.freeze({
   EMPTY: "",
-  EMAIL: "email",
-  PASSWORD: "password",
+  formFields: {
+    EMAIL: "email",
+    PASSWORD: "password",
+    RE_PASSWORD: "re_password",
+  },
 });
 
-export const _Reducer = Object.freeze({
+export const Reducer = Object.freeze({
   NAME: {
-    LOGIN: "LOGIN",
+    AUTH: "AUTH",
     APPBAR: "APPBAR",
+  },
+});
+
+export const Action = Object.freeze({
+  TYPE: {
+    LOGIN: "LOGIN",
+    REGISTER: "REGISTER",
   },
 });
 

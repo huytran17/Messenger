@@ -1,8 +1,8 @@
-import React from "react";
-import GoogleLogin from "react-google-login";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
+import React from "react";
+import GoogleLogin from "react-google-login";
 
 export default function Footer(props) {
   const responseGoogle = (response) => {

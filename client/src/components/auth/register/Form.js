@@ -1,30 +1,27 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Input from "@mui/material/Input";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
-import axios from "axios";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeData, rememberMeCheck, selectData,
+  changeData,
+  selectData,
   selectError,
-  selectIsAllValid, selectRememberMe, setError, validate
+  selectIsAllValid,
+  validate,
 } from "../../../app/slices/authSlice";
-import { Action, Server, _String } from "../../../constants/index";
+import { Action, _String } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
 
 export default function Form(props) {
   const error = useSelector(selectError);
 
   const data = useSelector(selectData);
-
-  const remember_me = useSelector(selectRememberMe);
 
   const isAllValid = useSelector(selectIsAllValid);
 
@@ -35,42 +32,18 @@ export default function Form(props) {
     dispatch(validate({ path: prop, type: Action.TYPE.LOGIN }));
   };
 
-  const handleChecked = (event) => {
-    dispatch(rememberMeCheck());
-  };
-
-  const login = () => async (event) => {
-    if (isAllValid)
-      await axios
-        .post(
-          `${Server.URL}:${Server.PORT}/auth/login`,
-          {
-            email: data.email,
-            password: data.password,
-            remember_me: remember_me,
-          },
-          { withCredentials: true }
-        )
-        .then((res) => {
-          window.location.href = "/";
-        })
-        .catch((err) => {
-          dispatch(
-            setError({
-              path: err.response.data.path,
-              error: err.response.data.errors,
-            })
-          );
-        });
+  const register = () => async (event) => {
+    if (isAllValid) {
+      console.log("valid");
+    }
   };
 
   const {
     emailLabel,
     passwordLabel,
-    rememberMeLabel,
-    btnLoginLabel,
-    fogetPwdLinkLabel,
-    registerLinkLabel,
+    btnRegisterLabel,
+    loginLinkLabel,
+    repasswordLabel,
   } = props;
 
   const sxContainerBox = {
@@ -142,38 +115,34 @@ export default function Form(props) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl>
-            <FormControlLabel
-              sx={{
-                "& .MuiSvgIcon-root": { fontSize: 18 },
-                "& .MuiTypography-root": { fontSize: 14 },
-              }}
-              control={
-                <Checkbox
-                  checked={remember_me}
-                  onChange={handleChecked}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-              }
-              label={rememberMeLabel}
+          <FormControl variant="standard">
+            <InputLabelForError
+              for="re_password"
+              field="re_password"
+              label={repasswordLabel}
             />
+            <Input
+              id="re_password"
+              type="password"
+              value={data.re_password}
+              onChange={handleChange(_String.formFields.RE_PASSWORD)}
+              required
+            />
+            <ErrorHelperText error={error.re_password} />
           </FormControl>
         </Grid>
-        <Grid item xs={12} sx={{ paddingTop: "0px !important" }}>
+        <Grid item xs={12}>
           <FormControl>
             <FormLink href="#" underline="hover">
-              {fogetPwdLinkLabel}
-            </FormLink>
-            <FormLink href="#" underline="hover">
-              {registerLinkLabel}
+              {loginLinkLabel}
             </FormLink>
           </FormControl>
         </Grid>
         <Grid item xs={12}>
           <FormControl>
             <ButtonBox>
-              <BtnLogin variant="contained" onClick={login()}>
-                {btnLoginLabel}
+              <BtnLogin variant="contained" onClick={register()}>
+                {btnRegisterLabel}
               </BtnLogin>
             </ButtonBox>
           </FormControl>
@@ -186,17 +155,17 @@ export default function Form(props) {
 Form.propTypes = {
   emailLabel: PropTypes.string,
   passwordLabel: PropTypes.string,
-  rememberMeLabel: PropTypes.string,
-  btnLoginLabel: PropTypes.string,
+  repasswordLabel: PropTypes.string,
+  btnRegisterLabel: PropTypes.string,
   fogetPwdLinkLabel: PropTypes.string,
-  registerLinkLabel: PropTypes.string,
+  loginLinkLabel: PropTypes.string,
 };
 
 Form.defaultProps = {
   emailLabel: "Email",
   passwordLabel: "Password",
-  rememberMeLabel: "Remember me",
-  btnLoginLabel: "Login",
+  repasswordLabel: "Re-type Password",
+  btnRegisterLabel: "Register",
   fogetPwdLinkLabel: "Forgot password?",
-  registerLinkLabel: "Register",
+  loginLinkLabel: "Already have account",
 };

@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { Home } from "./components/Layout/index";
 import { Switch, Route } from "react-router-dom";
 import { Login } from "./components/auth/index";
+import { Register } from "./components/auth/index";
 
 class App extends React.Component {
   componentDidMount() {
@@ -17,6 +18,7 @@ class App extends React.Component {
           <Route path="/" component={Home} exact />
           <Route path="/home" component={Home} />
           <Route path="/auth/login" component={Login} />
+          <Route path="/auth/register" component={Register} />
         </Switch>
       </div>
     );
