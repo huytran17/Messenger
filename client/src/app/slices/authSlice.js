@@ -39,6 +39,12 @@ function checkErrorProperties(obj) {
   return true;
 }
 
+const setStateError =
+  (state) =>
+  (path, value = _String.EMPTY) => {
+    state.error[path] = value;
+  };
+
 export const authSlice = createSlice({
   name: Reducer.NAME.AUTH,
   initialState,
@@ -53,21 +59,23 @@ export const authSlice = createSlice({
 
       //validate all data is not empty
       if (state.data[attr] === _String.EMPTY)
-        state.error[attr] = ValidateError.REQUIRED;
+        setStateError(state)(attr, ValidateError.REQUIRED);
       //validate email
       else if (attr === _String.formFields.EMAIL) {
         if (!validateEmail(state.data[attr]))
-          state.error[attr] = ValidateError.INVALID_EMAIL;
-        else state.error[attr] = _String.EMPTY;
+          setStateError(state)(attr, ValidateError.INVALID_EMAIL);
+        else setStateError(state)(attr, _String.EMPTY);
       }
       //validate for register
       else if (type === Action.TYPE.REGISTER) {
         //validate username
         if (attr === _String.formFields.USERNAME) {
           if (state.data.username.length < 6)
-            state.error[_String.formFields.USERNAME] =
-              ValidateError.USERNAME_MIN_LENGTH;
-          else state.error[_String.formFields.USERNAME] = _String.EMPTY;
+            setStateError(state)(
+              _String.formFields.USERNAME,
+              ValidateError.USERNAME_MIN_LENGTH
+            );
+          else setStateError(state)(_String.formFields.USERNAME, _String.EMPTY);
         }
         //validate password & re-password
         else if (
@@ -77,9 +85,12 @@ export const authSlice = createSlice({
           //password length
           if (attr === _String.formFields.PASSWORD) {
             if (state.data.password.length < 8)
-              state.error[_String.formFields.PASSWORD] =
-                ValidateError.PASSWORD_MIN_LENGTH;
-            else state.error[_String.formFields.PASSWORD] = _String.EMPTY;
+              setStateError(state)(
+                _String.formFields.PASSWORD,
+                ValidateError.PASSWORD_MIN_LENGTH
+              );
+            else
+              setStateError(state)(_String.formFields.PASSWORD, _String.EMPTY);
           }
 
           //match re-pasword
@@ -87,11 +98,14 @@ export const authSlice = createSlice({
             state.data.re_password &&
             state.data.re_password !== state.data.password
           )
-            state.error[_String.formFields.RE_PASSWORD] =
-              ValidateError.MISMATCH;
-          else state.error[_String.formFields.RE_PASSWORD] = _String.EMPTY;
+            setStateError(state)(
+              _String.formFields.RE_PASSWORD,
+              ValidateError.MISMATCH
+            );
+          else
+            setStateError(state)(_String.formFields.RE_PASSWORD, _String.EMPTY);
         }
-      } else state.error[attr] = _String.EMPTY;
+      } else setStateError(state)(attr, _String.EMPTY);
 
       //validate login
       if (type === Action.TYPE.LOGIN) {
