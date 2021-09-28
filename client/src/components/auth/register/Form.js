@@ -6,6 +6,7 @@ import Input from "@mui/material/Input";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,8 +15,9 @@ import {
   selectError,
   selectIsAllValid,
   validate,
+  setError,
 } from "../../../app/slices/authSlice";
-import { Action, _String } from "../../../constants/index";
+import { Action, _String, Server } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
 
 export default function Form(props) {
@@ -29,12 +31,28 @@ export default function Form(props) {
 
   const handleChange = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
-    dispatch(validate({ path: prop, type: Action.TYPE.LOGIN }));
+    dispatch(validate({ path: prop, type: Action.TYPE.REGISTER }));
   };
 
   const register = () => async (event) => {
     if (isAllValid) {
-      console.log("valid");
+      await axios
+        .post(`${Server.URL}:${Server.PORT}`, {
+          email: data.email,
+          password: data.password,
+          re_password: data.re_password,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          dispatch(
+            setError({
+              path: err.response.data.path,
+              error: err.response.data.errors,
+            })
+          );
+        });
     }
   };
 

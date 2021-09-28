@@ -49,28 +49,43 @@ export const authSlice = createSlice({
 
       const type = action.payload.type.toUpperCase();
 
+      //validate all data is not empty
       if (state.data[attr] === _String.EMPTY)
         state.error[attr] = ValidateError.REQUIRED;
+      //validate email
       else if (
         attr === _String.formFields.EMAIL &&
         !validateEmail(state.data[attr])
       )
         state.error[attr] = ValidateError.INVALID_EMAIL;
+      //validate re-password
       else if (
         (attr === _String.formFields.RE_PASSWORD ||
           attr === _String.formFields.PASSWORD) &&
-        state.data.password !== state.data.re_password
-      )
-        state.error[attr] = ValidateError.MISMATCH;
+        type === Action.TYPE.REGISTER
+      ) {
+        if (
+          state.data.re_password &&
+          state.data.re_password !== state.data.password
+        )
+          state.error[_String.formFields.RE_PASSWORD] = ValidateError.MISMATCH;
+        else {
+          state.error[_String.formFields.RE_PASSWORD] = _String.EMPTY;
+        }
+      }
+      //no errors
       else state.error[attr] = _String.EMPTY;
 
+      //validate login
       if (type === Action.TYPE.LOGIN) {
         const { email, password } = state.data;
 
         state.isAllValid =
           checkDataProperties({ email, password }) &&
           checkErrorProperties(state.error);
-      } else if (type === Action.TYPE.REGISTER)
+      }
+      //validate register
+      else if (type === Action.TYPE.REGISTER)
         state.isAllValid =
           checkDataProperties(state.data) && checkErrorProperties(state.error);
     },
