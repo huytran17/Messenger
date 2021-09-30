@@ -9,7 +9,7 @@ import { ForgetPwd } from "./components/auth/index";
 import { VerifyCode } from "./components/auth/index";
 import { ResetPassword } from "./components/auth/index";
 import axios from "axios";
-import { Server } from "./constants/index";
+import AuthContext from "./ctx/authCtx";
 
 class App extends React.Component {
   async componentDidMount() {
@@ -26,15 +26,6 @@ class App extends React.Component {
         return Promise.reject(error);
       }
     );
-
-    const currentUser = await axios
-      .get(`${Server.URL}:${Server.PORT}/users/user`)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
   render() {
     return (

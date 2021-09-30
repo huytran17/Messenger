@@ -20,7 +20,7 @@ import {
   selectRememberMe,
   setError,
   validate,
-} from "../../../app/slices/authSlice";
+} from "../../../app/slices/authFormSlice";
 import { Auth, Field, Server } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
 

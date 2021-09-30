@@ -27,6 +27,7 @@ export const Field = Object.freeze({
 export const Reducer = Object.freeze({
   NAME: {
     AUTH: "AUTH",
+    AUTH_FORM: "AUTH_FORM",
     APPBAR: "APPBAR",
     ALERT: "ALERT",
   },
@@ -57,4 +58,22 @@ export const Message = Object.freeze({
         "Một email đã được gửi đến địa chỉ E-mail của bạn. Bạn vui lòng kiểm tra và làm theo hướng dẫn.",
     },
   },
+});
+
+export const HttpStatus = Object.freeze({
+  OK: 200,
+  CREATED: 201,
+  ACCEPTED: 202,
+  NO_CONTENT: 204,
+  NOT_MODIFIED: 304,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  METHOD_NOT_ALLOWED: 405,
+  REQUEST_TIMEOUT: 407,
+  INTERNAL_SERVER_ERROR: 500,
+  NOT_IMPLEMENTED: 501,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
 });
