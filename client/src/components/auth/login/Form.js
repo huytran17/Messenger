@@ -21,7 +21,7 @@ import {
   setError,
   validate,
 } from "../../../app/slices/authSlice";
-import { Action, Server, _String } from "../../../constants/index";
+import { Auth, Field, Server } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
 
 export default function Form(props) {
@@ -37,7 +37,7 @@ export default function Form(props) {
 
   const handleChange = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
-    dispatch(validate({ path: prop, type: Action.TYPE.LOGIN }));
+    dispatch(validate({ path: prop, type: Auth.TYPE.LOGIN }));
   };
 
   const handleChecked = (event) => {
@@ -47,15 +47,11 @@ export default function Form(props) {
   const login = () => async (event) => {
     if (isAllValid)
       await axios
-        .post(
-          `${Server.URL}:${Server.PORT}/auth/login`,
-          {
-            email: data.email,
-            password: data.password,
-            remember_me: remember_me,
-          },
-          { withCredentials: true }
-        )
+        .post(`${Server.URL}:${Server.PORT}/auth/login`, {
+          email: data.email,
+          password: data.password,
+          remember_me: remember_me,
+        })
         .then((res) => {
           window.location.href = "/";
         })
@@ -117,7 +113,7 @@ export default function Form(props) {
               id="email"
               type="text"
               value={data.email}
-              onChange={handleChange(_String.formFields.EMAIL)}
+              onChange={handleChange(Field.EMAIL)}
               inputProps={{
                 form: {
                   autoComplete: "off",
@@ -140,7 +136,7 @@ export default function Form(props) {
               id="password"
               type="password"
               value={data.password}
-              onChange={handleChange(_String.formFields.PASSWORD)}
+              onChange={handleChange(Field.PASSWORD)}
               required
             />
             <ErrorHelperText error={error.password} />
@@ -166,7 +162,7 @@ export default function Form(props) {
         </Grid>
         <Grid item xs={12} sx={{ paddingTop: "0px !important" }}>
           <FormControl>
-            <FormLink href="#" underline="hover">
+            <FormLink href="/auth/forget-password" underline="hover">
               {fogetPwdLinkLabel}
             </FormLink>
             <FormLink href="/auth/register" underline="hover">

@@ -45,6 +45,7 @@ const ValidationMessage = Object.freeze({
 const Path = Object.freeze({
   EMAIL: "email",
   PASSWORD: "password",
+  VERIFY_CODE: "verify_code",
 });
 
 module.exports.HttpStatus = HttpStatus;

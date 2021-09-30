@@ -11,31 +11,50 @@ export const ValidateError = Object.freeze({
   USERNAME_MIN_LENGTH: `Tối thiểu ${ValidateCond.USERNAME_MIN_LENGTH} ký tự.`,
 });
 
-export const _String = Object.freeze({
+export const STRING = Object.freeze({
   EMPTY: "",
-  formFields: {
-    USERNAME: "username",
-    EMAIL: "email",
-    PASSWORD: "password",
-    RE_PASSWORD: "re_password",
-  },
+});
+
+export const Field = Object.freeze({
+  USERNAME: "username",
+  EMAIL: "email",
+  PASSWORD: "password",
+  RE_PASSWORD: "re_password",
+  VERIFY_CODE: "verify_code",
+  RESET_PWD: "RESET_PWD",
 });
 
 export const Reducer = Object.freeze({
   NAME: {
     AUTH: "AUTH",
     APPBAR: "APPBAR",
+    ALERT: "ALERT",
   },
 });
 
-export const Action = Object.freeze({
+export const Auth = Object.freeze({
   TYPE: {
     LOGIN: "LOGIN",
     REGISTER: "REGISTER",
+    FORGET_PWD: "FORGET_PWD",
+    RESET_PWD: "RESET_PWD",
+    VERIFY_CODE: "VERIFY_CODE",
   },
 });
 
 export const Server = Object.freeze({
   PORT: 8000,
   URL: "http://localhost",
+});
+
+export const Message = Object.freeze({
+  ALERT: {
+    TITLE: {
+      SUCCSESS: "Success!",
+    },
+    MESSAGE: {
+      MAIL_SENT:
+        "Một email đã được gửi đến địa chỉ E-mail của bạn. Bạn vui lòng kiểm tra và làm theo hướng dẫn.",
+    },
+  },
 });

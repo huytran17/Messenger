@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
+const { HttpResponseError } = require("../utils/Response/http.response");
+const { HttpStatus, ResponseMessage } = require("../constants/app.constant");
 
 /**
  * Check if jwt token is provided and valid
@@ -15,11 +17,21 @@ module.exports.verifyAccess = async (req, res, next) => {
   if (token) {
     //verify token
     jwt.verify(token, _CONF.TOKEN_SECRET, function (err, decoded) {
-      if (err) return res.redirect("/auth/login");
+      if (err)
+        return HttpResponseError(
+          res,
+          HttpStatus.UNAUTHORIZED,
+          ResponseMessage.UNAUTHORIZED_ACCESS
+        );
       //save for the next request
       req.decoded = decoded;
 
       next();
     });
-  } else return res.redirect("/auth/login");
+  } else
+    return HttpResponseError(
+      res,
+      HttpStatus.UNAUTHORIZED,
+      ResponseMessage.UNAUTHORIZED_ACCESS
+    );
 };

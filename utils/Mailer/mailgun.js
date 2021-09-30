@@ -6,7 +6,7 @@ module.exports = (data, next) => {
     apiKey: _CONF.MAIL_API_KEY,
     domain: _CONF.MAIL_DOMAIN,
   });
-
+  
   mg.messages().send(data, (error, body) => {
     if (error) next(error);
   });

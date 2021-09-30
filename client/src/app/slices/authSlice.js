@@ -1,20 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ValidateError, _String, Reducer, Action } from "../../constants/index";
+import {
+  ValidateError,
+  STRING,
+  Reducer,
+  Auth,
+  Field,
+} from "../../constants/index";
 
 const initialState = {
   isAllValid: false,
   remember_me: false,
   data: {
-    username: _String.EMPTY,
-    email: _String.EMPTY,
-    password: _String.EMPTY,
-    re_password: _String.EMPTY,
+    username: STRING.EMPTY,
+    email: STRING.EMPTY,
+    password: STRING.EMPTY,
+    re_password: STRING.EMPTY,
+    verify_code: STRING.EMPTY,
   },
   error: {
-    username: _String.EMPTY,
-    email: _String.EMPTY,
-    password: _String.EMPTY,
-    re_password: _String.EMPTY,
+    username: STRING.EMPTY,
+    email: STRING.EMPTY,
+    password: STRING.EMPTY,
+    re_password: STRING.EMPTY,
+    verify_code: STRING.EMPTY,
   },
 };
 
@@ -27,21 +35,21 @@ const validateEmail = (email) => {
 
 function checkDataProperties(obj) {
   for (var key in obj) {
-    if (obj[key] === null || obj[key] === _String.EMPTY) return false;
+    if (obj[key] === null || obj[key] === STRING.EMPTY) return false;
   }
   return true;
 }
 
 function checkErrorProperties(obj) {
   for (var key in obj) {
-    if (obj[key] !== null && obj[key] !== _String.EMPTY) return false;
+    if (obj[key] !== null && obj[key] !== STRING.EMPTY) return false;
   }
   return true;
 }
 
 const setStateError =
   (state) =>
-  (path, value = _String.EMPTY) => {
+  (path, value = STRING.EMPTY) => {
     state.error[path] = value;
   };
 
@@ -60,38 +68,29 @@ export const authSlice = createSlice({
       const setState = setStateError(state);
 
       //validate all data is not empty
-      if (state.data[attr] === _String.EMPTY)
+      if (state.data[attr] === STRING.EMPTY)
         setState(attr, ValidateError.REQUIRED);
       //validate email
-      else if (attr === _String.formFields.EMAIL) {
+      else if (attr === Field.EMAIL) {
         if (!validateEmail(state.data[attr]))
           setState(attr, ValidateError.INVALID_EMAIL);
-        else setState(attr, _String.EMPTY);
+        else setState(attr, STRING.EMPTY);
       }
       //validate for register
-      else if (type === Action.TYPE.REGISTER) {
+      else if (type === Auth.TYPE.REGISTER || type === Auth.TYPE.RESET_PWD) {
         //validate username
-        if (attr === _String.formFields.USERNAME) {
+        if (attr === Field.USERNAME) {
           if (state.data.username.length < 6)
-            setState(
-              _String.formFields.USERNAME,
-              ValidateError.USERNAME_MIN_LENGTH
-            );
-          else setState(_String.formFields.USERNAME, _String.EMPTY);
+            setState(Field.USERNAME, ValidateError.USERNAME_MIN_LENGTH);
+          else setState(Field.USERNAME, STRING.EMPTY);
         }
         //validate password & re-password
-        else if (
-          attr === _String.formFields.RE_PASSWORD ||
-          attr === _String.formFields.PASSWORD
-        ) {
+        else if (attr === Field.RE_PASSWORD || attr === Field.PASSWORD) {
           //password length
-          if (attr === _String.formFields.PASSWORD) {
+          if (attr === Field.PASSWORD) {
             if (state.data.password.length < 8)
-              setState(
-                _String.formFields.PASSWORD,
-                ValidateError.PASSWORD_MIN_LENGTH
-              );
-            else setState(_String.formFields.PASSWORD, _String.EMPTY);
+              setState(Field.PASSWORD, ValidateError.PASSWORD_MIN_LENGTH);
+            else setState(Field.PASSWORD, STRING.EMPTY);
           }
 
           //match re-pasword
@@ -99,13 +98,14 @@ export const authSlice = createSlice({
             state.data.re_password &&
             state.data.re_password !== state.data.password
           )
-            setState(_String.formFields.RE_PASSWORD, ValidateError.MISMATCH);
-          else setState(_String.formFields.RE_PASSWORD, _String.EMPTY);
+            setState(Field.RE_PASSWORD, ValidateError.MISMATCH);
+          else setState(Field.RE_PASSWORD, STRING.EMPTY);
         }
-      } else setState(attr, _String.EMPTY);
+      } else setState(attr, STRING.EMPTY);
 
+      //validate
       //validate login
-      if (type === Action.TYPE.LOGIN) {
+      if (type === Auth.TYPE.LOGIN) {
         const { email, password } = state.data;
 
         state.isAllValid =
@@ -113,9 +113,34 @@ export const authSlice = createSlice({
           checkErrorProperties(state.error);
       }
       //validate register
-      else if (type === Action.TYPE.REGISTER)
+      else if (type === Auth.TYPE.REGISTER) {
+        const { email, username, password, re_password } = state.data;
+
         state.isAllValid =
-          checkDataProperties(state.data) && checkErrorProperties(state.error);
+          checkDataProperties({ email, username, password, re_password }) &&
+          checkErrorProperties(state.error);
+      }
+      //validate find account
+      else if (type === Auth.TYPE.FORGET_PWD) {
+        const { email } = state.data;
+
+        state.isAllValid =
+          checkDataProperties({ email }) && checkErrorProperties(state.error);
+      }
+      //validate verify code
+      else if (type === Auth.TYPE.VERIFY_CODE) {
+        const { verify_code } = state.data;
+
+        state.isAllValid =
+          checkDataProperties({ verify_code }) &&
+          checkErrorProperties(state.error);
+      } else if (type === Auth.TYPE.RESET_PWD) {
+        const { password, re_password } = state.data;
+
+        state.isAllValid =
+          checkDataProperties({ password, re_password }) &&
+          checkErrorProperties(state.error);
+      }
     },
     setError: (state, action) => {
       const payload = action.payload;

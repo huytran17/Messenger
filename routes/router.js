@@ -26,5 +26,5 @@ module.exports = (app) => {
 
   app.use("/info", [verifyAccess, infoRouter]);
 
-  app.use("/forget-pwd", pwdRouter);
+  app.use("/auth", pwdRouter);
 };

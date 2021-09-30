@@ -53,7 +53,8 @@ module.exports.getByEmail = async (req, res) => {
 
 module.exports.getCurrent = async (req, res) => {
   try {
-    if (req.decoded) return HttpResponse(res, HttpStatus.OK, req.decoded);
+    if (req.decoded.user)
+      return HttpResponse(res, HttpStatus.OK, req.decoded.user);
 
     return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {

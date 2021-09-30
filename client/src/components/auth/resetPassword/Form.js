@@ -3,10 +3,9 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Input from "@mui/material/Input";
-import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
 import axios from "axios";
+import PropTypes from "prop-types";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,10 +13,10 @@ import {
   selectData,
   selectError,
   selectIsAllValid,
-  validate,
   setError,
+  validate,
 } from "../../../app/slices/authSlice";
-import { Auth, Field, Server } from "../../../constants/index";
+import { Auth, Server, Field } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
 
 export default function Form(props) {
@@ -31,14 +30,14 @@ export default function Form(props) {
 
   const handleChange = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
-    dispatch(validate({ path: prop, type: Auth.TYPE.REGISTER }));
+
+    dispatch(validate({ path: prop, type: Auth.TYPE.RESET_PWD }));
   };
 
-  const register = () => async (event) => {
-    if (isAllValid) {
+  const resetPassword = () => async (event) => {
+    if (isAllValid)
       await axios
-        .post(`${Server.URL}:${Server.PORT}/auth/register`, {
-          username: data.username,
+        .patch(`${Server.URL}:${Server.PORT}/auth/reset-password`, {
           email: data.email,
           password: data.password,
           re_password: data.re_password,
@@ -47,6 +46,7 @@ export default function Form(props) {
           window.location.href = "/auth/login";
         })
         .catch((err) => {
+          console.error(err);
           dispatch(
             setError({
               path: err.response.data.path,
@@ -54,22 +54,13 @@ export default function Form(props) {
             })
           );
         });
-    }
   };
 
-  const {
-    emailLabel,
-    passwordLabel,
-    btnRegisterLabel,
-    loginLinkLabel,
-    repasswordLabel,
-    usernameLabel,
-  } = props;
+  const { repasswordLabel, passwordLabel, btnConfirmLabel, emailLabel } = props;
 
   const sxContainerBox = {
-    width: "250px",
+    width: "100%",
     "& .MuiFormControl-root": { width: "100%" },
-    "& .MuiButton-root": { width: 115 },
     "& .MuiInputBase-input": { padding: "10px" },
     "& .MuiBox-root": { marginTop: "8px" },
   };
@@ -85,31 +76,9 @@ export default function Form(props) {
     boxShadow: "none",
   });
 
-  const FormLink = styled(Link)({
-    fontSize: 13,
-    textAlign: "right",
-  });
-
   return (
     <Box component="form" sx={sxContainerBox}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <FormControl variant="standard">
-            <InputLabelForError
-              for="username"
-              field="username"
-              label={usernameLabel}
-            />
-            <Input
-              id="username"
-              type="username"
-              value={data.username}
-              onChange={handleChange(Field.USERNAME)}
-              required
-            />
-            <ErrorHelperText error={error.username} />
-          </FormControl>
-        </Grid>
         <Grid item xs={12}>
           <FormControl variant="standard">
             <InputLabelForError
@@ -170,16 +139,9 @@ export default function Form(props) {
         </Grid>
         <Grid item xs={12}>
           <FormControl>
-            <FormLink href="/auth/login" underline="hover">
-              {loginLinkLabel}
-            </FormLink>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl>
             <ButtonBox>
-              <BtnLogin variant="contained" onClick={register()}>
-                {btnRegisterLabel}
+              <BtnLogin variant="contained" onClick={resetPassword()}>
+                {btnConfirmLabel}
               </BtnLogin>
             </ButtonBox>
           </FormControl>
@@ -190,21 +152,15 @@ export default function Form(props) {
 }
 
 Form.propTypes = {
-  usernameLabel: PropTypes.string,
   emailLabel: PropTypes.string,
   passwordLabel: PropTypes.string,
   repasswordLabel: PropTypes.string,
-  btnRegisterLabel: PropTypes.string,
-  fogetPwdLinkLabel: PropTypes.string,
-  loginLinkLabel: PropTypes.string,
+  btnConfirmLabel: PropTypes.string,
 };
 
 Form.defaultProps = {
-  usernameLabel: "Username",
   emailLabel: "Email",
-  passwordLabel: "Password",
-  repasswordLabel: "Re-type Password",
-  btnRegisterLabel: "Register",
-  fogetPwdLinkLabel: "Forgot password?",
-  loginLinkLabel: "Already have account",
+  passwordLabel: "New password",
+  repasswordLabel: "Confirm password",
+  btnConfirmLabel: "Confirm",
 };
