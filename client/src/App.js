@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { io } from "socket.io-client";
 import { Home } from "./components/Layout/index";
 import { Switch, Route, Redirect } from "react-router-dom";
