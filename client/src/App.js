@@ -32,12 +32,14 @@ axios.interceptors.request.use(
 const AuthProvider = ({ children }) => {
   const loggedStatus = useSelector(selectLoggedStatus);
   const loggedUser = useSelector(selectLoggedUser);
+  const dispatch = useDispatch();
 
   return (
     <AuthContext.Provider
       value={{
-        authed: loggedStatus,
-        user: loggedUser,
+        loggedStatus,
+        loggedUser,
+        dispatch,
       }}
     >
       {children}
@@ -45,18 +47,20 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const AuthenticatedRoute = ({ children, ...restProps }) => {
-  const auth = useContext(AuthContext);
+const useAuth = () => {
+  return useContext(AuthContext);
+};
 
-  const dispatch = useDispatch();
+const ProtectedRoute = ({ children, ...restProps }) => {
+  const auth = useAuth();
 
-  dispatch(getUserAsync());
+  auth.dispatch(getUserAsync());
 
   return (
     <Route
       {...restProps}
       render={({ location }) =>
-        auth.authed ? (
+        auth.loggedStatus ? (
           children
         ) : (
           <Redirect
@@ -71,34 +75,29 @@ const AuthenticatedRoute = ({ children, ...restProps }) => {
   );
 };
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  // eslint-disable-next-line
+  const socket = io("http://localhost:8000");
 
-    this.socket = io("http://localhost:8000");
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <AuthProvider>
-          <Switch>
-            <AuthenticatedRoute path="/" exact>
-              <Home />
-            </AuthenticatedRoute>
-            <AuthenticatedRoute path="/home">
-              <Home />
-            </AuthenticatedRoute>
-            <Route path="/auth/login" component={Login} />
-            <Route path="/auth/register" component={Register} />
-            <Route path="/auth/forget-password" component={ForgetPwd} />
-            <Route path="/auth/verify-code" component={VerifyCode} />
-            <Route path="/auth/reset-password" component={ResetPassword} />
-          </Switch>
-        </AuthProvider>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      <AuthProvider>
+        <Switch>
+          <ProtectedRoute path="/" exact>
+            <Home />
+          </ProtectedRoute>
+          <ProtectedRoute path="/home">
+            <Home />
+          </ProtectedRoute>
+          <Route path="/auth/login" component={Login} />
+          <Route path="/auth/register" component={Register} />
+          <Route path="/auth/forget-password" component={ForgetPwd} />
+          <Route path="/auth/verify-code" component={VerifyCode} />
+          <Route path="/auth/reset-password" component={ResetPassword} />
+        </Switch>
+      </AuthProvider>
+    </div>
+  );
+};
 
 export default App;

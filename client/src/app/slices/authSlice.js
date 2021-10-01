@@ -23,6 +23,7 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getUserAsync.fulfilled, (state, action) => {
       state.user = action.payload;
+
       if (action.payload) state.isLoggedIn = true;
     });
   },

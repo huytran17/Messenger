@@ -29,6 +29,7 @@ module.exports._login = async (req, res) => {
     await res.cookie("token", token, {
       signed: true,
       expires: expires,
+      httpOnly: true,
     });
   } else await res.clearCookie("token");
 
