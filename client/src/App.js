@@ -32,14 +32,12 @@ axios.interceptors.request.use(
 const AuthProvider = ({ children }) => {
   const loggedStatus = useSelector(selectLoggedStatus);
   const loggedUser = useSelector(selectLoggedUser);
-  const dispatch = useDispatch();
 
   return (
     <AuthContext.Provider
       value={{
         authed: loggedStatus,
         user: loggedUser,
-        dispatch: dispatch,
       }}
     >
       {children}
