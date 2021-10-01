@@ -19,8 +19,6 @@ const { isAdmin } = require("../middlewares/authorization.middleware");
 
 router.route("/").get(getAll);
 
-router.route("/user").get(getCurrent);
-
 router
   .route("/:id")
   .get(getById)

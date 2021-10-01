@@ -10,29 +10,28 @@ const initialState = {
 export const getUserAsync = createAsyncThunk(
   Reducer.NAME.AUTH + "/fetch",
   async () => {
-    const user = await axios.get(`${Server.URL}:${Server.PORT}/users/user`);
+    const user = await axios.get(`${Server.URL}:${Server.PORT}/auth/user`);
 
-    return user;
+    return user.data.data || null;
   }
 );
 
 export const authSlice = createSlice({
   name: Reducer.NAME.AUTH,
   initialState,
-  reducers: {
-    loggedStatus: (state, action) => {
-      state.isLoggedIn = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getUserAsync.fulfilled, (state, action) => {
       state.user = action.payload;
+      if (action.payload) state.isLoggedIn = true;
     });
   },
 });
 
-export const { loggedStatus } = authSlice.actions;
+export const { setLoggedStatus } = authSlice.actions;
 
-export const selectStatus = (state) => state.auth.isLoggedIn;
+export const selectLoggedStatus = (state) => state.auth.isLoggedIn;
+
+export const selectLoggedUser = (state) => state.auth.user;
 
 export default authSlice.reducer;

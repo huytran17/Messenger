@@ -15,6 +15,7 @@ const {
   _login,
   logout,
 } = require("../controllers/auth.controller");
+const { getCurrent } = require("../controllers/user.controller");
 
 router
   .route("/register")
@@ -26,5 +27,7 @@ router
   .post(_validateData, _validateEmail, _validatePwd, _login);
 
 router.route("/logout").post(logout);
+
+router.route("/user").get(getCurrent);
 
 module.exports = router;

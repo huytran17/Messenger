@@ -1,3 +1,3 @@
 import React from "react";
 
-export default React.createContext({ isLoggedIn: false, user: null });
+export default React.createContext({ loggedStatus: false, user: null });

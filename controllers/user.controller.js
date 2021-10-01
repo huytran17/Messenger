@@ -4,6 +4,8 @@ const {
   HttpResponseError,
 } = require("../utils/Response/http.response");
 const { HttpStatus } = require("../constants/app.constant");
+const jwt = require("jsonwebtoken");
+const _CONF = require("../config/app");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -52,14 +54,16 @@ module.exports.getByEmail = async (req, res) => {
 };
 
 module.exports.getCurrent = async (req, res) => {
-  try {
-    if (req.decoded.user)
-      return HttpResponse(res, HttpStatus.OK, req.decoded.user);
+  const token = await (req.session.token || req.signedCookies.token);
 
-    return HttpResponse(res, HttpStatus.NO_CONTENT);
-  } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
-  }
+  if (token) {
+    //verify token
+    jwt.verify(token, _CONF.TOKEN_SECRET, function (err, decoded) {
+      if (err) return HttpResponse(res, HttpStatus.NO_CONTENT);
+
+      return HttpResponse(res, HttpStatus.OK, decoded.user);
+    });
+  } else return HttpResponse(res, HttpStatus.NO_CONTENT);
 };
 
 module.exports.updateInfo = async (req, res) => {
