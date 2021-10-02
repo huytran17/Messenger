@@ -23,6 +23,9 @@ import {
 } from "../../../app/slices/authFormSlice";
 import { Auth, Field, Server } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
+import Crypto from "crypto-js";
+import { reactLocalStorage } from "reactjs-localstorage";
+import { CONF } from "../../../config/app";
 
 export default function Form(props) {
   const error = useSelector(selectError);
@@ -52,16 +55,26 @@ export default function Form(props) {
           password: data.password,
           remember_me: remember_me,
         })
-        .then((res) => {
+        .then(async (res) => {
+          console.log(res.data.data);
+          const d = new Date();
+          const expires = d.setDate(d.getDate() + CONF.TOKEN_EXPIRES);
+          const token = Crypto.AES.encrypt(
+            JSON.stringify({ value: res.data.data, eat: expires }),
+            CONF.TOKEN_SECRET
+          );
+          reactLocalStorage.set("token", token);
           window.location.href = "/";
         })
         .catch((err) => {
-          dispatch(
-            setError({
-              path: err.response.data.path,
-              error: err.response.data.errors,
-            })
-          );
+          console.log(err);
+          if (err.response)
+            dispatch(
+              setError({
+                path: err.response.data.path,
+                error: err.response.data.errors,
+              })
+            );
         });
   };
 

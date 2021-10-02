@@ -3,35 +3,34 @@ import axios from "axios";
 import { Reducer, Server } from "../../constants/index";
 
 const initialState = {
-  isLoggedIn: false,
   user: null,
 };
 
 export const getUserAsync = createAsyncThunk(
-  Reducer.NAME.AUTH + "/fetch",
+  Reducer.NAME.AUTH + "/fetchUser",
   async () => {
     const user = await axios.get(`${Server.URL}:${Server.PORT}/auth/user`);
-
-    return user.data.data || null;
+    console.log('get');
+    return user.data.data;
   }
 );
 
 export const authSlice = createSlice({
   name: Reducer.NAME.AUTH,
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getUserAsync.fulfilled, (state, action) => {
       state.user = action.payload;
-
-      if (action.payload) state.isLoggedIn = true;
     });
   },
 });
 
-export const { setLoggedStatus } = authSlice.actions;
-
-export const selectLoggedStatus = (state) => state.auth.isLoggedIn;
+export const { setUser } = authSlice.actions;
 
 export const selectLoggedUser = (state) => state.auth.user;
 
