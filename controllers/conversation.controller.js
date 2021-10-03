@@ -54,9 +54,7 @@ module.exports.updateBackground = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const file = await req.source.toString("base64");
-
-    const background_photo = new Buffer.from(file, "base64");
+    const background_photo = await req.source.toString("base64");
 
     let conversation = await Conversation.findByIdAndUpdate(
       id,

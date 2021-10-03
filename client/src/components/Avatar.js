@@ -34,24 +34,50 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export default function BadgeAvatars({ src, ...rest }) {
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 22,
+  height: 22,
+  border: `2px solid ${theme.palette.background.paper}`,
+}));
+
+export function ConvAvatar({ src, ...rest }) {
   return (
-    <Stack direction="row" spacing={2}>
-      <StyledBadge
-        overlap="circular"
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        variant="dot"
-      >
-        <Avatar {...rest} src={src} />
-      </StyledBadge>
-    </Stack>
+    <StyledBadge
+      overlap="circular"
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      variant="dot"
+    >
+      <Avatar {...rest} src={src} />
+    </StyledBadge>
   );
 }
 
-BadgeAvatars.propTypes = {
+export function GrpAvatar({ src, srcSmall, ...rest }) {
+  return (
+    <Badge
+      overlap="circular"
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      badgeContent={<SmallAvatar {...rest} src={srcSmall} />}
+    >
+      <Avatar {...rest} src={src} />
+    </Badge>
+  );
+}
+
+ConvAvatar.propTypes = {
   src: PropTypes.string,
 };
 
-BadgeAvatars.defaultProps = {
+ConvAvatar.defaultProps = {
   src: "",
+};
+
+GrpAvatar.propTypes = {
+  src: PropTypes.string,
+  srcSmall: PropTypes.string,
+};
+
+GrpAvatar.defaultProps = {
+  src: "",
+  srcSmall: "",
 };

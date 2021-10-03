@@ -30,7 +30,7 @@ const groupSchema = new Schema(
       default: "",
       alias: "bg",
     },
-    created_by: {
+    createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Không được để trống."],

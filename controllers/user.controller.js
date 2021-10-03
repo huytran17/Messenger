@@ -34,8 +34,9 @@ module.exports.getById = async (req, res) => {
       })
       .populate({
         path: "grs",
-        select: ["_id", "mems"],
+        select: ["_id", "mems", "name", "background_photo"],
         populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
+        populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
       })
       .exec();
 
@@ -115,9 +116,7 @@ module.exports.updateCover = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const file = req.source.toString("base64");
-
-    const cover_photo = new Buffer.from(file, "base64");
+    const cover_photo = req.source.toString("base64");
 
     const user = await User.findByIdAndUpdate(
       id,

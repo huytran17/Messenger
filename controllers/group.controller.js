@@ -83,9 +83,7 @@ module.exports.updateBackground = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const file = req.source.toString("base64");
-
-    const background_photo = new Buffer.from(file, "base64");
+    const background_photo = req.source.toString("base64");
 
     let group = await Group.findByIdAndUpdate(
       id,

@@ -23,7 +23,7 @@ import {
 } from "../../app/slices/authSlice";
 import { STRING } from "../../constants/index";
 import { AuthContext } from "../../ctx/appCtx";
-import Avatar from "../Avatar";
+import { ConvAvatar, GrpAvatar } from "../Avatar";
 
 const drawerWidth = 240;
 
@@ -117,12 +117,12 @@ export default function DrawerLeft() {
       </DrawerHeader>
       <List>
         {convs
-          ? convs.map((item, index) => {
+          ? convs.map((item) => {
               if (item.mems.length > 0)
                 return (
                   <ListItem button key={item._id}>
                     <ListItemIcon>
-                      <Avatar
+                      <ConvAvatar
                         src={"data:image/*;base64," + item.mems[0].avatar_photo}
                         alt={item.mems[0].username}
                       />
@@ -130,19 +130,29 @@ export default function DrawerLeft() {
                     <ListItemText primary={item.mems[0].username} />
                   </ListItem>
                 );
+              return STRING.EMPTY;
             })
           : STRING.EMPTY}
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        {grs
+          ? grs.map((item) => {
+              return (
+                <ListItem button key={item._id}>
+                  <ListItemIcon>
+                    <GrpAvatar
+                      src={"data:image/*;base64," + item.background_photo}
+                      srcSmall={
+                        "data:image/*;base64," + item.createdBy.avatar_photo
+                      }
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItem>
+              );
+            })
+          : STRING.EMPTY}
       </List>
     </Drawer>
   );
