@@ -23,9 +23,20 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = { ...req.params };
 
-    let user = await User.findOne({ _id: id })
-      .populate("convs")
-      .populate("grs")
+    let user = await User.findOne(
+      { _id: id },
+      "-createdAt -updatedAt -deletedAt -deleted"
+    )
+      .populate({
+        path: "convs",
+        select: ["_id", "mems"],
+        populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
+      })
+      .populate({
+        path: "grs",
+        select: ["_id", "mems"],
+        populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
+      })
       .exec();
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
@@ -61,7 +72,7 @@ module.exports.getCurrent = async (req, res) => {
     jwt.verify(token, _CONF.TOKEN_SECRET, function (err, decoded) {
       if (err) return HttpResponse(res, HttpStatus.NO_CONTENT);
 
-      return HttpResponse(res, HttpStatus.OK, decoded.user);
+      return HttpResponse(res, HttpStatus.OK, decoded.uid);
     });
   } else return HttpResponse(res, HttpStatus.NO_CONTENT);
 };
@@ -86,9 +97,7 @@ module.exports.updateAvatar = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const file = await req.source.toString("base64");
-
-    const avatar_photo = new Buffer.from(file, "base64");
+    const avatar_photo = await req.source.toString("base64");
 
     const user = await User.findByIdAndUpdate(
       id,

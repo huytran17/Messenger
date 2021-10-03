@@ -12,7 +12,8 @@ import {
 } from "./components/auth/index";
 import { Home } from "./components/Layout/index";
 import { CONF } from "./config/app";
-import AuthContext from "./ctx/authCtx";
+import { AuthContext, SocketContext } from "./ctx/appCtx";
+import { Server } from "./constants/index";
 
 axios.interceptors.request.use(
   function (config) {
@@ -80,11 +81,28 @@ const ProtectedRoute = ({ children, ...restProps }) => {
   );
 };
 
+const useSocket = () => {
+  return useContext(SocketContext);
+};
+
+const useSocketProvide = () => {
+  const socket = io(`${Server.URL}:${Server.PORT}`);
+
+  return { socket };
+};
+
+const SocketProvider = ({ children }) => {
+  const socket = useSocketProvide();
+
+  return (
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+  );
+};
+
 class App extends React.Component {
   // eslint-disable-next-line
   constructor(props) {
     super(props);
-    this.socket = io("http://localhost:8000");
   }
 
   componentDidUpdate() {
@@ -95,14 +113,16 @@ class App extends React.Component {
     return (
       <div className="App">
         <AuthProvider>
-          <Switch>
-            <ProtectedRoute path="/" exact>
-              <Home />
-            </ProtectedRoute>
-            <ProtectedRoute path="/home">
-              <Home />
-            </ProtectedRoute>
-          </Switch>
+          <SocketProvider>
+            <Switch>
+              <ProtectedRoute path="/" exact>
+                <Home />
+              </ProtectedRoute>
+              <ProtectedRoute path="/home">
+                <Home />
+              </ProtectedRoute>
+            </Switch>
+          </SocketProvider>
         </AuthProvider>
         <Switch>
           <Route path="/auth/login" component={Login} />

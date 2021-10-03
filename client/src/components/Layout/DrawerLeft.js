@@ -1,20 +1,29 @@
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import MuiDrawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import MailIcon from "@mui/icons-material/Mail";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import Divider from "@mui/material/Divider";
+import MuiDrawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { useSelector, useDispatch } from "react-redux";
+import { styled, useTheme } from "@mui/material/styles";
+import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  toggleStatusLeft,
   selectStatusLeft,
+  toggleStatusLeft,
 } from "../../app/slices/appBarSlice";
+import {
+  getUserAsync,
+  selectConvs,
+  selectGrs,
+  selectUser,
+} from "../../app/slices/authSlice";
+import { STRING } from "../../constants/index";
+import { AuthContext } from "../../ctx/appCtx";
+import Avatar from "../Avatar";
 
 const drawerWidth = 240;
 
@@ -76,6 +85,22 @@ export default function DrawerLeft() {
     dispatch(toggleStatusLeft());
   };
 
+  const useAuth = () => {
+    return useContext(AuthContext);
+  };
+
+  const auth = useAuth();
+
+  const user = useSelector(selectUser);
+  const convs = useSelector(selectConvs);
+  const grs = useSelector(selectGrs);
+
+  useEffect(() => {
+    dispatch(getUserAsync(auth.user._id));
+  }, [dispatch, auth.user._id]);
+
+  console.log(user, convs, grs);
+
   return (
     <Drawer variant="permanent" open={status}>
       <DrawerHeader sx={{ justifyContent: "start", padding: 0 }}>
@@ -91,14 +116,22 @@ export default function DrawerLeft() {
         </ListItem>
       </DrawerHeader>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        {convs
+          ? convs.map((item, index) => {
+              if (item.mems.length > 0)
+                return (
+                  <ListItem button key={item._id}>
+                    <ListItemIcon>
+                      <Avatar
+                        src={"data:image/*;base64," + item.mems[0].avatar_photo}
+                        alt={item.mems[0].username}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={item.mems[0].username} />
+                  </ListItem>
+                );
+            })
+          : STRING.EMPTY}
       </List>
       <Divider />
       <List>

@@ -29,7 +29,7 @@ module.exports._validateData = async (req, res, next) => {
 };
 
 module.exports._validateEmail = async (req, res, next) => {
-  const data = { ...req.body } || { ...req.decoded };
+  const data = { ...req.body };
   //is email exists?
   const _emailExists = await User.emailExists(data.email);
 
@@ -45,7 +45,7 @@ module.exports._validateEmail = async (req, res, next) => {
 };
 
 module.exports._validatePwd = async (req, res, next) => {
-  const data = { ...req.body } || { ...req.decoded };
+  const data = { ...req.body };
 
   let user = await User.findEmail(data.email);
   //validate password
