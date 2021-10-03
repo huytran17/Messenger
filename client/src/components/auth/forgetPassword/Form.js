@@ -48,6 +48,7 @@ export default function Form(props) {
               message: Message.ALERT.MESSAGE.MAIL_SENT,
             })
           );
+          
           dispatch(setOpen(true));
         })
         .catch((err) => {
