@@ -43,12 +43,12 @@ export default function Form(props) {
         .then((res) => {
           window.location.href = "/auth/reset-password";
         })
-        .catch((err) => {
-          if (err.response)
+        .catch((e) => {
+          if (e.response)
             dispatch(
               setError({
-                path: err.response.data.path,
-                error: err.response.data.errors,
+                path: e.response.data.path,
+                error: e.response.data.errors,
               })
             );
         });

@@ -67,14 +67,14 @@ export default function Form(props) {
           if (remember_me) localStorage.setItem("token", token);
           else sessionStorage.setItem("token", token);
 
-          // window.location.href = "/";
+          window.location.href = "/";
         })
-        .catch((err) => {
-          if (err.response)
+        .catch((e) => {
+          if (e.response)
             dispatch(
               setError({
-                path: err.response.data.path,
-                error: err.response.data.errors,
+                path: e.response.data.path,
+                error: e.response.data.errors,
               })
             );
         });

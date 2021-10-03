@@ -48,15 +48,15 @@ export default function Form(props) {
               message: Message.ALERT.MESSAGE.MAIL_SENT,
             })
           );
-          
+
           dispatch(setOpen(true));
         })
-        .catch((err) => {
-          if (err.response)
+        .catch((e) => {
+          if (e.response)
             dispatch(
               setError({
-                path: err.response.data.path,
-                error: err.response.data.errors,
+                path: e.response.data.path,
+                error: e.response.data.errors,
               })
             );
         });
