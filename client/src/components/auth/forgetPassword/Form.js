@@ -51,12 +51,13 @@ export default function Form(props) {
           dispatch(setOpen(true));
         })
         .catch((err) => {
-          dispatch(
-            setError({
-              path: err.response.data.path,
-              error: err.response.data.errors,
-            })
-          );
+          if (err.response)
+            dispatch(
+              setError({
+                path: err.response.data.path,
+                error: err.response.data.errors,
+              })
+            );
         });
   };
 
