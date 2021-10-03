@@ -6,7 +6,7 @@ import { Image } from "../../index";
 
 export default function Header({ caption }) {
   return (
-    <Box>
+    <Box sx={{ textAlign: "center" }}>
       <Image size={{ w: 85, h: 85 }} />
       <Typography variant="caption" display="block" gutterBottom>
         {caption}

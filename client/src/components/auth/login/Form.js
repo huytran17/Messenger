@@ -60,11 +60,11 @@ export default function Form(props) {
           const d = new Date();
           const expires = d.setDate(d.getDate() + CONF.TOKEN_EXPIRES);
           const token = Crypto.AES.encrypt(
-            JSON.stringify({ value: res.data.data, eat: expires }),
+            JSON.stringify({ user: res.data.data, eat: expires }),
             CONF.TOKEN_SECRET
           );
           reactLocalStorage.set("token", token);
-          window.location.href = "/";
+          // window.location.href = "/";
         })
         .catch((err) => {
           console.log(err);

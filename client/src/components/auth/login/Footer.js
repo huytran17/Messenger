@@ -10,7 +10,7 @@ export default function Footer(props) {
   };
 
   return (
-    <Box sx={{ marginTop: 1, textAlign: 'center'}}>
+    <Box sx={{ marginTop: 1, textAlign: "center" }}>
       <Typography variant="caption" display="block" gutterBottom>
         {props.caption}
       </Typography>

@@ -1,17 +1,15 @@
 import axios from "axios";
 import Crypto from "crypto-js";
 import React, { useContext } from "react";
-import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { reactLocalStorage } from "reactjs-localstorage";
+import { reactLocalStorage as storage } from "reactjs-localstorage";
 import { io } from "socket.io-client";
-import { selectLoggedUser } from "./app/slices/authSlice";
 import {
   ForgetPwd,
   Login,
   Register,
   ResetPassword,
-  VerifyCode
+  VerifyCode,
 } from "./components/auth/index";
 import { Home } from "./components/Layout/index";
 import { CONF } from "./config/app";
@@ -36,9 +34,25 @@ const AuthProvider = ({ children }) => {
 };
 
 const useProvideAuth = () => {
-  const loggedUser = useSelector(selectLoggedUser);
+  var auth = null;
 
-  return { loggedUser };
+  const token = storage.get("token");
+
+  if (token) {
+    try {
+      const now = Date.now();
+
+      const bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
+
+      auth = JSON.parse(bytes.toString(Crypto.enc.Utf8)) || null;
+
+      if (now > auth.eat) storage.remove("token");
+    } catch (e) {
+      storage.remove("token");
+    }
+  }
+
+  return auth;
 };
 
 const useAuth = () => {
@@ -46,25 +60,13 @@ const useAuth = () => {
 };
 
 const ProtectedRoute = ({ children, ...restProps }) => {
-  var authData = null;
-
-  const token = reactLocalStorage.get("token");
-
-  if (token) {
-    const now = Date.now();
-
-    const bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
-
-    authData = JSON.parse(bytes.toString(Crypto.enc.Utf8));
-
-    if (now > authData.eat) reactLocalStorage.remove("token");
-  }
+  const auth = useAuth();
 
   return (
     <Route
       {...restProps}
       render={({ location }) =>
-        authData && authData.value ? (
+        auth && auth.user ? (
           children
         ) : (
           <Redirect
