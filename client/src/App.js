@@ -2,7 +2,6 @@ import axios from "axios";
 import Crypto from "crypto-js";
 import React, { useContext } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { reactLocalStorage as storage } from "reactjs-localstorage";
 import { io } from "socket.io-client";
 import {
   ForgetPwd,
@@ -35,7 +34,8 @@ const AuthProvider = ({ children }) => {
 const useProvideAuth = () => {
   var auth = null;
 
-  const token = storage.get("token");
+  const token =
+    sessionStorage.getItem("token") || localStorage.getItem("token");
 
   if (token) {
     try {
@@ -45,9 +45,9 @@ const useProvideAuth = () => {
 
       auth = JSON.parse(bytes.toString(Crypto.enc.Utf8)) || null;
 
-      if (now > auth.eat) storage.remove("token");
+      if (now > auth.eat) localStorage.removeItem("token");
     } catch (e) {
-      storage.remove("token");
+      localStorage.removeItem("token");
     }
   }
 

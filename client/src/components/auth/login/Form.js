@@ -8,6 +8,7 @@ import Input from "@mui/material/Input";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
+import Crypto from "crypto-js";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,11 +22,9 @@ import {
   setError,
   validate,
 } from "../../../app/slices/authFormSlice";
+import { CONF } from "../../../config/app";
 import { Auth, Field, Server } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
-import Crypto from "crypto-js";
-import { reactLocalStorage as storage } from "reactjs-localstorage";
-import { CONF } from "../../../config/app";
 
 export default function Form(props) {
   const error = useSelector(selectError);
@@ -65,9 +64,10 @@ export default function Form(props) {
             CONF.TOKEN_SECRET
           );
 
-          storage.set("token", token);
-          
-          window.location.href = "/";
+          if (remember_me) localStorage.setItem("token", token);
+          else sessionStorage.setItem("token", token);
+
+          // window.location.href = "/";
         })
         .catch((err) => {
           if (err.response)
