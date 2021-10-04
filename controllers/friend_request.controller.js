@@ -42,11 +42,7 @@ module.exports.getBySender = async (req, res) => {
 
 module.exports.accept = async (req, res) => {
   try {
-    const { id } = req.body;
-
-    const frq = await FrRequest.findById(id).exec();
-
-    const { sender, receiver } = frq;
+    const { sender, receiver } = req.body;
 
     const user = await FrRequest.accept(sender, receiver);
 
@@ -56,4 +52,14 @@ module.exports.accept = async (req, res) => {
   }
 };
 
-module.exports.decline = async (req, res) => {};
+module.exports.decline = async (req, res) => {
+  try {
+    const { sender, receiver } = req.body;
+
+    const user = await FrRequest.decline(sender, receiver);
+
+    return HttpResponse(res, HttpStatus.OK, user);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
