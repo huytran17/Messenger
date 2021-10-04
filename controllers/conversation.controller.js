@@ -7,7 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const conversations = await Conversation.find({}).populate("mems").exec();
+    let conversations = await Conversation.getAll();
 
     if (conversations.length)
       return HttpResponse(res, HttpStatus.OK, conversations);
@@ -22,9 +22,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const conversation = await Conversation.findById(id)
-      .populate("mems")
-      .exec();
+    let conversation = await Conversation.getById(id);
 
     if (conversation) return HttpResponse(res, HttpStatus.OK, conversation);
 
@@ -38,7 +36,7 @@ module.exports.store = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    const conversation = await new Conversation(data).save();
+    let conversation = await new Conversation(data).save();
 
     return HttpResponse(res, HttpStatus.CREATED, conversation);
   } catch (err) {
@@ -56,13 +54,10 @@ module.exports.updateBackground = async (req, res) => {
 
     const background_photo = await req.source.toString("base64");
 
-    let conversation = await Conversation.findByIdAndUpdate(
+    let conversation = await Conversation.updateBackground(
       id,
-      { background_photo },
-      {
-        new: true,
-      }
-    ).exec();
+      background_photo
+    );
 
     return HttpResponse(res, HttpStatus.CREATED, conversation);
   } catch (err) {
@@ -80,9 +75,7 @@ module.exports.updateInfo = async (req, res) => {
 
     const data = { ...req.body };
 
-    const conversation = await Conversation.findByIdAndUpdate(id, data, {
-      new: true,
-    });
+    const conversation = await Conversation.updateInfo(id, data);
 
     return HttpResponse(res, HttpStatus.CREATED, conversation);
   } catch (err) {
@@ -98,7 +91,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let conversation = await Conversation.findOneAndDelete({ _id: id }).exec();
+    let conversation = await Conversation.destroy(id);
 
     return HttpResponse(res, HttpStatus.OK, conversation);
   } catch (err) {

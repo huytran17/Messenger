@@ -8,26 +8,34 @@ const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
 
 module.exports.login = async (req, res) => {
-  const data = { ...req.body };
+  try {
+    const data = { ...req.body };
 
-  let user = await User.findEmail(data.email);
+    let user = await User.findEmail(data.email);
 
-  //craete token
-  const token = jwt.sign({ uid: user._id }, _CONF.TOKEN_SECRET);
+    //craete token
+    const token = jwt.sign({ uid: user._id }, _CONF.TOKEN_SECRET);
 
-  if (data.remember_me === "true") {
-    let expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
+    if (data.remember_me === "true") {
+      let expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
 
-    await res.cookie("token", token, {
-      signed: true,
-      expires: expires,
-      httpOnly: true,
-    });
-  } else await res.clearCookie("token");
+      await res.cookie("token", token, {
+        signed: true,
+        expires: expires,
+        httpOnly: true,
+      });
+    } else await res.clearCookie("token");
 
-  req.session.token = token;
+    req.session.token = token;
 
-  return HttpResponse(res, HttpStatus.OK, user);
+    return HttpResponse(res, HttpStatus.OK, user);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
+  }
 };
 
 module.exports.register = async (req, res) => {
