@@ -106,9 +106,79 @@ userSchema.statics.emailExists = async function (email) {
   }
 };
 
+userSchema.statics.getAll = async function () {
+  let users = await this.find({}).populate("convs").populate("grs").exec();
+
+  return users;
+};
+
+userSchema.statics.getById = async function (id) {
+  let user = await this.findOne(
+    { _id: id },
+    "-createdAt -updatedAt -deletedAt -deleted"
+  )
+    .populate({
+      path: "convs",
+      select: ["_id", "mems"],
+      populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
+    })
+    .populate({
+      path: "grs",
+      select: ["_id", "mems", "name", "background_photo"],
+      populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
+      populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
+    })
+    .exec();
+
+  return user;
+};
+
+userSchema.statics.getByEmail = async function (email) {
+  let user = await this.findOne({ email })
+    .populate("convs")
+    .populate("grs")
+    .exec();
+
+  return user;
+};
+
+userSchema.statics.updateInfo = async function (id, data) {
+  let user = await this.findOneAndUpdate({ _id: id }, data, {
+    new: true,
+  }).exec();
+
+  return user;
+};
+
+userSchema.statics.updateAvatar = async function (id, avatar_photo) {
+  let user = await this.findByIdAndUpdate(
+    id,
+    { avatar_photo },
+    { new: true }
+  ).exec();
+
+  return user;
+};
+
+userSchema.statics.updateCover = async function (id, cover_photo) {
+  let user = await this.findByIdAndUpdate(
+    id,
+    { cover_photo },
+    { new: true }
+  ).exec();
+
+  return user;
+};
+
+userSchema.statics.destroy = async function (id) {
+  let user = await this.delete({ _id: id }).exec();
+
+  return user;
+};
+
 userSchema.statics.addFriend = async function (id, fid) {
   try {
-    const user = await this.findOneAndUpdate(
+    let user = await this.findOneAndUpdate(
       { _id: id },
       {
         $addToSet: { friends: fid },
@@ -124,7 +194,7 @@ userSchema.statics.addFriend = async function (id, fid) {
 
 userSchema.statics.unfriend = async function (id, fid) {
   try {
-    const user = await this.findOneAndUpdate(
+    let user = await this.findOneAndUpdate(
       { _id: id },
       {
         $pull: { friends: fid },

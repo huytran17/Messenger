@@ -9,7 +9,7 @@ const _CONF = require("../config/app");
 
 module.exports.getAll = async (req, res) => {
   try {
-    let users = await User.find({}).populate("convs").populate("grs").exec();
+    let users = await User.getAll();
 
     if (users.length) return HttpResponse(res, HttpStatus.OK, users);
 
@@ -23,22 +23,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let user = await User.findOne(
-      { _id: id },
-      "-createdAt -updatedAt -deletedAt -deleted"
-    )
-      .populate({
-        path: "convs",
-        select: ["_id", "mems"],
-        populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
-      })
-      .populate({
-        path: "grs",
-        select: ["_id", "mems", "name", "background_photo"],
-        populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
-        populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
-      })
-      .exec();
+    let user = await User.findById(id);
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
 
@@ -52,10 +37,7 @@ module.exports.getByEmail = async (req, res) => {
   try {
     const { email } = req.params;
 
-    let user = await User.findOne({ email })
-      .populate("convs")
-      .populate("grs")
-      .exec();
+    let user = await User.getByEmail(email);
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
 
@@ -65,28 +47,13 @@ module.exports.getByEmail = async (req, res) => {
   }
 };
 
-module.exports.getCurrent = async (req, res) => {
-  const token = await (req.session.token || req.signedCookies.token);
-
-  if (token) {
-    //verify token
-    jwt.verify(token, _CONF.TOKEN_SECRET, function (err, decoded) {
-      if (err) return HttpResponse(res, HttpStatus.NO_CONTENT);
-
-      return HttpResponse(res, HttpStatus.OK, decoded.uid);
-    });
-  } else return HttpResponse(res, HttpStatus.NO_CONTENT);
-};
-
 module.exports.updateInfo = async (req, res) => {
   try {
     const { id } = req.params;
 
     const data = { ...req.body };
 
-    let user = await User.findOneAndUpdate({ _id: id }, data, {
-      new: true,
-    }).exec();
+    let user = await User.updateInfo(id, data);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -100,11 +67,7 @@ module.exports.updateAvatar = async (req, res) => {
 
     const avatar_photo = await req.source.toString("base64");
 
-    const user = await User.findByIdAndUpdate(
-      id,
-      { avatar_photo },
-      { new: true }
-    ).exec();
+    let user = await User.updateAvatar(id, avatar_photo);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -118,11 +81,7 @@ module.exports.updateCover = async (req, res) => {
 
     const cover_photo = req.source.toString("base64");
 
-    const user = await User.findByIdAndUpdate(
-      id,
-      { cover_photo },
-      { new: true }
-    ).exec();
+    let user = await User.updateCover(id, cover_photo);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -134,7 +93,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let user = await User.delete({ _id: id }).exec();
+    let user = await User.destroy(id);
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
