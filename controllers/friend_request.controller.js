@@ -12,9 +12,7 @@ module.exports.getByReceiver = async (req, res) => {
   try {
     const { receiver } = req.query;
 
-    const frqs = await FrRequest.find({ receiver }, "-receiver")
-      .populate("sender", "username friends avatar_photo cover_photo")
-      .exec();
+    const frqs = await FrRequest.getByReceiver(receiver);
 
     if (frqs.length) return HttpResponse(res, HttpStatus.OK, frqs);
 
@@ -28,9 +26,7 @@ module.exports.getBySender = async (req, res) => {
   try {
     const { sender } = req.query;
 
-    const frqs = await FrRequest.find({ sender }, "-sender")
-      .populate("receiver", "username friends avatar_photo cover_photo")
-      .exec();
+    const frqs = await FrRequest.getBySender(sender);
 
     if (frqs.length) return HttpResponse(res, HttpStatus.OK, frqs);
 

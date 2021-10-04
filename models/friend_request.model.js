@@ -18,6 +18,22 @@ const friendRequestSchema = new Schema(
   { timestamps: true }
 );
 
+friendRequestSchema.statics.getBySender = async function (sender) {
+  const frqs = await this.find({ sender }, "-sender")
+    .populate("receiver", "username friends avatar_photo cover_photo")
+    .exec();
+
+  return frqs;
+};
+
+friendRequestSchema.statics.getByReceiver = async function (receiver) {
+  const frqs = await this.find({ receiver }, "-receiver")
+    .populate("sender", "username friends avatar_photo cover_photo")
+    .exec();
+
+  return frqs;
+};
+
 friendRequestSchema.statics.accept = async function (sender, receiver) {
   try {
     const user = await User.addFriend(receiver, sender);
