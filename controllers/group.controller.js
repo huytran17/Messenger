@@ -7,10 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const groups = await Group.find({})
-      .populate("mems")
-      .populate({ path: "created_by", select: "_id" })
-      .exec();
+    const groups = await Group.getAll();
 
     if (groups.length) return HttpResponse(res, HttpStatus.OK, groups);
 
@@ -28,10 +25,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const group = await Group.findById(id)
-      .populate("mems")
-      .populate({ path: "created_by", select: "_id" })
-      .exec();
+    const group = await Group.getById(id);
 
     if (group) return HttpResponse(res, HttpStatus.OK, group);
 
@@ -49,7 +43,7 @@ module.exports.store = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    const group = await new Group(data).save();
+    const group = await Group.store(data);
 
     return HttpResponse(res, HttpStatus.CREATED, group);
   } catch (err) {
@@ -67,7 +61,7 @@ module.exports.updateInfo = async (req, res) => {
 
     const { id } = req.params;
 
-    const group = await Group.findByIdAndUpdate(id, data, { new: true }).exec();
+    const group = await Group.updateInfo(id, data);
 
     return HttpResponse(res, HttpStatus.CREATED, group);
   } catch (err) {
@@ -85,11 +79,7 @@ module.exports.updateBackground = async (req, res) => {
 
     const background_photo = req.source.toString("base64");
 
-    let group = await Group.findByIdAndUpdate(
-      id,
-      { background_photo },
-      { new: true }
-    ).exec();
+    let group = await Group.updateBackground(id, background_photo);
 
     return HttpResponse(res, HttpStatus.CREATED, group);
   } catch (err) {
@@ -105,7 +95,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const group = await Group.findOneAndDelete({ _id: id }).exec();
+    const group = await Group.destroy(id);
 
     return HttpResponse(res, HttpStatus.CREATED, group);
   } catch (err) {
@@ -121,13 +111,7 @@ module.exports.leave = async (req, res) => {
   try {
     const { gid, uid } = req.params;
 
-    const group = await Group.findOneAndUpdate(
-      { _id: gid },
-      {
-        $pull: { mems: uid },
-      },
-      { new: true }
-    ).exec();
+    const group = await Group.leave(gid, uid);
 
     return HttpResponse(res, HttpStatus.OK, group);
   } catch (err) {
@@ -143,13 +127,7 @@ module.exports.join = async (req, res) => {
   try {
     const { gid, uid } = req.params;
 
-    const group = await Group.findOneAndUpdate(
-      { _id: gid },
-      {
-        $addToSet: { mems: uid },
-      },
-      { new: true }
-    ).exec();
+    const group = await Group.join(gid, uid);
 
     return HttpResponse(res, HttpStatus.OK, group);
   } catch (err) {

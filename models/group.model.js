@@ -74,4 +74,74 @@ groupSchema.post("findOneAndUpdate", async function (doc) {
   }
 });
 
+groupSchema.statics.getAll = async function () {
+  let groups = await this.find({})
+    .populate("mems")
+    .populate({ path: "created_by", select: "_id" })
+    .exec();
+
+  return groups;
+};
+
+groupSchema.statics.getById = async function (id) {
+  let group = await this.findById(id)
+    .populate("mems")
+    .populate({ path: "created_by", select: "_id" })
+    .exec();
+
+  return group;
+};
+
+groupSchema.statics.store = async function (data) {
+  let group = await new this(data).save();
+
+  return group;
+};
+
+groupSchema.statics.updateInfo = async function (id, data) {
+  let group = await this.findByIdAndUpdate(id, data, { new: true }).exec();
+
+  return group;
+};
+
+groupSchema.statics.updateBackground = async function (id, background_photo) {
+  let group = await this.findByIdAndUpdate(
+    id,
+    { background_photo },
+    { new: true }
+  ).exec();
+
+  return group;
+};
+
+groupSchema.statics.destroy = async function (id) {
+  let group = await this.findOneAndDelete({ _id: id }).exec();
+
+  return group;
+};
+
+groupSchema.statics.leave = async function (gid, uid) {
+  let group = await this.findOneAndUpdate(
+    { _id: gid },
+    {
+      $pull: { mems: uid },
+    },
+    { new: true }
+  ).exec();
+
+  return group;
+};
+
+groupSchema.statics.join = async function (gid, uid) {
+  let group = await this.findOneAndUpdate(
+    { _id: gid },
+    {
+      $addToSet: { mems: uid },
+    },
+    { new: true }
+  ).exec();
+
+  return group;
+};
+
 module.exports = mongoose.model("Group", groupSchema);
