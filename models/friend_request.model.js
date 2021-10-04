@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const User = require("./user.model");
 
 const friendRequestSchema = new Schema(
   {
@@ -16,5 +17,24 @@ const friendRequestSchema = new Schema(
   },
   { timestamps }
 );
+
+friendRequestSchema.statics.accept = async function (sender, receiver) {
+  try {
+    const user = await User.addFriend(receiver, sender);
+    await User.addFriend(sender, receiver);
+
+    return user;
+  } catch (err) {
+    return new Error(err);
+  }
+};
+
+friendRequestSchema.statics.decline = function (sender, receiver) {
+  try {
+    await this.findOneAndDelete({ sender, receiver }).exec();
+  } catch (err) {
+    return new Error(err);
+  }
+};
 
 module.exports = mongoose.model("FriendRequest", friendRequestSchema);

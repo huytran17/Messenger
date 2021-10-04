@@ -21,7 +21,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
   try {
-    const { id } = { ...req.params };
+    const { id } = req.params;
 
     let user = await User.findOne(
       { _id: id },
@@ -50,7 +50,7 @@ module.exports.getById = async (req, res) => {
 
 module.exports.getByEmail = async (req, res) => {
   try {
-    const { email } = { ...req.params };
+    const { email } = req.params;
 
     let user = await User.findOne({ email })
       .populate("convs")
@@ -142,8 +142,17 @@ module.exports.destroy = async (req, res) => {
   }
 };
 
+module.exports.deleteFriend = async (req, res) => {
+  try {
+    const { id, fid } = req.body;
+
+    let user = await User.deleteFriend(id, fid);
+
+    return HttpResponse(res, HttpStatus.OK, user);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
+
 //TODO create join and leave conversation for user
-
-module.exports.acceptFriend = async (req, res) => {};
-
-module.exports.deleteFriend = async (req, res) => {};
+//TODO delete friend

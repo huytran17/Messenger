@@ -106,4 +106,36 @@ userSchema.statics.emailExists = async function (email) {
   }
 };
 
+userSchema.statics.addFriend = async function (id, fid) {
+  try {
+    const user = await this.findOneAndUpdate(
+      { _id: id },
+      {
+        $addToSet: { friends: fid },
+      },
+      { new: true }
+    ).exec();
+
+    return user;
+  } catch (err) {
+    return new Error(err);
+  }
+};
+
+userSchema.statics.deleteFriend = async function (id, fid) {
+  try {
+    const user = await this.findOneAndUpdate(
+      { _id: id },
+      {
+        $pull: { friends: fid },
+      },
+      { new: true }
+    ).exec();
+
+    return user;
+  } catch (err) {
+    return new Error(err);
+  }
+};
+
 module.exports = mongoose.model("User", userSchema);

@@ -20,7 +20,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
   try {
-    const { id } = { ...req.params };
+    const { id } = req.params;
 
     const conversation = await Conversation.findById(id)
       .populate("mems")
@@ -76,7 +76,7 @@ module.exports.updateBackground = async (req, res) => {
 
 module.exports.updateInfo = async (req, res) => {
   try {
-    const { id } = { ...req.params };
+    const { id } = req.params;
 
     const data = { ...req.body };
 
