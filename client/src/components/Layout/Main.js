@@ -1,19 +1,19 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import { DrawerLeft, DrawerRight, Bar, ChatFrame, BottomNav } from "./index";
+import { DrawerLeft, DrawerRight, Bar, BottomNav } from "./index";
 
-export default function Home() {
+export default function Main({ children }) {
   return (
     <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <Bar />
         <DrawerLeft />
-        <ChatFrame />
+        {children}
         <DrawerRight />
+        <BottomNav />
       </Box>
-      <BottomNav />
     </>
   );
 }

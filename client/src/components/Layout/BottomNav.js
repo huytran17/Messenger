@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 
 export default function BottomNav(props) {
   const { homeLabel, profileLabel, settingLabel, logoutLabel } = props;
@@ -41,8 +42,12 @@ export default function BottomNav(props) {
     setValue(newValue);
   };
 
+  const BoxContainer = styled(Box)(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+  }));
+
   return (
-    <Box sx={{ pb: 7 }}>
+    <BoxContainer sx={{ pb: 7 }}>
       <Paper
         sx={{
           position: "fixed",
@@ -80,7 +85,7 @@ export default function BottomNav(props) {
           />
         </BottomNavigation>
       </Paper>
-    </Box>
+    </BoxContainer>
   );
 }
 

@@ -49,23 +49,25 @@ export default function TemporaryDrawer() {
   );
 
   return (
-    <div>
-      <Drawer
-        anchor="right"
-        open={status}
-        onClose={() => dispatch(toggleStatusRight())}
-        sx={{
+    <Drawer
+      anchor="right"
+      open={status}
+      onClose={() => dispatch(toggleStatusRight())}
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar />
-        {list()}
-      </Drawer>
-    </div>
+          boxSizing: "border-box",
+          border: 0,
+        },
+        [`& .MuiToolbar-root`]: {
+          minHeight: "48px",
+        },
+      }}
+    >
+      <Toolbar />
+      {list()}
+    </Drawer>
   );
 }

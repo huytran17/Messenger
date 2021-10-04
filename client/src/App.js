@@ -10,7 +10,7 @@ import {
   ResetPassword,
   VerifyCode,
 } from "./components/auth/index";
-import { Home } from "./components/Layout/index";
+import { Home } from "./components/index";
 import { CONF } from "./config/app";
 import { AuthContext, SocketContext } from "./ctx/appCtx";
 import { Server } from "./constants/index";

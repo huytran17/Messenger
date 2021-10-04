@@ -21,7 +21,7 @@ import {
 } from "../../app/slices/authSlice";
 import { STRING } from "../../constants/index";
 import { AuthContext } from "../../ctx/appCtx";
-import { ConvAvatar, GrpAvatar } from "../Avatar";
+import { ConvAvatar, GrpAvatar } from "../index";
 
 const drawerWidth = 220;
 
@@ -62,6 +62,12 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+  "& .MuiPaper-root": {
+    border: 0,
+  },
+  "& .MuiPaper-root > div": {
+    minHeight: 0,
+  },
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
