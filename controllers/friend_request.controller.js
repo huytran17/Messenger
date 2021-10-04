@@ -40,9 +40,9 @@ module.exports.store = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    const user = await FrRequest.store(data);
+    const frq = await FrRequest.store(data);
 
-    return HttpResponse(res, HttpStatus.OK, user);
+    return HttpResponse(res, HttpStatus.OK, frq);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }
@@ -62,11 +62,11 @@ module.exports.accept = async (req, res) => {
 
 module.exports.decline = async (req, res) => {
   try {
-    const { sender, receiver } = req.body;
+    const { id } = req.body;
 
-    const user = await FrRequest.decline(sender, receiver);
+    const frq = await FrRequest.decline(id);
 
-    return HttpResponse(res, HttpStatus.OK, user);
+    return HttpResponse(res, HttpStatus.OK, frq);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }

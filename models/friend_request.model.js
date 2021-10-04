@@ -39,19 +39,27 @@ friendRequestSchema.statics.accept = async function (sender, receiver) {
 
   await User.addFriend(sender, receiver);
 
+  await this.findOneAndDelete({ sender, receiver }).exec();
+
   return user;
 };
 
-friendRequestSchema.statics.decline = async function (sender, receiver) {
-  let user = await this.findOneAndDelete({ sender, receiver }).exec();
+friendRequestSchema.statics.decline = async function (id) {
+  let frq = await this.destroy({ _id: id });
 
-  return user;
+  return frq;
+};
+
+friendRequestSchema.statics.destroy = async function (id) {
+  let frq = await this.findOneAndDelete({ _id: id }).exec();
+
+  return frq;
 };
 
 friendRequestSchema.statics.store = async function (data) {
-  let user = await new this(data).save();
+  let frq = await new this(data).save();
 
-  return user;
+  return frq;
 };
 
 module.exports = mongoose.model("FriendRequest", friendRequestSchema);
