@@ -1,12 +1,12 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FolderIcon from "@mui/icons-material/Folder";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import RestoreIcon from "@mui/icons-material/Restore";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import FolderIcon from "@mui/icons-material/Folder";
+import * as React from "react";
 
 export default function BottomNav() {
   const [value, setValue] = React.useState("recents");

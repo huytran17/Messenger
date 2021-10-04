@@ -1,14 +1,17 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MuiAppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector, useDispatch } from "react-redux";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  toggleStatusLeft,
   selectStatusLeft,
+  selectStatusRight,
+  toggleStatusLeft,
+  toggleStatusRight
 } from "../../app/slices/appBarSlice";
 
 const drawerWidth = 240;
@@ -35,10 +38,16 @@ const AppBar = styled(MuiAppBar, {
 export default function Bar() {
   const statusLeft = useSelector(selectStatusLeft);
 
+  const statusRight = useSelector(selectStatusRight);
+
   const dispatch = useDispatch();
 
   const handleDrawerOpenLeft = () => {
     dispatch(toggleStatusLeft());
+  };
+
+  const handleDrawerOpenRight = () => {
+    dispatch(toggleStatusRight());
   };
 
   return (
@@ -64,6 +73,17 @@ export default function Bar() {
         >
           Mini variant drawer
         </Typography>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpenRight}
+          edge="end"
+          sx={{
+            ...statusRight,
+          }}
+        >
+          <MenuOpenIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

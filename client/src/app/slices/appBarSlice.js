@@ -3,7 +3,7 @@ import { Reducer } from "../../constants/index";
 
 const initialState = {
   openLeft: false,
-  openRight: true,
+  openRight: false,
 };
 
 export const appBarSlice = createSlice({

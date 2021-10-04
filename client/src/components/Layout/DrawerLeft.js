@@ -1,7 +1,5 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -13,13 +11,13 @@ import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatusLeft,
-  toggleStatusLeft,
+  toggleStatusLeft
 } from "../../app/slices/appBarSlice";
 import {
   getUserAsync,
   selectConvs,
   selectGrs,
-  selectUser,
+  selectUser
 } from "../../app/slices/authSlice";
 import { STRING } from "../../constants/index";
 import { AuthContext } from "../../ctx/appCtx";
