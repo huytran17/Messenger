@@ -8,7 +8,7 @@ const {
   updateAvatar,
   updateCover,
   destroy,
-  getCurrent,
+  unfriend,
 } = require("../controllers/user.controller");
 const {
   verifyUpdateInfo,
@@ -17,7 +17,7 @@ const {
 } = require("../middlewares/user/verify.middleware");
 const { isAdmin } = require("../middlewares/authorization.middleware");
 
-router.route("/").get(getAll);
+router.route("/").get(getAll).delete(unfriend);
 
 router
   .route("/:id")

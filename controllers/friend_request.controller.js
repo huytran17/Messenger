@@ -10,9 +10,9 @@ const _CONF = require("../config/app");
 
 module.exports.getByReceiver = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { receiver } = req.query;
 
-    const frqs = await FrRequest.find({ receiver: id }, "-receiver")
+    const frqs = await FrRequest.find({ receiver }, "-receiver")
       .populate("sender", "username friends avatar_photo cover_photo")
       .exec();
 
@@ -26,9 +26,9 @@ module.exports.getByReceiver = async (req, res) => {
 
 module.exports.getBySender = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { sender } = req.query;
 
-    const frqs = await FrRequest.find({ sender: id }, "-sender")
+    const frqs = await FrRequest.find({ sender }, "-sender")
       .populate("receiver", "username friends avatar_photo cover_photo")
       .exec();
 

@@ -7,7 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
 
-module.exports._login = async (req, res) => {
+module.exports.login = async (req, res) => {
   const data = { ...req.body };
 
   let user = await User.findEmail(data.email);

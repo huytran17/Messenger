@@ -9,25 +9,12 @@ const {
   _validateEmail,
   _validatePwd,
 } = require("../middlewares/auth/login.middleware");
-const {
-  create,
-  register,
-  _login,
-  logout,
-} = require("../controllers/auth.controller");
-const { getCurrent } = require("../controllers/user.controller");
+const { register, login, logout } = require("../controllers/auth.controller");
 
-router
-  .route("/register")
-  .get(create)
-  .post(validateData, validateEmail, register);
+router.route("/register").post(validateData, validateEmail, register);
 
-router
-  .route("/login")
-  .post(_validateData, _validateEmail, _validatePwd, _login);
+router.route("/login").post(_validateData, _validateEmail, _validatePwd, login);
 
 router.route("/logout").post(logout);
-
-router.route("/user").get(getCurrent);
 
 module.exports = router;

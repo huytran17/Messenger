@@ -15,7 +15,7 @@ const friendRequestSchema = new Schema(
       required: [true, "Không được để trống."],
     },
   },
-  { timestamps }
+  { timestamps: true }
 );
 
 friendRequestSchema.statics.accept = async function (sender, receiver) {

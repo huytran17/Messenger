@@ -122,7 +122,7 @@ userSchema.statics.addFriend = async function (id, fid) {
   }
 };
 
-userSchema.statics.deleteFriend = async function (id, fid) {
+userSchema.statics.unfriend = async function (id, fid) {
   try {
     const user = await this.findOneAndUpdate(
       { _id: id },
@@ -130,13 +130,6 @@ userSchema.statics.deleteFriend = async function (id, fid) {
         $pull: { friends: fid },
       },
       { new: true }
-    ).exec();
-
-    await this.findOneAndUpdate(
-      { _id: fid },
-      {
-        $pull: { friends: id },
-      }
     ).exec();
 
     return user;

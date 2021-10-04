@@ -142,11 +142,13 @@ module.exports.destroy = async (req, res) => {
   }
 };
 
-module.exports.deleteFriend = async (req, res) => {
+module.exports.unfriend = async (req, res) => {
   try {
     const { id, fid } = req.body;
 
-    let user = await User.deleteFriend(id, fid);
+    let user = await User.unfriend(id, fid);
+
+    await User.unfriend(fid, id);
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
