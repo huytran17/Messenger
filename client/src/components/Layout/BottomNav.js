@@ -12,18 +12,18 @@ import { useHistory, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 export default function BottomNav(props) {
-  const { homeLabel, profileLabel, settingLabel, logoutLabel } = props;
+  const { homeValue, profileValue, settingValue, logoutValue } = props;
 
   const history = useHistory();
 
   const location = useLocation();
 
   const urlValue = {
-    "": homeLabel,
-    home: homeLabel,
-    profile: profileLabel,
-    settings: settingLabel,
-    logout: logoutLabel,
+    "": homeValue,
+    home: homeValue,
+    profile: profileValue,
+    settings: settingValue,
+    logout: logoutValue,
   };
 
   const [value, setValue] = React.useState(
@@ -63,26 +63,16 @@ export default function BottomNav(props) {
           value={value}
           onChange={handleChange}
         >
+          <BottomNavigationAction value={homeValue} icon={<HomeIcon />} />
           <BottomNavigationAction
-            label={homeLabel}
-            value={homeLabel}
-            icon={<HomeIcon />}
-          />
-          <BottomNavigationAction
-            label={profileLabel}
-            value={profileLabel}
+            value={profileValue}
             icon={<AccountCircleIcon />}
           />
           <BottomNavigationAction
-            label={settingLabel}
-            value={settingLabel}
+            value={settingValue}
             icon={<SettingsIcon />}
           />
-          <BottomNavigationAction
-            label={logoutLabel}
-            value={logoutLabel}
-            icon={<LogoutIcon />}
-          />
+          <BottomNavigationAction value={logoutValue} icon={<LogoutIcon />} />
         </BottomNavigation>
       </Paper>
     </BoxContainer>
@@ -90,15 +80,15 @@ export default function BottomNav(props) {
 }
 
 BottomNav.propTypes = {
-  homeLabel: PropTypes.string,
-  profileLabel: PropTypes.string,
-  settingLabel: PropTypes.string,
-  logoutLabel: PropTypes.string,
+  homeValue: PropTypes.string,
+  profileValue: PropTypes.string,
+  settingValue: PropTypes.string,
+  logoutValue: PropTypes.string,
 };
 
 BottomNav.defaultProps = {
-  homeLabel: "Trang chủ",
-  profileLabel: "Cá nhân",
-  settingLabel: "Cài đặt",
-  logoutLabel: "Đăng xuất",
+  homeValue: "home",
+  profileValue: "profile",
+  settingValue: "settings",
+  logoutValue: "logout",
 };
