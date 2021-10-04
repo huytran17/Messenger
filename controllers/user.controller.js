@@ -4,8 +4,6 @@ const {
   HttpResponseError,
 } = require("../utils/Response/http.response");
 const { HttpStatus } = require("../constants/app.constant");
-const jwt = require("jsonwebtoken");
-const _CONF = require("../config/app");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -23,7 +21,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let user = await User.findById(id);
+    let user = await User.getById(id);
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
 

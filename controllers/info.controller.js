@@ -9,7 +9,7 @@ module.exports.getInfo = async (req, res) => {
   try {
     const { uid, mid } = req.params;
 
-    const infos = await Info.find({ uid, mid }).exec();
+    let infos = await Info.getInfo(uid, mid);
 
     if (infos.length) return HttpResponse(res, HttpStatus.OK, infos);
 
@@ -29,7 +29,7 @@ module.exports.store = async (req, res, next) => {
 
     const data = { ...req.body };
 
-    const info = await new Info({ uid, mid, onModel }, data).save();
+    let info = await Info.store(uid, mid, onModel, data);
 
     return HttpResponse(res, HttpStatus.CREATED, info);
   } catch (err) {
@@ -47,11 +47,7 @@ module.exports.update = async (req, res, next) => {
 
     const data = { ...req.body };
 
-    const info = await Info.findOneAndUpdate(
-      { uid, mid },
-      { data },
-      { new: true }
-    ).exec();
+    let info = await Info.updateInfo(uid, mid, data);
 
     return HttpResponse(res, HttpStatus.CREATED, info);
   } catch (err) {
@@ -67,7 +63,7 @@ module.exports.destroy = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const info = await Info.findByIdAndDelete(id);
+    let info = await Info.destroy(id);
 
     return HttpResponse(res, HttpStatus.CREATED, info);
   } catch (err) {

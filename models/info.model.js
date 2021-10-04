@@ -28,4 +28,32 @@ const infoSchema = new Schema(
   { timestamps: true }
 );
 
+infoSchema.statics.getInfo = async function (uid, mid) {
+  let infos = await this.find({ uid, mid }).exec();
+
+  return infos;
+};
+
+infoSchema.statics.store = async function (uid, mid, onModel, data) {
+  let info = await new this({ uid, mid, onModel }, data).save();
+
+  return info;
+};
+
+infoSchema.statics.updateInfo = async function (uid, mid, data) {
+  let info = await this.findOneAndUpdate(
+    { uid, mid },
+    { data },
+    { new: true }
+  ).exec();
+
+  return info;
+};
+
+infoSchema.statics.destroy = async function (id) {
+  let info = await this.findByIdAndDelete(id);
+
+  return info;
+};
+
 module.exports = mongoose.model("Info", infoSchema);

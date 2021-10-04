@@ -12,7 +12,7 @@ export const getUserAsync = createAsyncThunk(
   Reducer.NAME.AUTH + "/fetchUser",
   async (id) => {
     const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
-
+    console.log(user.data.data);
     return user.data.data || null;
   }
 );
