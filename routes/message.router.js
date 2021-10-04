@@ -8,13 +8,13 @@ const {
   store,
   getByModelId,
   destroy,
-  storeUploadFile,
+  storeFile: storeFile,
 } = require("../controllers/message.controller");
 
 router
   .route("/:onModel/:uid/:mid")
   .post(verifyStore, store)
-  .put(verifyStoreFile, storeUploadFile);
+  .put(verifyStoreFile, storeFile);
 
 router.route("/:mid").get(getByModelId);
 

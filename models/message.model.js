@@ -33,6 +33,52 @@ const messageSchema = new Schema(
   { timestamps: true }
 );
 
+messageSchema.statics.getByModelId = async function (mid) {
+  let messages = await this.findWithDeleted({ mid })
+    .populate({
+      path: "mid",
+      populate: {
+        path: "mems",
+      },
+    })
+    .exec();
+
+  return messages;
+};
+
+messageSchema.statics.store = async function (onModel, uid, mid, content) {
+  let message = await new this({
+    uid,
+    mid,
+    onModel,
+    content,
+  }).save();
+
+  return message;
+};
+
+messageSchema.statics.storeFile = async function (
+  onModel,
+  uid,
+  mid,
+  file_path
+) {
+  let message = await new this({
+    uid,
+    mid,
+    onModel,
+    file_path,
+  }).save();
+
+  return message;
+};
+
+messageSchema.statics.destroy = async function (id) {
+  let message = await this.delete({ _id: id }).exec();
+
+  return message;
+};
+
 mongoose_delete_plugin(messageSchema);
 
 module.exports = mongoose.model("Message", messageSchema);

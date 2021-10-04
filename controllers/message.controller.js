@@ -9,14 +9,7 @@ module.exports.getByModelId = async (req, res) => {
   try {
     const { mid } = req.params;
 
-    const messages = await Message.findWithDeleted({ mid })
-      .populate({
-        path: "mid",
-        populate: {
-          path: "mems",
-        },
-      })
-      .exec();
+    let messages = await Message.getByModelId(mid);
 
     if (messages.length) return HttpResponse(res, HttpStatus.OK, messages);
 
@@ -36,12 +29,7 @@ module.exports.store = async (req, res) => {
 
     const { content } = req.body;
 
-    const message = await new Message({
-      uid,
-      mid,
-      onModel,
-      content,
-    }).save();
+    let message = await Message.store(onModel, uid, mid, content);
 
     return HttpResponse(res, HttpStatus.CREATED, message);
   } catch (err) {
@@ -53,20 +41,13 @@ module.exports.store = async (req, res) => {
   }
 };
 
-module.exports.storeUploadFile = async (req, res) => {
+module.exports.storeFile = async (req, res) => {
   try {
     const { onModel, uid, mid } = req.params;
 
-    const file = req.source.toString("base64");
+    const file_path = req.source.toString("base64");
 
-    const file_path = new Buffer.from(file, "base64");
-
-    const message = await new Message({
-      uid,
-      mid,
-      onModel,
-      file_path,
-    }).save();
+    let message = await Message.storeFile(onModel, uid, mid, file_path);
 
     return HttpResponse(res, HttpStatus.CREATED, message);
   } catch (err) {
@@ -82,7 +63,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const message = await Message.delete({ _id: id }).exec();
+    let message = await Message.destroy(id);
 
     return HttpResponse(res, HttpStatus.OK, message);
   } catch (err) {
