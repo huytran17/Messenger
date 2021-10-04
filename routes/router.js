@@ -6,6 +6,7 @@ const groupRouter = require("./group.router");
 const messageRouter = require("./message.router");
 const infoRouter = require("./info.router");
 const homeRouter = require("./home.router");
+const friendRequestRouter = require("./friendRequest.router");
 const testRouter = require("./test.router");
 const { verifyAccess } = require("../middlewares/verifyAccess.middleware");
 
@@ -27,4 +28,6 @@ module.exports = (app) => {
   app.use("/info", [verifyAccess, infoRouter]);
 
   app.use("/auth", pwdRouter);
+
+  app.use("/frqs", [verifyAccess, friendRequestRouter]);
 };

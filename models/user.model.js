@@ -132,6 +132,13 @@ userSchema.statics.deleteFriend = async function (id, fid) {
       { new: true }
     ).exec();
 
+    await this.findOneAndUpdate(
+      { _id: fid },
+      {
+        $pull: { friends: id },
+      }
+    ).exec();
+
     return user;
   } catch (err) {
     return new Error(err);

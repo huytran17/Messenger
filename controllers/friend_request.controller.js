@@ -10,7 +10,7 @@ const _CONF = require("../config/app");
 
 module.exports.getByReceiver = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
     const frqs = await FrRequest.find({ receiver: id }, "-receiver")
       .populate("sender", "username friends avatar_photo cover_photo")
@@ -26,7 +26,7 @@ module.exports.getByReceiver = async (req, res) => {
 
 module.exports.getBySender = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
     const frqs = await FrRequest.find({ sender: id }, "-sender")
       .populate("receiver", "username friends avatar_photo cover_photo")
@@ -35,6 +35,18 @@ module.exports.getBySender = async (req, res) => {
     if (frqs.length) return HttpResponse(res, HttpStatus.OK, frqs);
 
     return HttpResponse(res, HttpStatus.NO_CONTENT);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
+
+module.exports.store = async (req, res) => {
+  try {
+    const data = { ...req.body };
+
+    const user = await FrRequest.store(data);
+
+    return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
     return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
   }

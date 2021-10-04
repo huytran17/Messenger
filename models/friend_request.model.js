@@ -29,9 +29,21 @@ friendRequestSchema.statics.accept = async function (sender, receiver) {
   }
 };
 
-friendRequestSchema.statics.decline = function (sender, receiver) {
+friendRequestSchema.statics.decline = async function (sender, receiver) {
   try {
-    await this.findOneAndDelete({ sender, receiver }).exec();
+    const user = await this.findOneAndDelete({ sender, receiver }).exec();
+
+    return user;
+  } catch (err) {
+    return new Error(err);
+  }
+};
+
+friendRequestSchema.statics.store = async function (data) {
+  try {
+    const user = await new this(data).save();
+
+    return user;
   } catch (err) {
     return new Error(err);
   }

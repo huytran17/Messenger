@@ -7,14 +7,6 @@ const { HttpStatus } = require("../constants/app.constant");
 const jwt = require("jsonwebtoken");
 const _CONF = require("../config/app");
 
-module.exports.create = (req, res) => {
-  return res.render("auth/register");
-};
-
-module.exports.login = (req, res) => {
-  return res.render("auth/login");
-};
-
 module.exports._login = async (req, res) => {
   const data = { ...req.body };
 
