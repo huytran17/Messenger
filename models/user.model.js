@@ -177,35 +177,27 @@ userSchema.statics.destroy = async function (id) {
 };
 
 userSchema.statics.addFriend = async function (id, fid) {
-  try {
-    let user = await this.findOneAndUpdate(
-      { _id: id },
-      {
-        $addToSet: { friends: fid },
-      },
-      { new: true }
-    ).exec();
+  let user = await this.findOneAndUpdate(
+    { _id: id },
+    {
+      $addToSet: { friends: fid },
+    },
+    { new: true }
+  ).exec();
 
-    return user;
-  } catch (err) {
-    return new Error(err);
-  }
+  return user;
 };
 
 userSchema.statics.unfriend = async function (id, fid) {
-  try {
-    let user = await this.findOneAndUpdate(
-      { _id: id },
-      {
-        $pull: { friends: fid },
-      },
-      { new: true }
-    ).exec();
+  let user = await this.findOneAndUpdate(
+    { _id: id },
+    {
+      $pull: { friends: fid },
+    },
+    { new: true }
+  ).exec();
 
-    return user;
-  } catch (err) {
-    return new Error(err);
-  }
+  return user;
 };
 
 module.exports = mongoose.model("User", userSchema);

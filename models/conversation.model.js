@@ -43,6 +43,7 @@ conversationSchema.post("findOneAndDelete", async function (doc) {
   }
 
   await Message.deleteMany({ mid: doc._id }).exec();
+  
   await Info.deleteMany({ mid: doc._id }).exec();
 });
 

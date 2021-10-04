@@ -19,7 +19,7 @@ const friendRequestSchema = new Schema(
 );
 
 friendRequestSchema.statics.getBySender = async function (sender) {
-  const frqs = await this.find({ sender }, "-sender")
+  let frqs = await this.find({ sender }, "-sender")
     .populate("receiver", "username friends avatar_photo cover_photo")
     .exec();
 
@@ -27,7 +27,7 @@ friendRequestSchema.statics.getBySender = async function (sender) {
 };
 
 friendRequestSchema.statics.getByReceiver = async function (receiver) {
-  const frqs = await this.find({ receiver }, "-receiver")
+  let frqs = await this.find({ receiver }, "-receiver")
     .populate("sender", "username friends avatar_photo cover_photo")
     .exec();
 
@@ -35,34 +35,23 @@ friendRequestSchema.statics.getByReceiver = async function (receiver) {
 };
 
 friendRequestSchema.statics.accept = async function (sender, receiver) {
-  try {
-    const user = await User.addFriend(receiver, sender);
-    await User.addFriend(sender, receiver);
+  let user = await User.addFriend(receiver, sender);
 
-    return user;
-  } catch (err) {
-    return new Error(err);
-  }
+  await User.addFriend(sender, receiver);
+
+  return user;
 };
 
 friendRequestSchema.statics.decline = async function (sender, receiver) {
-  try {
-    const user = await this.findOneAndDelete({ sender, receiver }).exec();
+  let user = await this.findOneAndDelete({ sender, receiver }).exec();
 
-    return user;
-  } catch (err) {
-    return new Error(err);
-  }
+  return user;
 };
 
 friendRequestSchema.statics.store = async function (data) {
-  try {
-    const user = await new this(data).save();
+  let user = await new this(data).save();
 
-    return user;
-  } catch (err) {
-    return new Error(err);
-  }
+  return user;
 };
 
 module.exports = mongoose.model("FriendRequest", friendRequestSchema);
