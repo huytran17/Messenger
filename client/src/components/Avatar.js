@@ -57,7 +57,7 @@ export function GrpAvatar({ src, srcSmall, ...rest }) {
     <Badge
       overlap="circular"
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      badgeContent={<SmallAvatar {...rest} src={srcSmall} />}
+      badgeContent={<SmallAvatar src={srcSmall} />}
     >
       <Avatar {...rest} src={src} />
     </Badge>

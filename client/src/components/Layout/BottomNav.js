@@ -7,9 +7,16 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import * as React from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import PropTypes from "prop-types";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-export default function BottomNav() {
-  const [value, setValue] = React.useState("recents");
+export default function BottomNav(props) {
+  const { homeLabel, profileLabel, settingLabel, logoutLabel } = props;
+
+  const [value, setValue] = React.useState(homeLabel);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,27 +40,41 @@ export default function BottomNav() {
           onChange={handleChange}
         >
           <BottomNavigationAction
-            label="Recents"
-            value="recents"
-            icon={<RestoreIcon />}
+            label={homeLabel}
+            value={homeLabel}
+            icon={<HomeIcon />}
           />
           <BottomNavigationAction
-            label="Favorites"
-            value="favorites"
-            icon={<FavoriteIcon />}
+            label={profileLabel}
+            value={profileLabel}
+            icon={<AccountCircleIcon />}
           />
           <BottomNavigationAction
-            label="Nearby"
-            value="nearby"
-            icon={<LocationOnIcon />}
+            label={settingLabel}
+            value={settingLabel}
+            icon={<SettingsIcon />}
           />
           <BottomNavigationAction
-            label="Folder"
-            value="folder"
-            icon={<FolderIcon />}
+            label={logoutLabel}
+            value={logoutLabel}
+            icon={<LogoutIcon />}
           />
         </BottomNavigation>
       </Paper>
     </Box>
   );
 }
+
+BottomNav.propTypes = {
+  homeLabel: PropTypes.string,
+  profileLabel: PropTypes.string,
+  settingLabel: PropTypes.string,
+  logoutLabel: PropTypes.string,
+};
+
+BottomNav.defaultProps = {
+  homeLabel: "Trang chủ",
+  profileLabel: "Cá nhân",
+  settingLabel: "Cài đặt",
+  logoutLabel: "Đăng xuất",
+};

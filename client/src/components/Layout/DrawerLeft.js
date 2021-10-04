@@ -11,19 +11,19 @@ import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatusLeft,
-  toggleStatusLeft
+  toggleStatusLeft,
 } from "../../app/slices/appBarSlice";
 import {
   getUserAsync,
   selectConvs,
   selectGrs,
-  selectUser
+  selectUser,
 } from "../../app/slices/authSlice";
 import { STRING } from "../../constants/index";
 import { AuthContext } from "../../ctx/appCtx";
 import { ConvAvatar, GrpAvatar } from "../Avatar";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -40,9 +40,9 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: `calc(${theme.spacing(8)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
+    width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
@@ -123,6 +123,7 @@ export default function DrawerLeft() {
                       <ConvAvatar
                         src={"data:image/*;base64," + item.mems[0].avatar_photo}
                         alt={item.mems[0].username}
+                        sx={{ width: "30px", height: "30px" }}
                       />
                     </ListItemIcon>
                     <ListItemText primary={item.mems[0].username} />
@@ -144,6 +145,7 @@ export default function DrawerLeft() {
                       srcSmall={
                         "data:image/*;base64," + item.createdBy.avatar_photo
                       }
+                      sx={{ width: "30px", height: "30px" }}
                     />
                   </ListItemIcon>
                   <ListItemText primary={item.name} />

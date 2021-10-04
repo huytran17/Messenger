@@ -14,7 +14,7 @@ import {
   toggleStatusRight
 } from "../../app/slices/appBarSlice";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",

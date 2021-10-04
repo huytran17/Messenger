@@ -12,7 +12,7 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatusRight,
-  toggleStatusRight
+  toggleStatusRight,
 } from "../../app/slices/appBarSlice";
 
 const drawerWidth = 200;
