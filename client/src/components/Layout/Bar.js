@@ -11,7 +11,7 @@ import {
   selectStatusLeft,
   selectStatusRight,
   toggleStatusLeft,
-  toggleStatusRight
+  toggleStatusRight,
 } from "../../app/slices/appBarSlice";
 
 const drawerWidth = 220;
@@ -52,7 +52,7 @@ export default function Bar() {
 
   return (
     <AppBar position="fixed" open={statusLeft}>
-      <Toolbar>
+      <Toolbar variant="dense">
         <IconButton
           color="inherit"
           aria-label="open drawer"

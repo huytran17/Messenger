@@ -1,24 +1,43 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FolderIcon from "@mui/icons-material/Folder";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import RestoreIcon from "@mui/icons-material/Restore";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import * as React from "react";
-import HomeIcon from "@mui/icons-material/Home";
 import PropTypes from "prop-types";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
+import * as React from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 export default function BottomNav(props) {
   const { homeLabel, profileLabel, settingLabel, logoutLabel } = props;
 
-  const [value, setValue] = React.useState(homeLabel);
+  const history = useHistory();
+
+  const location = useLocation();
+
+  const urlValue = {
+    "": homeLabel,
+    home: homeLabel,
+    profile: profileLabel,
+    settings: settingLabel,
+    logout: logoutLabel,
+  };
+
+  const [value, setValue] = React.useState(
+    urlValue[location.pathname.slice(1)]
+  );
+
+  const getKeyByValue = (object, value) => {
+    return Object.keys(object).find((key) => object[key] === value);
+  };
 
   const handleChange = (event, newValue) => {
+    const urlPart = getKeyByValue(urlValue, newValue);
+
+    history.push(`/${urlPart}`);
+
     setValue(newValue);
   };
 

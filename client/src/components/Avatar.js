@@ -1,6 +1,5 @@
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import * as React from "react";
