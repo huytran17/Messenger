@@ -62,6 +62,9 @@ const userSchema = new Schema(
     bio: {
       type: String,
     },
+    quote: {
+      type: String,
+    },
     dob: {
       type: Date,
     },
