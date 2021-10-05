@@ -80,12 +80,6 @@ export default function Form(props) {
     justifyContent: "center",
   });
 
-  const BtnLogin = styled(Button)({
-    borderRadius: "20px",
-    flexShrink: 1,
-    boxShadow: "none",
-  });
-
   const FormLink = styled(Link)({
     fontSize: 13,
     textAlign: "right",
@@ -179,9 +173,14 @@ export default function Form(props) {
         <Grid item xs={12}>
           <FormControl>
             <ButtonBox>
-              <BtnLogin variant="contained" onClick={register()}>
+              <Button
+                variant="contained"
+                disableElevation
+                onClick={register()}
+                sx={{ borderRadius: 999 }}
+              >
                 {btnRegisterLabel}
-              </BtnLogin>
+              </Button>
             </ButtonBox>
           </FormControl>
         </Grid>
