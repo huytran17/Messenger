@@ -101,8 +101,8 @@ export default function DrawerLeft() {
   const grs = useSelector(selectGrs);
 
   useEffect(() => {
-    dispatch(getUserAsync(auth.user._id));
-  }, [dispatch, auth.user._id]);
+    dispatch(getUserAsync(auth.id));
+  }, [dispatch, auth.id]);
 
   console.log(user, convs, grs);
 

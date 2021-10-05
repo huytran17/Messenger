@@ -67,7 +67,7 @@ const ProtectedRoute = ({ children, ...restProps }) => {
     <Route
       {...restProps}
       render={({ location }) =>
-        auth && auth.user ? (
+        auth && auth.id ? (
           children
         ) : (
           <Redirect
@@ -122,7 +122,7 @@ class App extends React.Component {
               <ProtectedRoute path="/home">
                 <Home />
               </ProtectedRoute>
-              <ProtectedRoute path="/profile">
+              <ProtectedRoute path="/profile/:id">
                 <Profile />
               </ProtectedRoute>
               <ProtectedRoute path="/settings">

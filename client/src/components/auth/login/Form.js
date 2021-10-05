@@ -60,7 +60,7 @@ export default function Form(props) {
           const expires = d.setDate(d.getDate() + CONF.TOKEN_EXPIRES);
 
           const token = Crypto.AES.encrypt(
-            JSON.stringify({ user: res.data.data, eat: expires }),
+            JSON.stringify({ id: res.data.data._id, eat: expires }),
             CONF.TOKEN_SECRET
           );
 

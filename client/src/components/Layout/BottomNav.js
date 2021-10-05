@@ -11,8 +11,18 @@ import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { View } from "../../constants/index";
+import Crypto from "crypto-js";
+import { CONF } from "../../config/app";
 
 const bottomNavHeight = View.BOTTOM_NAV_HEIGHT;
+
+const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+
+const bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
+
+const originalData = bytes.toString(Crypto.enc.Utf8);
+
+console.log(originalData);
 
 export default function BottomNav(props) {
   const { homeValue, profileValue, settingValue, logoutValue } = props;
