@@ -59,6 +59,9 @@ const userSchema = new Schema(
     relationship: {
       type: String,
     },
+    bio: {
+      type: String,
+    },
     dob: {
       type: Date,
     },

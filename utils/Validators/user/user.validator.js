@@ -27,6 +27,9 @@ module.exports.updateInfoValidator = (data) => {
     relationship: Joi.string().messages({
       "string.base": ValidationMessage.STRING_BASE,
     }),
+    bio: Joi.string().messages({
+      "string.base": ValidationMessage.STRING_BASE,
+    }),
     dob: Joi.date().messages({
       "date.base": ValidationMessage.DATE_BASE,
     }),
