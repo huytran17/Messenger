@@ -73,6 +73,18 @@ module.exports.updateAvatar = async (req, res) => {
   }
 };
 
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { id, new_password } = req.body;
+
+    let user = await User.updatePassword(id, new_password);
+
+    return HttpResponse(res, HttpStatus.CREATED, user);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
+
 module.exports.updateCover = async (req, res) => {
   try {
     const { id } = req.params;

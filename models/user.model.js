@@ -190,6 +190,16 @@ userSchema.statics.updateCover = async function (id, cover_photo) {
   return user;
 };
 
+userSchema.statics.updatePassword = async function (id, new_password) {
+  let user = await this.findOneAndUpdate(
+    { _id: id },
+    { password: new_password },
+    { new: true }
+  ).exec();
+
+  return user;
+};
+
 userSchema.statics.destroy = async function (id) {
   let user = await this.delete({ _id: id }).exec();
 
