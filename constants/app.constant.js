@@ -40,6 +40,9 @@ const ValidationMessage = Object.freeze({
   MIME_TYPE: "File không đúng định dạng.",
   IMAGE_SIZE: "Kích thước tối đa 1MB",
   INVALID: "Dữ liệu không hợp lệ.",
+  NUMBER_BASE: "Phải có định dạng kiểu số.",
+  NUMBER_INFINITY: "Vượt quá giá trị cho phép.",
+  DATE_BASE: "Phải có định dạng đ/mm/yyyy",
 });
 
 const Path = Object.freeze({

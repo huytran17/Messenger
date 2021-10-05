@@ -42,6 +42,26 @@ const userSchema = new Schema(
       unique: [true, "Đã tồn tại."],
       required: [true, "Không được để trống."],
     },
+    phone: {
+      type: String,
+      min: [10, "Tối thiểu 10 ký tự."],
+      max: [12, "Tối đa 12 ký tự."],
+    },
+    address: {
+      type: String,
+      min: [2, "Tối thiểu 2 ký tự."],
+      max: [255, "Tối đa 255 ký tự."],
+    },
+    gender: {
+      type: Number,
+      default: 1, //1: male, 2: female, 3: other
+    },
+    relationship: {
+      type: String,
+    },
+    dob: {
+      type: Date,
+    },
     avatar_photo: {
       type: String,
       default: "",
