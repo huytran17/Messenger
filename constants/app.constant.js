@@ -51,7 +51,13 @@ const Path = Object.freeze({
   VERIFY_CODE: "verify_code",
 });
 
+const FileUpload = Object.freeze({
+  IMAGE_MAX_SIZE: 1048576,
+  FILE_MAX_SIZE: 1048576,
+});
+
 module.exports.HttpStatus = HttpStatus;
 module.exports.ResponseMessage = ResponseMessage;
 module.exports.ValidationMessage = ValidationMessage;
 module.exports.Path = Path;
+module.exports.FileUpload = FileUpload;

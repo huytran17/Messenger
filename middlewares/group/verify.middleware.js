@@ -1,5 +1,5 @@
 const { HttpResponseError } = require("../../utils/Response/http.response");
-const { HttpStatus } = require("../../constants/app.constant");
+const { HttpStatus, FileUpload } = require("../../constants/app.constant");
 const {
   updateInfoValidator,
   storeValidator,
@@ -16,7 +16,7 @@ module.exports.verifyStore = (req, res, next) => {
 };
 
 module.exports.verifyUpdateBackground = async (req, res, next) => {
-  verifyUpload(req, res, next, "background_photo", 1048576);
+  verifyUpload(req, res, next, "background_photo", FileUpload.IMAGE_MAX_SIZE);
 };
 
 module.exports.verifyUpdateInfo = (req, res, next) => {
