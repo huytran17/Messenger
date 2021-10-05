@@ -99,9 +99,10 @@ userSchema.pre("save", async function (next) {
 userSchema.pre("findOneAndUpdate", async function (next) {
   const update = { ...this.getUpdate() };
 
-  if (update.password) update.password = await hash(update.password, 10);
-
-  this.setUpdate(update);
+  if (update.password) {
+    update.password = await hash(update.password, 10);
+    this.setUpdate(update);
+  }
 
   next();
 });
@@ -197,7 +198,7 @@ userSchema.statics.updatePassword = async function (id, new_password) {
     { new: true }
   ).exec();
 
-  return user;
+  return user; //TODO: sau khi đổi mật khẩu thì đăng xuất và đăng nhập lại
 };
 
 userSchema.statics.destroy = async function (id) {

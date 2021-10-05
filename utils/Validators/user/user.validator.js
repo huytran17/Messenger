@@ -54,7 +54,7 @@ module.exports.updatePasswordValidator = (data) => {
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
     }),
-    re_password: Joi.any().required().valid(Joi.ref("password")).messages({
+    re_password: Joi.any().required().valid(Joi.ref("new_password")).messages({
       "any.required": ValidationMessage.REQUIRED,
       "any.only": ValidationMessage.MISMATCH_REPWD,
     }),

@@ -9,15 +9,21 @@ const {
   updateCover,
   destroy,
   unfriend,
+  updatePassword,
 } = require("../controllers/user.controller");
 const {
   verifyUpdateInfo,
   verifyUpdateAvatar,
   verifyUpdateCover,
+  verifyUpdatePassword,
 } = require("../middlewares/user/verify.middleware");
 const { isAdmin } = require("../middlewares/authorization.middleware");
 
-router.route("/").get(getAll).delete(unfriend);
+router
+  .route("/")
+  .get(getAll)
+  .delete(unfriend)
+  .patch(verifyUpdatePassword, updatePassword);
 
 router
   .route("/:id")

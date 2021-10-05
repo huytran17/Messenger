@@ -3,6 +3,7 @@ const {
   HttpStatus,
   FileUpload,
   Path,
+  ResponseMessage,
 } = require("../../constants/app.constant");
 const {
   updateInfoValidator,
@@ -49,7 +50,13 @@ module.exports.verifyUpdatePassword = async (req, res, next) => {
       Path.PASSWORD
     );
 
-  const { error } = updatePasswordValidator(req.body);
+  let { password, re_password, new_password } = req.body;
+
+  let { error } = updatePasswordValidator({
+    password,
+    re_password,
+    new_password,
+  });
 
   if (error)
     return HttpResponseError(
