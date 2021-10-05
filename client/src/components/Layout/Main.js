@@ -10,7 +10,9 @@ export default function Main({ children, ...rest }) {
         <CssBaseline />
         <Bar />
         <DrawerLeft />
-        {children}
+        <Box component="main" sx={{ width: "100%", marginBottom: 10 }}>
+          {children}
+        </Box>
         <DrawerRight />
         <BottomNav />
       </Box>

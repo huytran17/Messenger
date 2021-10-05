@@ -9,10 +9,11 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatusRight,
-  toggleStatusRight
+  toggleStatusRight,
 } from "../../app/slices/appBarSlice";
+import { View } from "../../constants/index";
 
-const drawerWidth = 200;
+const drawerWidth = View.DRAWER_WIDTH - 20;
 
 export default function TemporaryDrawer() {
   const status = useSelector(selectStatusRight);

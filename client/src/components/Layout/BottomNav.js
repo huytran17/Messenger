@@ -10,6 +10,9 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { View } from "../../constants/index";
+
+const bottomNavHeight = View.BOTTOM_NAV_HEIGHT;
 
 export default function BottomNav(props) {
   const { homeValue, profileValue, settingValue, logoutValue } = props;
@@ -55,6 +58,7 @@ export default function BottomNav(props) {
           left: 0,
           right: 0,
           boxShadow: "none",
+          height: `${bottomNavHeight}px`,
         }}
         elevation={3}
       >

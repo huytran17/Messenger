@@ -15,7 +15,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function ChatFrame() {
   return (
-    <Box component="main" sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }}>
       <DrawerHeader />
       <Typography paragraph>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

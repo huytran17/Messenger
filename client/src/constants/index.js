@@ -77,3 +77,9 @@ export const HttpStatus = Object.freeze({
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
 });
+
+export const View = Object.freeze({
+  DRAWER_WIDTH: 220,
+  BOTTOM_NAV_HEIGHT: 56,
+  APPBAR_HEIGHT: 56,
+});

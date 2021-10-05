@@ -22,8 +22,9 @@ import {
 import { STRING } from "../../constants/index";
 import { AuthContext } from "../../ctx/appCtx";
 import { ConvAvatar, GrpAvatar } from "../index";
+import { View } from "../../constants/index";
 
-const drawerWidth = 220;
+const drawerWidth = View.DRAWER_WIDTH;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -66,7 +67,7 @@ const Drawer = styled(MuiDrawer, {
     border: 0,
   },
   "& .MuiPaper-root > div": {
-    minHeight: 0,
+    minHeight: `${View.APPBAR_HEIGHT}px`,
   },
   ...(open && {
     ...openedMixin(theme),

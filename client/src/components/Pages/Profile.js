@@ -17,6 +17,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CoverPhoto from "../../static/images/loginPanel.jpg";
 import Box from "@mui/material/Box";
 
+const avatarSize = 80;
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -42,6 +44,21 @@ const BoxContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   width: "100%",
+  "& .MuiCardHeader-avatar": {
+    margin: `-${avatarSize / 2.2}px 0 ${avatarSize / 4.8}px 0`,
+  },
+  "& .MuiCardHeader-root": {
+    paddingTop: 0,
+  },
+
+  ...theme.mixins.toolbar,
+}));
+
+const Header = styled(CardHeader)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center",
+  alignItems: "center",
 
   ...theme.mixins.toolbar,
 }));
@@ -58,25 +75,27 @@ export default function RecipeReviewCard() {
       <DrawerHeader />
       <BoxContainer>
         <Card sx={{ width: "800px", margin: "0 auto" }}>
-          <CardHeader
+          <CardMedia
+            component="img"
+            height="200"
+            image={CoverPhoto}
+            alt="Paella dish"
+          />
+          <Header
             avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              <Avatar
+                sx={{
+                  bgcolor: red[500],
+                  width: avatarSize,
+                  height: avatarSize,
+                }}
+                aria-label="recipe"
+              >
                 R
               </Avatar>
             }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
             title="Shrimp and Chorizo Paella"
             subheader="September 14, 2016"
-          />
-          <CardMedia
-            component="img"
-            height="194"
-            image={CoverPhoto}
-            alt="Paella dish"
           />
           <CardContent>
             <Typography variant="body2" color="text.secondary">
