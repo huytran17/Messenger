@@ -17,6 +17,7 @@ module.exports.verifyUpdateCover = async (req, res, next) => {
 //TODO trong hàm controller update: update theo req.body, tức là tự động match dữ liệu, cái nào có thì update k thì thôi
 
 module.exports.verifyUpdateInfo = async (req, res, next) => {
+  console.log(req.body);
   const { error } = updateInfoValidator(req.body);
 
   if (error)
