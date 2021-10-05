@@ -20,9 +20,9 @@ const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
 const bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
 
-const originalData = bytes.toString(Crypto.enc.Utf8);
+const originalData = JSON.parse(bytes.toString(Crypto.enc.Utf8));
 
-console.log(originalData);
+const uid = originalData.id;
 
 export default function BottomNav(props) {
   const { homeValue, profileValue, settingValue, logoutValue } = props;
@@ -34,7 +34,7 @@ export default function BottomNav(props) {
   const urlValue = {
     "": homeValue,
     home: homeValue,
-    profile: profileValue,
+    [`profile/${uid}`]: profileValue,
     settings: settingValue,
     logout: logoutValue,
   };
