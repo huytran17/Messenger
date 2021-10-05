@@ -57,7 +57,7 @@ const userSchema = new Schema(
       default: 1, //1: male, 2: female, 3: other
     },
     relationship: {
-      type: String,
+      type: Number,
     },
     bio: {
       type: String,

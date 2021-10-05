@@ -24,8 +24,9 @@ module.exports.updateInfoValidator = (data) => {
       "number.base": ValidationMessage.NUMBER_BASE,
       "number.infinity": ValidationMessage.NUMBER_INFINITY,
     }),
-    relationship: Joi.string().messages({
-      "string.base": ValidationMessage.STRING_BASE,
+    relationship: Joi.number().messages({
+      "number.base": ValidationMessage.NUMBER_BASE,
+      "number.infinity": ValidationMessage.NUMBER_INFINITY,
     }),
     bio: Joi.string().messages({
       "string.base": ValidationMessage.STRING_BASE,
