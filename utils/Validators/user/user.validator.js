@@ -38,7 +38,7 @@ module.exports.updateInfoValidator = (data) => {
   });
 };
 
-module.exports.updatePassword = (data) => {
+module.exports.updatePasswordValidator = (data) => {
   const schema = Joi.object({
     password: Joi.string().min(8).max(32).required().messages({
       "string.base": ValidationMessage.STRING_BASE,
