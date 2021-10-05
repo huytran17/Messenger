@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import * as React from "react";
-import PanelImage from "../../../images/loginView.jpg";
+import PanelImage from "../../../static/images/loginView.jpg";
 
 export default function SideImage({ panelImage }) {
   return (

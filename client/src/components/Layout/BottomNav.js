@@ -43,7 +43,7 @@ export default function BottomNav(props) {
   };
 
   const BoxContainer = styled(Box)(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer,
   }));
 
   return (

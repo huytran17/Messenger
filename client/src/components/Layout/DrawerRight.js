@@ -22,25 +22,23 @@ export default function TemporaryDrawer() {
 
   const dispatch = useDispatch();
 
+  const features = ["Friend requests", "Friends"];
+
+  const expands = ["COVID-19", "News", "About", "Feedback"];
+
   const list = () => (
     <Box sx={{ width: drawerWidth }} role="presentation">
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {features.map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        {expands.map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}

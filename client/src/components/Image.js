@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import className from "classnames";
-import defaultLogo from "../images/defaultLogo.png";
+import defaultLogo from "../static/images/defaultLogo.png";
 
 const Image = ({ tag: Tag, src, size, style, classes, ...restProps }) => {
   const _classes = className({ classes });

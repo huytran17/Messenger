@@ -11,6 +11,7 @@ import {
   VerifyCode,
 } from "./components/auth/index";
 import { Home } from "./components/index";
+import { Profile } from "./components/index";
 import { CONF } from "./config/app";
 import { AuthContext, SocketContext } from "./ctx/appCtx";
 import { Server } from "./constants/index";
@@ -122,7 +123,7 @@ class App extends React.Component {
                 <Home />
               </ProtectedRoute>
               <ProtectedRoute path="/profile">
-                <Home />
+                <Profile />
               </ProtectedRoute>
               <ProtectedRoute path="/settings">
                 <Home />

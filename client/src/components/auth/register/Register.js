@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import * as React from "react";
 import { Form } from "./index";
-import PanelImage from "../../../images/registerPanel.jpg";
+import PanelImage from "../../../static/images/registerPanel.jpg";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 
