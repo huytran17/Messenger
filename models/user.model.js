@@ -231,4 +231,10 @@ userSchema.statics.unfriend = async function (id, fid) {
   return user;
 };
 
+userSchema.statics.register = async function (data) {
+  let user = await new this(data).save();
+
+  return user;
+};
+
 module.exports = mongoose.model("User", userSchema);

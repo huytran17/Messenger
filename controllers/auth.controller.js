@@ -42,7 +42,7 @@ module.exports.register = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    let user = await new User(data).save();
+    let user = await User.register(data);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
