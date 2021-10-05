@@ -53,6 +53,11 @@ const setStateError =
     state.error[path] = value;
   };
 
+const setIsAllValid = (state) => (obj) => {
+  state.isAllValid =
+    checkDataProperties(obj) && checkErrorProperties(state.error);
+};
+
 export const authSlice = createSlice({
   name: Reducer.NAME.AUTH_FORM,
   initialState,
@@ -66,6 +71,8 @@ export const authSlice = createSlice({
       const type = action.payload.type.toUpperCase();
 
       const setState = setStateError(state);
+
+      const _setIsAllValid = setIsAllValid(state);
 
       //validate all data is not empty
       if (state.data[attr] === STRING.EMPTY)
@@ -81,16 +88,16 @@ export const authSlice = createSlice({
         //validate username
         if (attr === Field.USERNAME) {
           if (state.data.username.length < 6)
-            setState(Field.USERNAME, ValidateError.USERNAME_MIN_LENGTH);
-          else setState(Field.USERNAME, STRING.EMPTY);
+            setState(attr, ValidateError.USERNAME_MIN_LENGTH);
+          else setState(attr, STRING.EMPTY);
         }
         //validate password & re-password
         else if (attr === Field.RE_PASSWORD || attr === Field.PASSWORD) {
           //password length
           if (attr === Field.PASSWORD) {
             if (state.data.password.length < 8)
-              setState(Field.PASSWORD, ValidateError.PASSWORD_MIN_LENGTH);
-            else setState(Field.PASSWORD, STRING.EMPTY);
+              setState(attr, ValidateError.PASSWORD_MIN_LENGTH);
+            else setState(attr, STRING.EMPTY);
           }
 
           //match re-pasword
@@ -108,38 +115,29 @@ export const authSlice = createSlice({
       if (type === Auth.TYPE.LOGIN) {
         const { email, password } = state.data;
 
-        state.isAllValid =
-          checkDataProperties({ email, password }) &&
-          checkErrorProperties(state.error);
+        _setIsAllValid({ email, password });
       }
       //validate register
       else if (type === Auth.TYPE.REGISTER) {
         const { email, username, password, re_password } = state.data;
 
-        state.isAllValid =
-          checkDataProperties({ email, username, password, re_password }) &&
-          checkErrorProperties(state.error);
+        _setIsAllValid({ email, username, password, re_password });
       }
       //validate find account
       else if (type === Auth.TYPE.FORGET_PWD) {
         const { email } = state.data;
 
-        state.isAllValid =
-          checkDataProperties({ email }) && checkErrorProperties(state.error);
+        _setIsAllValid({ email });
       }
       //validate verify code
       else if (type === Auth.TYPE.VERIFY_CODE) {
         const { verify_code } = state.data;
 
-        state.isAllValid =
-          checkDataProperties({ verify_code }) &&
-          checkErrorProperties(state.error);
+        _setIsAllValid({ verify_code });
       } else if (type === Auth.TYPE.RESET_PWD) {
         const { password, re_password } = state.data;
 
-        state.isAllValid =
-          checkDataProperties({ password, re_password }) &&
-          checkErrorProperties(state.error);
+        _setIsAllValid({ password, re_password });
       }
     },
     setError: (state, action) => {
