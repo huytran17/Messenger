@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const hash = require("../utils/Encrypt/password.encrypt");
 const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
+const { dmyFormat } = require("../utils/Date/format");
 
 const userSchema = new Schema(
   {
@@ -96,6 +97,11 @@ mongoose_delete_plugin(userSchema);
 userSchema.set("toJSON", {
   transform: (doc, ret, options) => {
     delete ret.password;
+
+    ret.dob = dmyFormat(ret.dob);
+    ret.createdAt = dmyFormat(ret.createdAt);
+    ret.updatedAt = dmyFormat(ret.updatedAt);
+    ret.deletedAt = dmyFormat(ret.deletedAt);
 
     return ret;
   },
