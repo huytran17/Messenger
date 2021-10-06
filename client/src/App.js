@@ -50,6 +50,7 @@ const useProvideAuth = () => {
       if (now > auth.eat) localStorage.removeItem("token");
     } catch (e) {
       localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
     }
   }
 
