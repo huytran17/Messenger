@@ -1,23 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  ValidateError,
-  STRING,
-  Reducer,
-  Auth,
-  Field,
-} from "../../constants/index";
+import { ValidateError, STRING, Reducer, Field } from "../../constants/index";
 
 const initialState = {
-  isAllValid: false,
+  isAllValid: true,
   data: {
     username: STRING.EMPTY,
     address: STRING.EMPTY,
     phone: STRING.EMPTY,
     bio: STRING.EMPTY,
     quote: STRING.EMPTY,
-    gender: STRING.EMPTY,
+    gender: 1,
     dob: STRING.EMPTY,
-    relationship: STRING.EMPTY,
+    relationship: 1,
   },
   error: {
     username: STRING.EMPTY,
@@ -48,7 +42,6 @@ export const updateInfoSlice = createSlice({
   reducers: {
     changeData: (state, action) => {
       state.data = { ...state.data, ...action.payload };
-      console.log(state.data);
     },
     validate: (state, action) => {
       let payload = action.payload;
@@ -87,7 +80,7 @@ export const updateInfoSlice = createSlice({
       }
 
       //set is all valid
-      if (!checkErrorProperties(state.error)) state.isAllValid = false;
+      state.isAllValid = checkErrorProperties(state.error);
     },
     setError: (state, action) => {},
   },

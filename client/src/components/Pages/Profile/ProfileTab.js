@@ -1,31 +1,30 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { ErrorHelperText, InputLabelForError } from "../../index";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useSelector, useDispatch } from "react-redux";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import TextField from "@mui/material/TextField";
+import moment from "moment";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import {
-  selectIsAllValid,
   changeData,
   selectData,
   selectError,
+  selectIsAllValid,
   validate,
-  setError,
 } from "../../../app/slices/updateInfoSlice";
-import moment from "moment";
-import { Auth, Field, Server, STRING } from "../../../constants/index";
+import { Field, STRING } from "../../../constants/index";
+import { ErrorHelperText } from "../../index";
 
 const tabItems = [
   {
@@ -138,6 +137,8 @@ export default function ProfileTab({
 
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
   const handleChangeInput = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
     dispatch(validate({ path: prop }));
@@ -150,6 +151,12 @@ export default function ProfileTab({
   const handleChangeDatePicker = (prop) => (newValue) => {
     dispatch(changeData({ [prop]: dmyFormat(newValue) }));
   };
+
+  const update = (event) => {};
+
+  useEffect(() => {
+    console.log(location.pathname.split("/").pop());
+  }, []);
 
   return (
     <Box sx={{ width: "100%" }} {...rest}>
@@ -218,7 +225,7 @@ export default function ProfileTab({
             <GridItem errorField={error.gender}>
               <CommonFormControl inputLabel={genderLabel}>
                 <Select
-                  defaultValue={1}
+                  value={data.gender}
                   onChange={handleChangeInput(Field.GENDER)}
                 >
                   {genders.map((item, index) => {
@@ -241,7 +248,7 @@ export default function ProfileTab({
             <GridItem errorField={error.relationship}>
               <CommonFormControl inputLabel={relationshipLabel}>
                 <Select
-                  defaultValue={1}
+                  value={data.relationship}
                   onChange={handleChangeInput(Field.RELATIONSHIP)}
                 >
                   {relationships.map((item, index) => {
@@ -262,7 +269,7 @@ export default function ProfileTab({
               />
             </GridItem>
             <GridItem xs={12} sm={12} sx={{ textAlign: "right" }}>
-              <Button variant="contained" disableElevation>
+              <Button variant="contained" disableElevation onClick={update}>
                 {btnSaveLabel}
               </Button>
             </GridItem>

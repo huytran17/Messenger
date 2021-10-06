@@ -65,7 +65,9 @@ groupSchema.post("findOneAndUpdate", async function (doc) {
     await User.findByIdAndUpdate(uid, {
       $addToSet: { grs: doc._id },
     }).exec();
-  } else if (update.$pull) {
+  } 
+  //
+  else if (update.$pull) {
     let uid = update.$pull.mems.toString("hex");
 
     await User.findByIdAndUpdate(uid, {
