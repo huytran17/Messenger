@@ -97,7 +97,7 @@ const GridItem = ({ children, errorField, ...props }) => {
   );
 };
 
-const CommonFormControl = ({ children, inputLabel,, ...props }) => {
+const CommonFormControl = ({ children, inputLabel, ...props }) => {
   return (
     <FormControl
       variant="standard"
