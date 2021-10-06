@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const hash = require("../utils/Encrypt/password.encrypt");
 const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
-const { dmyFormat } = require("../utils/Date/format");
+const { dmyFormat } = require("../utils/Datetime/format");
 
 const userSchema = new Schema(
   {
