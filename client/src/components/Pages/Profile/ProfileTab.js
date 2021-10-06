@@ -97,7 +97,7 @@ const GridItem = ({ children, errorField, ...props }) => {
   );
 };
 
-const CommonFormControl = ({ children, ...props }) => {
+const CommonFormControl = ({ children, inputLabel,, ...props }) => {
   return (
     <FormControl
       variant="standard"
@@ -106,6 +106,7 @@ const CommonFormControl = ({ children, ...props }) => {
       fullWidth
       {...props}
     >
+      <InputLabel>{inputLabel}</InputLabel>
       {children}
     </FormControl>
   );
@@ -214,8 +215,7 @@ export default function ProfileTab({
               </LocalizationProvider>
             </GridItem>
             <GridItem errorField={error.gender}>
-              <CommonFormControl>
-                <InputLabel>{genderLabel}</InputLabel>
+              <CommonFormControl inputLabel={genderLabel}>
                 <Select
                   defaultValue={1}
                   onChange={handleChangeInput(Field.GENDER)}
@@ -238,8 +238,7 @@ export default function ProfileTab({
               />
             </GridItem>
             <GridItem errorField={error.relationship}>
-              <CommonFormControl>
-                <InputLabel>{relationshipLabel}</InputLabel>
+              <CommonFormControl inputLabel={relationshipLabel}>
                 <Select
                   defaultValue={1}
                   onChange={handleChangeInput(Field.RELATIONSHIP)}
