@@ -64,10 +64,10 @@ const genders = [
 ];
 
 const relationships = [
-  { label: "Married", value: 1 },
-  { label: "Single", value: 2 },
-  { label: "In A Relationship", value: 3 },
-  { label: "Dating", value: 4 },
+  { label: "Single", value: 1 },
+  { label: "In A Relationship", value: 2 },
+  { label: "Dating", value: 3 },
+  { label: "Married", value: 4 },
 ];
 
 export default function ProfileTab({
@@ -87,6 +87,8 @@ export default function ProfileTab({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const [valued, setValued] = React.useState(null);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -150,6 +152,10 @@ export default function ProfileTab({
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Basic example"
+                  value={valued}
+                  onChange={(newValue) => {
+                    setValued(newValue);
+                  }}
                   renderInput={(params) => (
                     <TextField {...params} variant="standard" color="success" />
                   )}
@@ -169,9 +175,14 @@ export default function ProfileTab({
                 <Select
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
+                  defaultValue={1}
                 >
-                  {genders.map((item) => {
-                    return <MenuItem value={item.value}>{item.label}</MenuItem>;
+                  {genders.map((item, index) => {
+                    return (
+                      <MenuItem value={item.value} key={index}>
+                        {item.label}
+                      </MenuItem>
+                    );
                   })}
                 </Select>
               </FormControl>
@@ -190,11 +201,16 @@ export default function ProfileTab({
                   {relationshipLabel}
                 </InputLabel>
                 <Select
+                  defaultValue={1}
                   labelId="demo-simple-select-filled-label"
                   id="demo-simple-select-filled"
                 >
-                  {relationships.map((item) => {
-                    return <MenuItem value={item.value}>{item.label}</MenuItem>;
+                  {relationships.map((item, index) => {
+                    return (
+                      <MenuItem value={item.value} key={index}>
+                        {item.label}
+                      </MenuItem>
+                    );
                   })}
                 </Select>
               </FormControl>

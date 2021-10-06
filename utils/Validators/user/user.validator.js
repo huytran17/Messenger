@@ -28,11 +28,15 @@ module.exports.updateInfoValidator = (data) => {
       "number.base": ValidationMessage.NUMBER_BASE,
       "number.infinity": ValidationMessage.NUMBER_INFINITY,
     }),
-    bio: Joi.string().messages({
+    bio: Joi.string().min(2).max(255).messages({
       "string.base": ValidationMessage.STRING_BASE,
+      "string.min": ValidationMessage.MIN,
+      "string.max": ValidationMessage.MAX,
     }),
-    quote: Joi.string().messages({
+    quote: Joi.string().min(2).max(255).messages({
       "string.base": ValidationMessage.STRING_BASE,
+      "string.min": ValidationMessage.MIN,
+      "string.max": ValidationMessage.MAX,
     }),
     dob: Joi.date().messages({
       "date.base": ValidationMessage.DATE_BASE,

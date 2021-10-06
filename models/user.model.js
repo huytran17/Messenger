@@ -58,12 +58,17 @@ const userSchema = new Schema(
     },
     relationship: {
       type: Number,
+      default: 1, //1: single, 2: in a relatioship, 3: dating, 4: married
     },
     bio: {
       type: String,
+      min: [2, "Tối thiểu 2 ký tự."],
+      max: [255, "Tối đa 255 ký tự."],
     },
     quote: {
       type: String,
+      min: [2, "Tối thiểu 2 ký tự."],
+      max: [255, "Tối đa 255 ký tự."],
     },
     dob: {
       type: Date,
