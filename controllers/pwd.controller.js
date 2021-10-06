@@ -18,24 +18,27 @@ const {
 module.exports.changePwdEmail = async (req, res, next) => {
   const { email } = { ...req.body };
 
-  const user = await User.findEmail(email);
+  let user = await User.findOne({ email }, "_id");
 
-  const otpCode = otp.generate(6, {
+  let id = user._id;
+
+  let otpCode = otp.generate(6, {
     alphabets: false,
     upperCase: false,
     specialChars: false,
   });
 
-  const verifyToken = jwt.sign({ user, otpCode }, _CONF.TOKEN_SECRET);
+  let verifyToken = jwt.sign({ id, otpCode }, _CONF.TOKEN_SECRET);
 
   let expires = new Date(new Date().getTime() + _CONF.COOKIE_VERIFY_EXPIRES);
 
   await res.cookie("verifyToken", verifyToken, {
     signed: true,
     expires: expires,
+    httpOnly: true,
   });
 
-  const verifyUrl = `${_CONF.CLIENT_URL}:${_CONF.CLIENT_PORT}/auth/verify-code`;
+  let verifyUrl = `${_CONF.CLIENT_URL}:${_CONF.CLIENT_PORT}/auth/verify-code`;
 
   //send email
   //get mail's view
@@ -45,7 +48,7 @@ module.exports.changePwdEmail = async (req, res, next) => {
     verifyUrl,
   });
 
-  const data = {
+  let data = {
     from: _CONF.MAIL_FROM,
     to: email,
     subject: _CONF.MAIL_ONCHANGE_SUBJECT,
@@ -106,17 +109,26 @@ module.exports.resetPassword = async (req, res, next) => {
         );
 
       try {
-        const user = await User.findEmail(email);
+        const user = await User.findOne({ email }, "_id");
 
-        let _user = await User.findByIdAndUpdate(
-          user._id,
-          { password },
-          { new: true }
-        ).exec();
+        if (user.id === decoded.id) {
+          let _user = await User.findByIdAndUpdate(
+            user._id,
+            { password },
+            { new: true }
+          ).exec();
 
-        await res.clearCookie("verifyToken");
+          await res.clearCookie("verifyToken");
 
-        return HttpResponse(res, HttpStatus.OK, _user);
+          return HttpResponse(res, HttpStatus.OK, _user);
+        }
+
+        return HttpResponseError(
+          res,
+          HttpStatus.BAD_REQUEST,
+          ResponseMessage.INCORRECT_EMAIL,
+          Path.EMAIL
+        );
       } catch (err) {
         return HttpResponseError(
           res,
