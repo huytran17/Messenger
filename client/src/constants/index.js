@@ -22,6 +22,13 @@ export const Field = Object.freeze({
   RE_PASSWORD: "re_password",
   VERIFY_CODE: "verify_code",
   RESET_PWD: "RESET_PWD",
+  PHONE: "phone",
+  ADDRESS: "address",
+  GENDER: "gender",
+  DOB: "dob",
+  BIO: "bio",
+  RELATIONSHIP: "relationship",
+  QUOTE: "quote",
 });
 
 export const Reducer = Object.freeze({
@@ -30,6 +37,7 @@ export const Reducer = Object.freeze({
     AUTH_FORM: "AUTH_FORM",
     APPBAR: "APPBAR",
     ALERT: "ALERT",
+    UPDATE_INFO: "UPDATE_INFO",
   },
 });
 

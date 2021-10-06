@@ -15,6 +15,17 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectIsAllValid,
+  changeData,
+  selectData,
+  selectError,
+  validate,
+  setError,
+} from "../../../app/slices/updateInfoSlice";
+import moment from "moment";
+import { Auth, Field, Server } from "../../../constants/index";
 
 const tabItems = [
   {
@@ -23,6 +34,11 @@ const tabItems = [
   },
   { label: "Security", value: 1 },
 ];
+
+const tabIndex = {
+  1: 1,
+  2: 2,
+};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,12 +60,6 @@ function TabPanel(props) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -70,6 +80,10 @@ const relationships = [
   { label: "Married", value: 4 },
 ];
 
+const CommonTextField = ({ ...props }) => {
+  return <TextField variant="standard" color="success" {...props} />;
+};
+
 export default function ProfileTab({
   usernameLabel,
   phoneLabel,
@@ -82,21 +96,39 @@ export default function ProfileTab({
   btnSaveLabel,
   ...rest
 }) {
-  const [value, setValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChangeTab = (event, newValue) => {
+    setTabValue(newValue);
   };
 
-  const [valued, setValued] = React.useState(null);
+  const isAllValid = useSelector(selectIsAllValid);
+
+  const data = useSelector(selectData);
+
+  const error = useSelector(selectError);
+
+  const dispatch = useDispatch();
+
+  const handleChangeInput = (prop) => (event) => {
+    dispatch(changeData({ [prop]: event.target.value }));
+  };
+
+  const dmyFormat = (time) => {
+    return moment(time).format("DD/MM/yyyy");
+  };
+
+  const handleChangeDatePicker = (prop) => (newValue) => {
+    dispatch(changeData({ [prop]: dmyFormat(newValue) }));
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
+          value={tabValue}
+          onChange={handleChangeTab}
+          aria-label="user profile tab"
           variant="scrollable"
           scrollButtons="auto"
         >
@@ -112,9 +144,9 @@ export default function ProfileTab({
           })}
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tabValue} index={0}>
         <Box
-          value={value}
+          value={tabValue}
           index={0}
           sx={{
             "& .MuiTextField-root": { m: 1, width: "100%" },
@@ -124,43 +156,39 @@ export default function ProfileTab({
         >
           <Grid container spacing={{ xs: 1, md: 2 }} columns={12}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CommonTextField
                 label={usernameLabel}
-                variant="standard"
-                color="success"
+                value={data.username}
+                onChange={handleChangeInput(Field.USERNAME)}
               />
-              <ErrorHelperText
-                error={"error.password"}
-                sx={{ marginLeft: 1 }}
-              />
+              <ErrorHelperText error={error.username} sx={{ marginLeft: 1 }} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CommonTextField
                 label={addressLabel}
-                variant="standard"
-                color="success"
+                value={data.address}
+                onChange={handleChangeInput(Field.ADDRESS)}
               />
+              <ErrorHelperText error={error.address} sx={{ marginLeft: 1 }} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CommonTextField
                 label={phoneLabel}
-                variant="standard"
-                color="success"
+                value={data.phone}
+                onChange={handleChangeInput(Field.PHONE)}
               />
+              <ErrorHelperText error={error.phone} sx={{ marginLeft: 1 }} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  label="Basic example"
-                  value={valued}
-                  onChange={(newValue) => {
-                    setValued(newValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField {...params} variant="standard" color="success" />
-                  )}
+                  label={dobLabel}
+                  value={data.dob}
+                  onChange={handleChangeDatePicker(Field.DOB)}
+                  renderInput={(params) => <CommonTextField {...params} />}
                 />
               </LocalizationProvider>
+              <ErrorHelperText error={error.dob} sx={{ marginLeft: 1 }} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl
@@ -169,13 +197,10 @@ export default function ProfileTab({
                 sx={{ m: 1 }}
                 fullWidth
               >
-                <InputLabel id="demo-simple-select-filled-label">
-                  {genderLabel}
-                </InputLabel>
+                <InputLabel>{genderLabel}</InputLabel>
                 <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
                   defaultValue={1}
+                  onChange={handleChangeInput(Field.GENDER)}
                 >
                   {genders.map((item, index) => {
                     return (
@@ -188,7 +213,12 @@ export default function ProfileTab({
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label={bioLabel} variant="standard" color="success" />
+              <CommonTextField
+                label={bioLabel}
+                value={data.bio}
+                onChange={handleChangeInput(Field.BIO)}
+              />
+              <ErrorHelperText error={error.bio} sx={{ marginLeft: 1 }} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl
@@ -197,13 +227,10 @@ export default function ProfileTab({
                 sx={{ m: 1 }}
                 fullWidth
               >
-                <InputLabel id="demo-simple-select-filled-label">
-                  {relationshipLabel}
-                </InputLabel>
+                <InputLabel>{relationshipLabel}</InputLabel>
                 <Select
                   defaultValue={1}
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
+                  onChange={handleChangeInput(Field.RELATIONSHIP)}
                 >
                   {relationships.map((item, index) => {
                     return (
@@ -216,11 +243,12 @@ export default function ProfileTab({
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CommonTextField
                 label={quoteLabel}
-                variant="standard"
-                color="success"
+                value={data.quote}
+                onChange={handleChangeInput(Field.QUOTE)}
               />
+              <ErrorHelperText error={error.quote} sx={{ marginLeft: 1 }} />
             </Grid>
             <Grid item xs={12} sx={{ textAlign: "right" }}>
               <Button variant="contained" disableElevation>
@@ -230,7 +258,17 @@ export default function ProfileTab({
           </Grid>
         </Box>
       </TabPanel>
-      <TabPanel value={value} index={1}></TabPanel>
+      <TabPanel value={tabValue} index={1}>
+        <Box
+          value={tabValue}
+          index={1}
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "100%" },
+          }}
+          noValidate
+          autoComplete="off"
+        ></Box>
+      </TabPanel>
     </Box>
   );
 }
@@ -245,6 +283,14 @@ ProfileTab.propTypes = {
   quoteLabel: PropTypes.string,
   dobLabel: PropTypes.string,
   btnSaveLabel: PropTypes.string,
+  username: PropTypes.string,
+  phone: PropTypes.string,
+  address: PropTypes.string,
+  gender: PropTypes.string,
+  dob: PropTypes.string,
+  relationship: PropTypes.string,
+  bio: PropTypes.string,
+  quote: PropTypes.string,
 };
 
 ProfileTab.defaultProps = {
@@ -255,6 +301,12 @@ ProfileTab.defaultProps = {
   relationshipLabel: "Relationship",
   bioLabel: "Bio",
   quoteLabel: "Quote",
-  dobLabel: "Dob",
+  dobLabel: "Birthday",
   btnSaveLabel: "Save",
+};
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
