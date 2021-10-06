@@ -39,7 +39,14 @@ export const updateInfoSlice = createSlice({
       state.data = { ...state.data, ...action.payload };
       console.log(state.data);
     },
-    validate: (state, action) => {},
+    validate: (state, action) => {
+      let payload = action.payload;
+
+      let path = payload.path.toLowerCase();
+
+      
+
+    },
     setError: (state, action) => {},
   },
 });

@@ -36,8 +36,8 @@ const tabItems = [
 ];
 
 const tabIndex = {
-  1: 1,
-  2: 2,
+  frs: 0,
+  sec: 1,
 };
 
 function TabPanel(props) {
@@ -124,7 +124,7 @@ export default function ProfileTab({
   btnSaveLabel,
   ...rest
 }) {
-  const [tabValue, setTabValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(tabIndex.frs);
 
   const handleChangeTab = (event, newValue) => {
     setTabValue(newValue);
@@ -140,6 +140,7 @@ export default function ProfileTab({
 
   const handleChangeInput = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
+    dispatch(validate());
   };
 
   const dmyFormat = (date) => {
@@ -172,10 +173,10 @@ export default function ProfileTab({
           })}
         </Tabs>
       </Box>
-      <TabPanel value={tabValue} index={0}>
+      <TabPanel value={tabValue} index={tabIndex.frs}>
         <Box
           value={tabValue}
-          index={0}
+          index={tabIndex.frs}
           sx={{
             "& .MuiTextField-root": { m: 1, width: "100%" },
           }}
@@ -268,10 +269,10 @@ export default function ProfileTab({
           </Grid>
         </Box>
       </TabPanel>
-      <TabPanel value={tabValue} index={1}>
+      <TabPanel value={tabValue} index={tabIndex.sec}>
         <Box
           value={tabValue}
-          index={1}
+          index={tabIndex.sec}
           sx={{
             "& .MuiTextField-root": { m: 1, width: "100%" },
           }}

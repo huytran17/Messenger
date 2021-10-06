@@ -1,6 +1,8 @@
 export const ValidateCond = Object.freeze({
   PASSWORD_MIN_LENGTH: 8,
+  PASSWORD_MAX_LENGTH: 32,
   USERNAME_MIN_LENGTH: 6,
+  USERNAME_MAX_LENGTH: 32,
 });
 
 export const ValidateError = Object.freeze({
@@ -8,7 +10,9 @@ export const ValidateError = Object.freeze({
   REQUIRED: "Bắt buộc.",
   MISMATCH: "Không khớp.",
   PASSWORD_MIN_LENGTH: `Tối thiểu ${ValidateCond.PASSWORD_MIN_LENGTH} ký tự.`,
+  PASSWORD_MAX_LENGTH: `Tối đa ${ValidateCond.PASSWORD_MAX_LENGTH} ký tự.`,
   USERNAME_MIN_LENGTH: `Tối thiểu ${ValidateCond.USERNAME_MIN_LENGTH} ký tự.`,
+  USERNAME_MAX_LENGTH: `Tối đa ${ValidateCond.USERNAME_MAX_LENGTH} ký tự.`,
 });
 
 export const STRING = Object.freeze({
