@@ -10,12 +10,10 @@ module.exports.updateInfoValidator = (data) => {
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
     }),
-    phone: Joi.string().min(10).max(12).messages({
+    phone: Joi.string().messages({
       "string.base": ValidationMessage.STRING_BASE,
-      "string.min": ValidationMessage.MIN,
-      "string.max": ValidationMessage.MAX,
     }),
-    address: Joi.string().min(2).max(255).messages({
+    address: Joi.string().max(255).messages({
       "string.base": ValidationMessage.STRING_BASE,
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
@@ -28,12 +26,12 @@ module.exports.updateInfoValidator = (data) => {
       "number.base": ValidationMessage.NUMBER_BASE,
       "number.infinity": ValidationMessage.NUMBER_INFINITY,
     }),
-    bio: Joi.string().min(2).max(255).messages({
+    bio: Joi.string().max(255).messages({
       "string.base": ValidationMessage.STRING_BASE,
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
     }),
-    quote: Joi.string().min(2).max(255).messages({
+    quote: Joi.string().max(255).messages({
       "string.base": ValidationMessage.STRING_BASE,
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,

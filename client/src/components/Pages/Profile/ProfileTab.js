@@ -140,7 +140,7 @@ export default function ProfileTab({
 
   const handleChangeInput = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
-    dispatch(validate());
+    dispatch(validate({ path: prop }));
   };
 
   const dmyFormat = (date) => {
@@ -285,7 +285,7 @@ export default function ProfileTab({
 }
 
 ProfileTab.propTypes = {
-  usernameLabel: PropTypes.string,
+  usernameLabel: PropTypes.string.isRequired,
   phoneLabel: PropTypes.string,
   addressLabel: PropTypes.string,
   genderLabel: PropTypes.string,

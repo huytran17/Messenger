@@ -31,6 +31,17 @@ const initialState = {
   },
 };
 
+const setStateError = (state) => (path, error) => {
+  state.error[path] = error;
+};
+
+function checkErrorProperties(obj) {
+  for (var key in obj) {
+    if (obj[key] !== null && obj[key] !== STRING.EMPTY) return false;
+  }
+  return true;
+}
+
 export const updateInfoSlice = createSlice({
   name: Reducer.NAME.UPDATE_INFO,
   initialState,
@@ -44,8 +55,39 @@ export const updateInfoSlice = createSlice({
 
       let path = payload.path.toLowerCase();
 
-      
+      let setErrorState = setStateError(state);
 
+      //validate username
+      if (path === Field.USERNAME) {
+        if (state.data[path] === STRING.EMPTY)
+          setErrorState(path, ValidateError.REQUIRED);
+        else if (state.data[path].length < 6)
+          setErrorState(path, ValidateError.USERNAME_MIN_LENGTH);
+        else if (state.data[path].length > 32)
+          setErrorState(path, ValidateError.USERNAME_MAX_LENGTH);
+        else setErrorState(path, STRING.EMPTY);
+      }
+      //validate address
+      else if (path === Field.ADDRESS) {
+        if (state.data[path].length > 255)
+          setErrorState(path, ValidateError.ADDRESS_MAX_LENGTH);
+        else setErrorState(path, STRING.EMPTY);
+      }
+      //validate bio
+      else if (path === Field.BIO) {
+        if (state.data[path].length > 255)
+          setErrorState(path, ValidateError.BIO_MAX_LENGTH);
+        else setErrorState(path, STRING.EMPTY);
+      }
+      //validate quote
+      else if (path === Field.QUOTE) {
+        if (state.data[path].length > 255)
+          setErrorState(path, ValidateError.QUOTE_MAX_LENGTH);
+        else setErrorState(path, STRING.EMPTY);
+      }
+
+      //set is all valid
+      if (!checkErrorProperties(state.error)) state.isAllValid = false;
     },
     setError: (state, action) => {},
   },

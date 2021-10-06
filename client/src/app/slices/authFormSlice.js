@@ -70,38 +70,38 @@ export const authSlice = createSlice({
 
       const type = action.payload.type.toUpperCase();
 
-      const setState = setStateError(state);
+      const setErrorState = setStateError(state);
 
       const _setIsAllValid = setIsAllValid(state);
 
       //validate all data is not empty
       if (state.data[path] === STRING.EMPTY)
-        setState(path, ValidateError.REQUIRED);
+        setErrorState(path, ValidateError.REQUIRED);
       //validate email
       else if (path === Field.EMAIL) {
         if (!validateEmail(state.data[path]))
-          setState(path, ValidateError.INVALID_EMAIL);
-        else setState(path, STRING.EMPTY);
+          setErrorState(path, ValidateError.INVALID_EMAIL);
+        else setErrorState(path, STRING.EMPTY);
       }
       //validate for register
-      else if (type === Auth.TYPE.REGISTER || type === Auth.TYPE.RESET_PWD) {
+      if (type === Auth.TYPE.REGISTER || type === Auth.TYPE.RESET_PWD) {
         //validate username
         if (path === Field.USERNAME) {
           if (state.data.username.length < 6)
-            setState(path, ValidateError.USERNAME_MIN_LENGTH);
+            setErrorState(path, ValidateError.USERNAME_MIN_LENGTH);
           else if (state.data.username.length > 32)
-            setState(path, ValidateError.USERNAME_MAX_LENGTH);
-          else setState(path, STRING.EMPTY);
+            setErrorState(path, ValidateError.USERNAME_MAX_LENGTH);
+          else setErrorState(path, STRING.EMPTY);
         }
         //validate password & re-password
         else if (path === Field.RE_PASSWORD || path === Field.PASSWORD) {
           //password length
           if (path === Field.PASSWORD) {
             if (state.data.password.length < 8)
-              setState(path, ValidateError.PASSWORD_MIN_LENGTH);
+              setErrorState(path, ValidateError.PASSWORD_MIN_LENGTH);
             else if (state.data.password.length > 32)
-              setState(path, ValidateError.PASSWORD_MAX_LENGTH);
-            else setState(path, STRING.EMPTY);
+              setErrorState(path, ValidateError.PASSWORD_MAX_LENGTH);
+            else setErrorState(path, STRING.EMPTY);
           }
 
           //match re-pasword
@@ -109,10 +109,10 @@ export const authSlice = createSlice({
             state.data.re_password &&
             state.data.re_password !== state.data.password
           )
-            setState(Field.RE_PASSWORD, ValidateError.MISMATCH);
-          else setState(Field.RE_PASSWORD, STRING.EMPTY);
+            setErrorState(Field.RE_PASSWORD, ValidateError.MISMATCH);
+          else setErrorState(Field.RE_PASSWORD, STRING.EMPTY);
         }
-      } else setState(path, STRING.EMPTY);
+      } else setErrorState(path, STRING.EMPTY);
 
       //validate
       //validate login
@@ -138,7 +138,9 @@ export const authSlice = createSlice({
         const { verify_code } = state.data;
 
         _setIsAllValid({ verify_code });
-      } else if (type === Auth.TYPE.RESET_PWD) {
+      }
+      //validate reset password
+      else if (type === Auth.TYPE.RESET_PWD) {
         const { password, re_password } = state.data;
 
         _setIsAllValid({ password, re_password });
