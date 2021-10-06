@@ -25,7 +25,7 @@ import {
   setError,
 } from "../../../app/slices/updateInfoSlice";
 import moment from "moment";
-import { Auth, Field, Server } from "../../../constants/index";
+import { Auth, Field, Server, STRING } from "../../../constants/index";
 
 const tabItems = [
   {
@@ -84,6 +84,33 @@ const CommonTextField = ({ ...props }) => {
   return <TextField variant="standard" color="success" {...props} />;
 };
 
+const GridItem = ({ children, errorField, ...props }) => {
+  return (
+    <Grid item xs={12} sm={6} {...props}>
+      {children}
+      {errorField ? (
+        <ErrorHelperText error={errorField} sx={{ marginLeft: 1 }} />
+      ) : (
+        STRING.EMPTY
+      )}
+    </Grid>
+  );
+};
+
+const CommonFormControl = ({ children, ...props }) => {
+  return (
+    <FormControl
+      variant="standard"
+      color="success"
+      sx={{ m: 1 }}
+      fullWidth
+      {...props}
+    >
+      {children}
+    </FormControl>
+  );
+};
+
 export default function ProfileTab({
   usernameLabel,
   phoneLabel,
@@ -114,8 +141,8 @@ export default function ProfileTab({
     dispatch(changeData({ [prop]: event.target.value }));
   };
 
-  const dmyFormat = (time) => {
-    return moment(time).format("DD/MM/yyyy");
+  const dmyFormat = (date) => {
+    return moment(date).format("DD/MM/yyyy");
   };
 
   const handleChangeDatePicker = (prop) => (newValue) => {
@@ -123,7 +150,7 @@ export default function ProfileTab({
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%" }} {...rest}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={tabValue}
@@ -155,31 +182,28 @@ export default function ProfileTab({
           autoComplete="off"
         >
           <Grid container spacing={{ xs: 1, md: 2 }} columns={12}>
-            <Grid item xs={12} sm={6}>
+            <GridItem errorField={error.username}>
               <CommonTextField
                 label={usernameLabel}
                 value={data.username}
                 onChange={handleChangeInput(Field.USERNAME)}
               />
-              <ErrorHelperText error={error.username} sx={{ marginLeft: 1 }} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </GridItem>
+            <GridItem errorField={error.address}>
               <CommonTextField
                 label={addressLabel}
                 value={data.address}
                 onChange={handleChangeInput(Field.ADDRESS)}
               />
-              <ErrorHelperText error={error.address} sx={{ marginLeft: 1 }} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </GridItem>
+            <GridItem errorField={error.phone}>
               <CommonTextField
                 label={phoneLabel}
                 value={data.phone}
                 onChange={handleChangeInput(Field.PHONE)}
               />
-              <ErrorHelperText error={error.phone} sx={{ marginLeft: 1 }} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </GridItem>
+            <GridItem errorField={error.dob}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={dobLabel}
@@ -188,15 +212,9 @@ export default function ProfileTab({
                   renderInput={(params) => <CommonTextField {...params} />}
                 />
               </LocalizationProvider>
-              <ErrorHelperText error={error.dob} sx={{ marginLeft: 1 }} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl
-                variant="standard"
-                color="success"
-                sx={{ m: 1 }}
-                fullWidth
-              >
+            </GridItem>
+            <GridItem errorField={error.gender}>
+              <CommonFormControl>
                 <InputLabel>{genderLabel}</InputLabel>
                 <Select
                   defaultValue={1}
@@ -210,23 +228,17 @@ export default function ProfileTab({
                     );
                   })}
                 </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+              </CommonFormControl>
+            </GridItem>
+            <GridItem errorField={error.bio}>
               <CommonTextField
                 label={bioLabel}
                 value={data.bio}
                 onChange={handleChangeInput(Field.BIO)}
               />
-              <ErrorHelperText error={error.bio} sx={{ marginLeft: 1 }} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl
-                variant="standard"
-                color="success"
-                sx={{ m: 1 }}
-                fullWidth
-              >
+            </GridItem>
+            <GridItem errorField={error.relationship}>
+              <CommonFormControl>
                 <InputLabel>{relationshipLabel}</InputLabel>
                 <Select
                   defaultValue={1}
@@ -240,21 +252,20 @@ export default function ProfileTab({
                     );
                   })}
                 </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+              </CommonFormControl>
+            </GridItem>
+            <GridItem errorField={error.quote}>
               <CommonTextField
                 label={quoteLabel}
                 value={data.quote}
                 onChange={handleChangeInput(Field.QUOTE)}
               />
-              <ErrorHelperText error={error.quote} sx={{ marginLeft: 1 }} />
-            </Grid>
-            <Grid item xs={12} sx={{ textAlign: "right" }}>
+            </GridItem>
+            <GridItem xs={12} sm={12} sx={{ textAlign: "right" }}>
               <Button variant="contained" disableElevation>
                 {btnSaveLabel}
               </Button>
-            </Grid>
+            </GridItem>
           </Grid>
         </Box>
       </TabPanel>

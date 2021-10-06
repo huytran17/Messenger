@@ -13,7 +13,6 @@ const initialState = {
     username: STRING.EMPTY,
     address: STRING.EMPTY,
     phone: STRING.EMPTY,
-    birthday: STRING.EMPTY,
     bio: STRING.EMPTY,
     quote: STRING.EMPTY,
     gender: STRING.EMPTY,
@@ -24,9 +23,11 @@ const initialState = {
     username: STRING.EMPTY,
     address: STRING.EMPTY,
     phone: STRING.EMPTY,
-    birthday: STRING.EMPTY,
     bio: STRING.EMPTY,
     quote: STRING.EMPTY,
+    gender: STRING.EMPTY,
+    dob: STRING.EMPTY,
+    relationship: STRING.EMPTY,
   },
 };
 
