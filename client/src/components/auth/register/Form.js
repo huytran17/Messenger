@@ -1,24 +1,19 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
-import Input from "@mui/material/Input";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
-import PropTypes from "prop-types";
 import axios from "axios";
+import PropTypes from "prop-types";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeData,
   selectData,
   selectError,
-  selectIsAllValid,
-  validate,
-  setError,
+  selectIsAllValid, setError, validate
 } from "../../../app/slices/authFormSlice";
 import { Auth, Field, Server } from "../../../constants/index";
-import { ErrorHelperText, InputLabelForError } from "../../index";
 import { CommonTextField, FormGridItem } from "../../index";
 
 export default function Form(props) {
