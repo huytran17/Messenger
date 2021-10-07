@@ -1,7 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
@@ -23,6 +21,7 @@ import {
 import { CONF } from "../../../config/app";
 import { Auth, Field, Server } from "../../../constants/index";
 import { CommonTextField, FormGridItem } from "../../index";
+import { CheckBox } from "../../Widgets/index";
 
 export default function Form(props) {
   const error = useSelector(selectError);
@@ -135,19 +134,10 @@ export default function Form(props) {
           />
         </FormGridItem>
         <FormGridItem>
-          <FormControlLabel
-            sx={{
-              "& .MuiSvgIcon-root": { fontSize: 18 },
-              "& .MuiTypography-root": { fontSize: 14 },
-            }}
-            control={
-              <Checkbox
-                checked={remember_me}
-                onChange={handleChecked}
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            }
-            label={rememberMeLabel}
+          <CheckBox
+            checked={remember_me}
+            handleCheck={handleChecked}
+            rememberMeLabel={rememberMeLabel}
           />
         </FormGridItem>
         <FormGridItem sx={{ paddingTop: "0px !important" }}>
