@@ -6,3 +6,6 @@ export { ConvAvatar, GrpAvatar } from "./Avatar";
 export { default as Home } from "./Home";
 export { default as ChatFrame } from "./ChatFrame";
 export { default as Profile } from "./Profile";
+export { default as TabPanel } from "./TabPanel";
+export { default as CommonFormControl } from "./FormControl";
+export { default as GridItem } from "./GridItem";

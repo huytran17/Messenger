@@ -16,19 +16,9 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import CoverPhoto from "../../../static/images/loginPanel.jpg";
 import { ProfileTab } from "./index";
+import { Media, ProfileHeader, Content, Action, CollapseTab } from "./index";
 
 const avatarSize = 80;
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -54,15 +44,6 @@ const BoxContainer = styled(Box)(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const Header = styled(CardHeader)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  textAlign: "center",
-  alignItems: "center",
-
-  ...theme.mixins.toolbar,
-}));
-
 export default function ProfilePage() {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -75,56 +56,11 @@ export default function ProfilePage() {
       <DrawerHeader />
       <BoxContainer>
         <Card sx={{ width: "800px", margin: "0 auto" }}>
-          <CardMedia
-            component="img"
-            height="200"
-            image={CoverPhoto}
-            alt="Paella dish"
-          />
-          <Header
-            avatar={
-              <Avatar
-                sx={{
-                  bgcolor: red[500],
-                  width: avatarSize,
-                  height: avatarSize,
-                }}
-                aria-label="recipe"
-              >
-                R
-              </Avatar>
-            }
-            title="Shrimp and Chorizo Paella"
-            subheader="September 14, 2016"
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              This impressive paella is a perfect party dish and a fun meal to
-              cook together with your guests. Add 1 cup of frozen peas along
-              with the mussels, if you like.
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <ProfileTab />
-            </CardContent>
-          </Collapse>
+          <Media />
+          <ProfileHeader />
+          <Content />
+          <Action handleExpandClick={handleExpandClick} expanded={expanded} />
+          <CollapseTab expanded={expanded} />
         </Card>
       </BoxContainer>
     </Box>
