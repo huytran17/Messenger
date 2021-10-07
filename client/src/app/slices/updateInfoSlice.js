@@ -1,5 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { ValidateError, STRING, Reducer, Field } from "../../constants/index";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  ValidateError,
+  STRING,
+  Reducer,
+  Field,
+  Server,
+} from "../../constants/index";
+import axios from "axios";
 
 const initialState = {
   isAllValid: true,
@@ -24,6 +31,15 @@ const initialState = {
     relationship: STRING.EMPTY,
   },
 };
+
+export const getUserAsync = createAsyncThunk(
+  Reducer.NAME.UPDATE_INFO + "fetchUser",
+  async (id) => {
+    const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
+
+    return user.data.data || null;
+  }
+);
 
 const setStateError = (state) => (path, error) => {
   state.error[path] = error;
@@ -83,6 +99,11 @@ export const updateInfoSlice = createSlice({
       state.isAllValid = checkErrorProperties(state.error);
     },
     setError: (state, action) => {},
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getUserAsync.fulfilled, (state, action) => {
+      state.data = action.payload;
+    });
   },
 });
 

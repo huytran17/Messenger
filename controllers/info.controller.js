@@ -9,7 +9,7 @@ module.exports.getInfo = async (req, res) => {
   try {
     const { uid, mid } = req.params;
 
-    let infos = await Info.getInfo(uid, mid);
+    const infos = await Info.getInfo(uid, mid);
 
     if (infos.length) return HttpResponse(res, HttpStatus.OK, infos);
 
@@ -29,7 +29,7 @@ module.exports.store = async (req, res, next) => {
 
     const data = { ...req.body };
 
-    let info = await Info.store(uid, mid, onModel, data);
+    const info = await Info.store(uid, mid, onModel, data);
 
     return HttpResponse(res, HttpStatus.CREATED, info);
   } catch (err) {
@@ -47,7 +47,7 @@ module.exports.update = async (req, res, next) => {
 
     const data = { ...req.body };
 
-    let info = await Info.updateInfo(uid, mid, data);
+    const info = await Info.updateInfo(uid, mid, data);
 
     return HttpResponse(res, HttpStatus.CREATED, info);
   } catch (err) {
@@ -63,7 +63,7 @@ module.exports.destroy = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    let info = await Info.destroy(id);
+    const info = await Info.destroy(id);
 
     return HttpResponse(res, HttpStatus.CREATED, info);
   } catch (err) {

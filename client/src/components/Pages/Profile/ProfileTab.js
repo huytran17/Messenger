@@ -22,6 +22,7 @@ import {
   selectError,
   selectIsAllValid,
   validate,
+  getUserAsync,
 } from "../../../app/slices/updateInfoSlice";
 import { Field, STRING } from "../../../constants/index";
 import { ErrorHelperText } from "../../index";
@@ -155,8 +156,10 @@ export default function ProfileTab({
   const update = (event) => {};
 
   useEffect(() => {
-    console.log(location.pathname.split("/").pop());
-  }, []);
+    const uid = location.pathname.split("/").pop();
+
+    dispatch(getUserAsync(uid));
+  }, [location.pathname, dispatch, data]);
 
   return (
     <Box sx={{ width: "100%" }} {...rest}>

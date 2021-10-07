@@ -7,7 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    let conversations = await Conversation.getAll();
+    const conversations = await Conversation.getAll();
 
     if (conversations.length)
       return HttpResponse(res, HttpStatus.OK, conversations);
@@ -22,7 +22,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let conversation = await Conversation.getById(id);
+    const conversation = await Conversation.getById(id);
 
     if (conversation) return HttpResponse(res, HttpStatus.OK, conversation);
 
@@ -36,7 +36,7 @@ module.exports.store = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    let conversation = await new Conversation(data).save();
+    const conversation = await new Conversation(data).save();
 
     return HttpResponse(res, HttpStatus.CREATED, conversation);
   } catch (err) {
@@ -54,7 +54,7 @@ module.exports.updateBackground = async (req, res) => {
 
     const background_photo = await req.source.toString("base64");
 
-    let conversation = await Conversation.updateBackground(
+    const conversation = await Conversation.updateBackground(
       id,
       background_photo
     );
@@ -91,7 +91,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let conversation = await Conversation.destroy(id);
+    const conversation = await Conversation.destroy(id);
 
     return HttpResponse(res, HttpStatus.OK, conversation);
   } catch (err) {

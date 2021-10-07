@@ -48,19 +48,19 @@ conversationSchema.post("findOneAndDelete", async function (doc) {
 });
 
 conversationSchema.statics.getAll = async function () {
-  let conversations = await this.find({}).populate("mems").exec();
+  const conversations = await this.find({}).populate("mems").exec();
 
   return conversations;
 };
 
 conversationSchema.statics.getById = async function (id) {
-  let conversation = await this.findById(id).populate("mems").exec();
+  const conversation = await this.findById(id).populate("mems").exec();
 
   return conversation;
 };
 
 conversationSchema.statics.store = async function (data) {
-  let conversation = await new this(data).save();
+  const conversation = await new this(data).save();
 
   return conversation;
 };
@@ -69,7 +69,7 @@ conversationSchema.statics.updateBackground = async function (
   id,
   background_photo
 ) {
-  let conversation = await this.findByIdAndUpdate(
+  const conversation = await this.findByIdAndUpdate(
     id,
     { background_photo },
     {
@@ -81,7 +81,7 @@ conversationSchema.statics.updateBackground = async function (
 };
 
 conversationSchema.statics.updateInfo = async function (id, data) {
-  let conversation = await this.findByIdAndUpdate(id, data, {
+  const conversation = await this.findByIdAndUpdate(id, data, {
     new: true,
   });
 
@@ -89,7 +89,7 @@ conversationSchema.statics.updateInfo = async function (id, data) {
 };
 
 conversationSchema.statics.destroy = async function (id) {
-  let conversation = await this.findOneAndDelete({ _id: id }).exec();
+  const conversation = await this.findOneAndDelete({ _id: id }).exec();
 
   return conversation;
 };

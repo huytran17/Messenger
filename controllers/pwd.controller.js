@@ -18,19 +18,19 @@ const {
 module.exports.changePwdEmail = async (req, res, next) => {
   const { email } = { ...req.body };
 
-  let user = await User.findOne({ email }, "_id");
+  const user = await User.findOne({ email }, "_id");
 
-  let id = user._id;
+  const id = user._id;
 
-  let otpCode = otp.generate(6, {
+  const otpCode = otp.generate(6, {
     alphabets: false,
     upperCase: false,
     specialChars: false,
   });
 
-  let verifyToken = jwt.sign({ id, otpCode }, _CONF.TOKEN_SECRET);
+  const verifyToken = jwt.sign({ id, otpCode }, _CONF.TOKEN_SECRET);
 
-  let expires = new Date(new Date().getTime() + _CONF.COOKIE_VERIFY_EXPIRES);
+  const expires = new Date(new Date().getTime() + _CONF.COOKIE_VERIFY_EXPIRES);
 
   await res.cookie("verifyToken", verifyToken, {
     signed: true,
@@ -38,17 +38,17 @@ module.exports.changePwdEmail = async (req, res, next) => {
     httpOnly: true,
   });
 
-  let verifyUrl = `${_CONF.CLIENT_URL}:${_CONF.CLIENT_PORT}/auth/verify-code`;
+  const verifyUrl = `${_CONF.CLIENT_URL}:${_CONF.CLIENT_PORT}/auth/verify-code`;
 
   //send email
   //get mail's view
-  let html = pug.renderFile(`${__dirname}/../views/mail/verifyToken.pug`, {
+  const html = pug.renderFile(`${__dirname}/../views/mail/verifyToken.pug`, {
     pretty: true,
     otpCode,
     verifyUrl,
   });
 
-  let data = {
+  const data = {
     from: _CONF.MAIL_FROM,
     to: email,
     subject: _CONF.MAIL_ONCHANGE_SUBJECT,
@@ -112,7 +112,7 @@ module.exports.resetPassword = async (req, res, next) => {
         const user = await User.findOne({ email }, "_id");
 
         if (user.id === decoded.id) {
-          let _user = await User.findByIdAndUpdate(
+          const _user = await User.findByIdAndUpdate(
             user._id,
             { password },
             { new: true }

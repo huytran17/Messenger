@@ -36,11 +36,11 @@ module.exports.verifyUpdateInfo = async (req, res, next) => {
 };
 
 module.exports.verifyUpdatePassword = async (req, res, next) => {
-  let uid = req.decoded.uid;
+  const uid = req.decoded.uid;
 
-  let user = await User.findById(uid).exec();
+  const user = await User.findById(uid).exec();
 
-  let isPassed = await bcrypt.compare(req.body.password, user.password);
+  const isPassed = await bcrypt.compare(req.body.password, user.password);
 
   if (!isPassed)
     return HttpResponseError(
@@ -50,9 +50,9 @@ module.exports.verifyUpdatePassword = async (req, res, next) => {
       Path.PASSWORD
     );
 
-  let { password, re_password, new_password } = req.body;
+  const { password, re_password, new_password } = req.body;
 
-  let { error } = updatePasswordValidator({
+  const { error } = updatePasswordValidator({
     password,
     re_password,
     new_password,

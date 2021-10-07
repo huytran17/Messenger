@@ -9,7 +9,7 @@ module.exports.getByModelId = async (req, res) => {
   try {
     const { mid } = req.params;
 
-    let messages = await Message.getByModelId(mid);
+    const messages = await Message.getByModelId(mid);
 
     if (messages.length) return HttpResponse(res, HttpStatus.OK, messages);
 
@@ -29,7 +29,7 @@ module.exports.store = async (req, res) => {
 
     const { content } = req.body;
 
-    let message = await Message.store(onModel, uid, mid, content);
+    const message = await Message.store(onModel, uid, mid, content);
 
     return HttpResponse(res, HttpStatus.CREATED, message);
   } catch (err) {
@@ -47,7 +47,7 @@ module.exports.storeFile = async (req, res) => {
 
     const file_path = req.source.toString("base64");
 
-    let message = await Message.storeFile(onModel, uid, mid, file_path);
+    const message = await Message.storeFile(onModel, uid, mid, file_path);
 
     return HttpResponse(res, HttpStatus.CREATED, message);
   } catch (err) {
@@ -63,7 +63,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let message = await Message.destroy(id);
+    const message = await Message.destroy(id);
 
     return HttpResponse(res, HttpStatus.OK, message);
   } catch (err) {

@@ -47,11 +47,12 @@ export default function Form(props) {
   };
 
   const login = () => async (event) => {
-    if (isAllValid)
+    if (isAllValid) {
+      const { email, password } = data;
+
       await axios
         .post(`${Server.URL}:${Server.PORT}/auth/login`, {
-          email: data.email,
-          password: data.password,
+          ...{ email, password },
           remember_me: remember_me,
         })
         .then(async (res) => {
@@ -78,6 +79,7 @@ export default function Form(props) {
               })
             );
         });
+    }
   };
 
   const {

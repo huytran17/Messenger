@@ -34,7 +34,7 @@ const messageSchema = new Schema(
 );
 
 messageSchema.statics.getByModelId = async function (mid) {
-  let messages = await this.findWithDeleted({ mid })
+  const messages = await this.findWithDeleted({ mid })
     .populate({
       path: "mid",
       populate: {
@@ -47,7 +47,7 @@ messageSchema.statics.getByModelId = async function (mid) {
 };
 
 messageSchema.statics.store = async function (onModel, uid, mid, content) {
-  let message = await new this({
+  const message = await new this({
     uid,
     mid,
     onModel,
@@ -63,7 +63,7 @@ messageSchema.statics.storeFile = async function (
   mid,
   file_path
 ) {
-  let message = await new this({
+  const message = await new this({
     uid,
     mid,
     onModel,
@@ -74,7 +74,7 @@ messageSchema.statics.storeFile = async function (
 };
 
 messageSchema.statics.destroy = async function (id) {
-  let message = await this.delete({ _id: id }).exec();
+  const message = await this.delete({ _id: id }).exec();
 
   return message;
 };

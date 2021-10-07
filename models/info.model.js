@@ -29,19 +29,19 @@ const infoSchema = new Schema(
 );
 
 infoSchema.statics.getInfo = async function (uid, mid) {
-  let infos = await this.find({ uid, mid }).exec();
+  const infos = await this.find({ uid, mid }).exec();
 
   return infos;
 };
 
 infoSchema.statics.store = async function (uid, mid, onModel, data) {
-  let info = await new this({ uid, mid, onModel }, data).save();
+  const info = await new this({ uid, mid, onModel }, data).save();
 
   return info;
 };
 
 infoSchema.statics.updateInfo = async function (uid, mid, data) {
-  let info = await this.findOneAndUpdate(
+  const info = await this.findOneAndUpdate(
     { uid, mid },
     { data },
     { new: true }
@@ -51,7 +51,7 @@ infoSchema.statics.updateInfo = async function (uid, mid, data) {
 };
 
 infoSchema.statics.destroy = async function (id) {
-  let info = await this.findByIdAndDelete(id);
+  const info = await this.findByIdAndDelete(id);
 
   return info;
 };

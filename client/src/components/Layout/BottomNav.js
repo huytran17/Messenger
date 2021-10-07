@@ -17,19 +17,19 @@ import { CONF } from "../../config/app";
 const bottomNavHeight = View.BOTTOM_NAV_HEIGHT;
 
 export default function BottomNav(props) {
-  let { homeValue, profileValue, settingValue, logoutValue } = props;
+  const { homeValue, profileValue, settingValue, logoutValue } = props;
 
   const history = useHistory();
 
   const location = useLocation();
 
-  let token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  let bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
+  const bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
 
-  let originalData = JSON.parse(bytes.toString(Crypto.enc.Utf8));
+  const originalData = JSON.parse(bytes.toString(Crypto.enc.Utf8));
 
-  let uid = originalData.id;
+  const uid = originalData.id;
 
   const urlValue = {
     "": homeValue,

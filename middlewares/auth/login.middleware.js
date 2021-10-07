@@ -14,7 +14,7 @@ module.exports._validateData = async (req, res, next) => {
   const data = { ...req.body };
 
   //validate date
-  let { error } = loginValidator(data);
+  const { error } = loginValidator(data);
 
   if (error) {
     return HttpResponseError(
@@ -31,7 +31,7 @@ module.exports._validateData = async (req, res, next) => {
 module.exports._validateEmail = async (req, res, next) => {
   const data = { ...req.body };
   //is email exists?
-  let _emailExists = await User.emailExists(data.email);
+  const _emailExists = await User.emailExists(data.email);
 
   if (!_emailExists)
     return HttpResponseError(
@@ -47,9 +47,9 @@ module.exports._validateEmail = async (req, res, next) => {
 module.exports._validatePwd = async (req, res, next) => {
   const data = { ...req.body };
 
-  let user = await User.findEmail(data.email);
+  const user = await User.findEmail(data.email);
   //validate password
-  let isPassed = await bcrypt.compare(data.password, user.password);
+  const isPassed = await bcrypt.compare(data.password, user.password);
 
   if (!isPassed)
     return HttpResponseError(

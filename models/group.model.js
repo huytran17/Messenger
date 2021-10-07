@@ -60,7 +60,7 @@ groupSchema.post("findOneAndUpdate", async function (doc) {
   const update = { ...this.getUpdate() };
 
   if (update.$addToSet) {
-    let uid = update.$addToSet.mems.toString("hex");
+    const uid = update.$addToSet.mems.toString("hex");
 
     await User.findByIdAndUpdate(uid, {
       $addToSet: { grs: doc._id },
@@ -68,7 +68,7 @@ groupSchema.post("findOneAndUpdate", async function (doc) {
   } 
   //
   else if (update.$pull) {
-    let uid = update.$pull.mems.toString("hex");
+    const uid = update.$pull.mems.toString("hex");
 
     await User.findByIdAndUpdate(uid, {
       $pull: { grs: doc._id },
@@ -77,7 +77,7 @@ groupSchema.post("findOneAndUpdate", async function (doc) {
 });
 
 groupSchema.statics.getAll = async function () {
-  let groups = await this.find({})
+  const groups = await this.find({})
     .populate("mems")
     .populate({ path: "created_by", select: "_id" })
     .exec();
@@ -86,7 +86,7 @@ groupSchema.statics.getAll = async function () {
 };
 
 groupSchema.statics.getById = async function (id) {
-  let group = await this.findById(id)
+  const group = await this.findById(id)
     .populate("mems")
     .populate({ path: "created_by", select: "_id" })
     .exec();
@@ -95,19 +95,19 @@ groupSchema.statics.getById = async function (id) {
 };
 
 groupSchema.statics.store = async function (data) {
-  let group = await new this(data).save();
+  const group = await new this(data).save();
 
   return group;
 };
 
 groupSchema.statics.updateInfo = async function (id, data) {
-  let group = await this.findByIdAndUpdate(id, data, { new: true }).exec();
+  const group = await this.findByIdAndUpdate(id, data, { new: true }).exec();
 
   return group;
 };
 
 groupSchema.statics.updateBackground = async function (id, background_photo) {
-  let group = await this.findByIdAndUpdate(
+  const group = await this.findByIdAndUpdate(
     id,
     { background_photo },
     { new: true }
@@ -117,13 +117,13 @@ groupSchema.statics.updateBackground = async function (id, background_photo) {
 };
 
 groupSchema.statics.destroy = async function (id) {
-  let group = await this.findOneAndDelete({ _id: id }).exec();
+  const group = await this.findOneAndDelete({ _id: id }).exec();
 
   return group;
 };
 
 groupSchema.statics.leave = async function (gid, uid) {
-  let group = await this.findOneAndUpdate(
+  const group = await this.findOneAndUpdate(
     { _id: gid },
     {
       $pull: { mems: uid },
@@ -135,7 +135,7 @@ groupSchema.statics.leave = async function (gid, uid) {
 };
 
 groupSchema.statics.join = async function (gid, uid) {
-  let group = await this.findOneAndUpdate(
+  const group = await this.findOneAndUpdate(
     { _id: gid },
     {
       $addToSet: { mems: uid },

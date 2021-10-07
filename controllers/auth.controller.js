@@ -11,13 +11,13 @@ module.exports.login = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    let user = await User.findEmail(data.email);
+    const user = await User.findEmail(data.email);
 
     //craete token
     const token = jwt.sign({ uid: user._id }, _CONF.TOKEN_SECRET);
 
     if (data.remember_me === true) {
-      let expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
+      const expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
 
       await res.cookie("token", token, {
         signed: true,
@@ -42,7 +42,7 @@ module.exports.register = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    let user = await User.register(data);
+    const user = await User.register(data);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {

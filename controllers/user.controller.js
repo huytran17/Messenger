@@ -7,7 +7,7 @@ const { HttpStatus } = require("../constants/app.constant");
 
 module.exports.getAll = async (req, res) => {
   try {
-    let users = await User.getAll();
+    const users = await User.getAll();
 
     if (users.length) return HttpResponse(res, HttpStatus.OK, users);
 
@@ -21,7 +21,7 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let user = await User.getById(id);
+    const user = await User.getById(id);
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
 
@@ -35,7 +35,7 @@ module.exports.getByEmail = async (req, res) => {
   try {
     const { email } = req.params;
 
-    let user = await User.getByEmail(email);
+    const user = await User.getByEmail(email);
 
     if (user) return HttpResponse(res, HttpStatus.OK, user);
 
@@ -51,7 +51,7 @@ module.exports.updateInfo = async (req, res) => {
 
     const data = { ...req.body };
 
-    let user = await User.updateInfo(id, data);
+    const user = await User.updateInfo(id, data);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -65,7 +65,7 @@ module.exports.updateAvatar = async (req, res) => {
 
     const avatar_photo = await req.source.toString("base64");
 
-    let user = await User.updateAvatar(id, avatar_photo);
+    const user = await User.updateAvatar(id, avatar_photo);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -77,7 +77,7 @@ module.exports.updatePassword = async (req, res) => {
   try {
     const { id, new_password } = req.body;
 
-    let user = await User.updatePassword(id, new_password);
+    const user = await User.updatePassword(id, new_password);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -91,7 +91,7 @@ module.exports.updateCover = async (req, res) => {
 
     const cover_photo = req.source.toString("base64");
 
-    let user = await User.updateCover(id, cover_photo);
+    const user = await User.updateCover(id, cover_photo);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
@@ -103,7 +103,7 @@ module.exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let user = await User.destroy(id);
+    const user = await User.destroy(id);
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
@@ -115,7 +115,7 @@ module.exports.unfriend = async (req, res) => {
   try {
     const { id, fid } = req.body;
 
-    let user = await User.unfriend(id, fid);
+    const user = await User.unfriend(id, fid);
 
     await User.unfriend(fid, id);
 

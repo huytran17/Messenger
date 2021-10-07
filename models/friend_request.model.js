@@ -19,7 +19,7 @@ const friendRequestSchema = new Schema(
 );
 
 friendRequestSchema.statics.getBySender = async function (sender) {
-  let frqs = await this.find({ sender }, "-sender")
+  const frqs = await this.find({ sender }, "-sender")
     .populate("receiver", "username friends avatar_photo cover_photo")
     .exec();
 
@@ -27,7 +27,7 @@ friendRequestSchema.statics.getBySender = async function (sender) {
 };
 
 friendRequestSchema.statics.getByReceiver = async function (receiver) {
-  let frqs = await this.find({ receiver }, "-receiver")
+  const frqs = await this.find({ receiver }, "-receiver")
     .populate("sender", "username friends avatar_photo cover_photo")
     .exec();
 
@@ -35,7 +35,7 @@ friendRequestSchema.statics.getByReceiver = async function (receiver) {
 };
 
 friendRequestSchema.statics.accept = async function (sender, receiver) {
-  let user = await User.addFriend(receiver, sender);
+  const user = await User.addFriend(receiver, sender);
 
   await User.addFriend(sender, receiver);
 
@@ -45,19 +45,19 @@ friendRequestSchema.statics.accept = async function (sender, receiver) {
 };
 
 friendRequestSchema.statics.decline = async function (id) {
-  let frq = await this.destroy({ _id: id });
+  const frq = await this.destroy({ _id: id });
 
   return frq;
 };
 
 friendRequestSchema.statics.destroy = async function (id) {
-  let frq = await this.findOneAndDelete({ _id: id }).exec();
+  const frq = await this.findOneAndDelete({ _id: id }).exec();
 
   return frq;
 };
 
 friendRequestSchema.statics.store = async function (data) {
-  let frq = await new this(data).save();
+  const frq = await new this(data).save();
 
   return frq;
 };
