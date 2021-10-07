@@ -35,7 +35,7 @@ const initialState = {
 export const getUserAsync = createAsyncThunk(
   Reducer.NAME.UPDATE_INFO + "/fetchUser",
   async (id) => {
-    const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
+    const user = await axios.get(`${Server.URL}:${Server.PORT}/users/v2/${id}`);
     console.log(user.data.data);
     return user.data.data || null;
   }

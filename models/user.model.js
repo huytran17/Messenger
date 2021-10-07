@@ -56,10 +56,12 @@ const userSchema = new Schema(
     gender: {
       type: Number,
       default: 1, //1: male, 2: female, 3: other
+      enum: [1, 2, 3],
     },
     relationship: {
       type: Number,
       default: 1, //1: single, 2: in a relatioship, 3: dating, 4: married
+      enum: [1, 2, 3, 4],
     },
     bio: {
       type: String,
@@ -173,7 +175,7 @@ userSchema.statics.getById = async function (id) {
 userSchema.statics.edit = async function (id) {
   const user = await this.findById(
     id,
-    "-createdAt -updatedAt -deletedAt -deleted"
+    "-createdAt -updatedAt -deletedAt -deleted -convs -grs -friends -avatar_photo -cover_photo"
   ).exec();
 
   return user;
