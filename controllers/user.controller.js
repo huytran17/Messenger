@@ -31,6 +31,20 @@ module.exports.getById = async (req, res) => {
   }
 };
 
+module.exports.edit = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.edit(id);
+
+    if (user) return HttpResponse(res, HttpStatus.OK, user);
+
+    return HttpResponse(res, HttpStatus.NO_CONTENT);
+  } catch (err) {
+    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+  }
+};
+
 module.exports.getByEmail = async (req, res) => {
   try {
     const { email } = req.params;

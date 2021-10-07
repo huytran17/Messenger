@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const hash = require("../utils/Encrypt/password.encrypt");
 const mongoose_delete_plugin = require("../utils/Plugins/mongoseDelete.plugin");
-const { dmyhmsFormat } = require("../utils/Datetime/format");
+const { mdyhmsFormat, mdyFormat } = require("../utils/Datetime/format");
 
 const userSchema = new Schema(
   {
@@ -98,9 +98,9 @@ userSchema.set("toJSON", {
   transform: (doc, ret, options) => {
     delete ret.password;
 
-    ret.dob = dmyhmsFormat(ret.dob);
-    ret.createdAt = dmyhmsFormat(ret.createdAt);
-    ret.updatedAt = dmyhmsFormat(ret.updatedAt);
+    ret.dob = mdyFormat(ret.dob);
+    ret.createdAt = mdyhmsFormat(ret.createdAt);
+    ret.updatedAt = mdyhmsFormat(ret.updatedAt);
 
     return ret;
   },
@@ -150,8 +150,8 @@ userSchema.statics.getAll = async function () {
 };
 
 userSchema.statics.getById = async function (id) {
-  const user = await this.findOne(
-    { _id: id },
+  const user = await this.findById(
+    id,
     "-createdAt -updatedAt -deletedAt -deleted"
   )
     .populate({
@@ -166,6 +166,15 @@ userSchema.statics.getById = async function (id) {
       populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
     })
     .exec();
+
+  return user;
+};
+
+userSchema.statics.edit = async function (id) {
+  const user = await this.findById(
+    id,
+    "-createdAt -updatedAt -deletedAt -deleted"
+  ).exec();
 
   return user;
 };

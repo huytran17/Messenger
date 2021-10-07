@@ -16,9 +16,9 @@ const initialState = {
     phone: STRING.EMPTY,
     bio: STRING.EMPTY,
     quote: STRING.EMPTY,
-    gender: 1,
+    gender: STRING.EMPTY,
     dob: STRING.EMPTY,
-    relationship: 1,
+    relationship: STRING.EMPTY,
   },
   error: {
     username: STRING.EMPTY,
@@ -33,10 +33,10 @@ const initialState = {
 };
 
 export const getUserAsync = createAsyncThunk(
-  Reducer.NAME.UPDATE_INFO + "fetchUser",
+  Reducer.NAME.UPDATE_INFO + "/fetchUser",
   async (id) => {
     const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
-
+    console.log(user.data.data);
     return user.data.data || null;
   }
 );

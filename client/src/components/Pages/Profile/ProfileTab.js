@@ -146,12 +146,12 @@ export default function ProfileTab({
     dispatch(validate({ path: prop }));
   };
 
-  const dmyFormat = (date) => {
-    return moment(date).format("DD/MM/yyyy");
+  const mdyFormat = (date) => {
+    return moment(date).format("MM/DD/yyyy");
   };
 
   const handleChangeDatePicker = (prop) => (newValue) => {
-    dispatch(changeData({ [prop]: dmyFormat(newValue) }));
+    dispatch(changeData({ [prop]: mdyFormat(newValue) }));
   };
 
   const update = (event) => {};
@@ -219,10 +219,10 @@ export default function ProfileTab({
             <GridItem errorField={error.dob}>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={localeMap.vi}
+                locale={localeMap.en}
               >
                 <DatePicker
-                  mask={maskMap.vi}
+                  mask={maskMap.en}
                   label={dobLabel}
                   value={data.dob}
                   onChange={handleChangeDatePicker(Field.DOB)}
