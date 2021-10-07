@@ -26,6 +26,7 @@ import {
 } from "../../../app/slices/updateInfoSlice";
 import { Field, STRING } from "../../../constants/index";
 import { ErrorHelperText } from "../../index";
+import { localeMap, maskMap } from "../../utils/index";
 
 const tabItems = [
   {
@@ -159,7 +160,7 @@ export default function ProfileTab({
     const uid = location.pathname.split("/").pop();
 
     dispatch(getUserAsync(uid));
-  }, [location.pathname, dispatch, data]);
+  }, [location.pathname, dispatch]);
 
   return (
     <Box sx={{ width: "100%" }} {...rest}>
@@ -216,8 +217,12 @@ export default function ProfileTab({
               />
             </GridItem>
             <GridItem errorField={error.dob}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                locale={localeMap.vi}
+              >
                 <DatePicker
+                  mask={maskMap.vi}
                   label={dobLabel}
                   value={data.dob}
                   onChange={handleChangeDatePicker(Field.DOB)}
