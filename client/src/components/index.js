@@ -8,4 +8,5 @@ export { default as ChatFrame } from "./ChatFrame";
 export { default as Profile } from "./Profile";
 export { default as TabPanel } from "./TabPanel";
 export { default as CommonFormControl } from "./FormControl";
-export { default as GridItem } from "./GridItem";
+export { default as FormGridItem } from "./FormGridItem";
+export { default as CommonTextField } from "./TextField";

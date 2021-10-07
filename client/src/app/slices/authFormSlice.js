@@ -84,7 +84,7 @@ export const authSlice = createSlice({
         else setErrorState(path, STRING.EMPTY);
       }
       //validate for register
-      if (type === Auth.TYPE.REGISTER || type === Auth.TYPE.RESET_PWD) {
+      else if (type === Auth.TYPE.REGISTER || type === Auth.TYPE.RESET_PWD) {
         //validate username
         if (path === Field.USERNAME) {
           if (state.data.username.length < 6)
@@ -145,6 +145,8 @@ export const authSlice = createSlice({
 
         _setIsAllValid({ password, re_password });
       }
+
+      console.log({ ...state.data });
     },
     setError: (state, action) => {
       const payload = action.payload;

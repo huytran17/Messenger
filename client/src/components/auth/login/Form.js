@@ -1,10 +1,8 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import Input from "@mui/material/Input";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -24,7 +22,7 @@ import {
 } from "../../../app/slices/authFormSlice";
 import { CONF } from "../../../config/app";
 import { Auth, Field, Server } from "../../../constants/index";
-import { ErrorHelperText, InputLabelForError } from "../../index";
+import { CommonTextField, FormGridItem } from "../../index";
 
 export default function Form(props) {
   const error = useSelector(selectError);
@@ -107,94 +105,67 @@ export default function Form(props) {
   const FormLink = styled(Link)({
     fontSize: 13,
     textAlign: "right",
+    display: "block",
+    textDecoration: "hover",
   });
 
   return (
     <Box component="form" sx={sxContainerBox}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <FormControl variant="standard">
-            <InputLabelForError
-              for="email"
-              field="email"
-              label={emailLabel}
-              error={error}
-            />
-            <Input
-              id="email"
-              type="text"
-              value={data.email}
-              onChange={handleChange(Field.EMAIL)}
-              inputProps={{
-                form: {
-                  autoComplete: "off",
-                  error: true,
-                },
-              }}
-              required
-            />
-            <ErrorHelperText error={error.email} />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl variant="standard">
-            <InputLabelForError
-              for="password"
-              field="password"
-              label={passwordLabel}
-            />
-            <Input
-              id="password"
-              type="password"
-              value={data.password}
-              onChange={handleChange(Field.PASSWORD)}
-              required
-            />
-            <ErrorHelperText error={error.password} />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl>
-            <FormControlLabel
-              sx={{
-                "& .MuiSvgIcon-root": { fontSize: 18 },
-                "& .MuiTypography-root": { fontSize: 14 },
-              }}
-              control={
-                <Checkbox
-                  checked={remember_me}
-                  onChange={handleChecked}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-              }
-              label={rememberMeLabel}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sx={{ paddingTop: "0px !important" }}>
-          <FormControl>
-            <FormLink href="/auth/forget-password" underline="hover">
-              {fogetPwdLinkLabel}
-            </FormLink>
-            <FormLink href="/auth/register" underline="hover">
-              {registerLinkLabel}
-            </FormLink>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl>
-            <ButtonBox>
-              <Button
-                variant="contained"
-                disableElevation
-                onClick={login()}
-                sx={{ borderRadius: 999 }}
-              >
-                {btnLoginLabel}
-              </Button>
-            </ButtonBox>
-          </FormControl>
-        </Grid>
+      <Grid container spacing={2} columns={12}>
+        <FormGridItem errorField={error.email}>
+          <CommonTextField
+            label={emailLabel}
+            value={data.email}
+            onChange={handleChange(Field.EMAIL)}
+            inputProps={{
+              form: {
+                autoComplete: "off",
+                error: true,
+              },
+            }}
+            required
+          />
+        </FormGridItem>
+        <FormGridItem errorField={error.password}>
+          <CommonTextField
+            label={passwordLabel}
+            value={data.password}
+            onChange={handleChange(Field.PASSWORD)}
+            required
+          />
+        </FormGridItem>
+        <FormGridItem>
+          <FormControlLabel
+            sx={{
+              "& .MuiSvgIcon-root": { fontSize: 18 },
+              "& .MuiTypography-root": { fontSize: 14 },
+            }}
+            control={
+              <Checkbox
+                checked={remember_me}
+                onChange={handleChecked}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+            label={rememberMeLabel}
+          />
+        </FormGridItem>
+        <FormGridItem sx={{ paddingTop: "0px !important" }}>
+          <FormLink href="/auth/forget-password">{fogetPwdLinkLabel}</FormLink>
+          <FormLink href="/auth/register">{registerLinkLabel}</FormLink>
+        </FormGridItem>
+        <FormGridItem sx={{ paddingTop: "0px !important" }}>
+          <ButtonBox>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={login()}
+              sx={{ borderRadius: 999, maxWidth: "85px" }}
+            >
+              {btnLoginLabel}
+            </Button>
+          </ButtonBox>
+        </FormGridItem>
       </Grid>
     </Box>
   );
