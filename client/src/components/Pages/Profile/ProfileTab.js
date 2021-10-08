@@ -86,7 +86,7 @@ export default function ProfileTab({ ...props }) {
           })}
         </Tabs>
       </Box>
-      <AboutTab />
+      <AboutTab index={tabIndex.frs} value={tabValue} />
       <TabPanel value={tabValue} index={tabIndex.sec}>
         <Box
           value={tabValue}

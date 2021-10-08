@@ -24,11 +24,6 @@ import { CommonFormControl, FormGridItem, CommonTextField } from "../../index";
 import { TabPanel } from "../../index";
 import { localeMap, maskMap } from "../../utils/index";
 
-const tabIndex = {
-  frs: 0,
-  sec: 1,
-};
-
 const genders = [
   { label: "Male", value: 1 },
   { label: "Female", value: 2 },
@@ -52,10 +47,10 @@ export default function AboutTab({
   dobLabel,
   quoteLabel,
   btnSaveLabel,
+  index,
+  value,
   ...rest
 }) {
-  const [tabValue] = React.useState(tabIndex.frs);
-
   const isAllValid = useSelector(selectIsAllValid);
 
   const data = useSelector(selectData);
@@ -89,10 +84,10 @@ export default function AboutTab({
 
   return (
     <>
-      <TabPanel value={tabValue} index={tabIndex.frs}>
+      <TabPanel value={value} index={index} {...rest}>
         <Box
-          value={tabValue}
-          index={tabIndex.frs}
+          value={value}
+          index={index}
           sx={{
             "& .MuiTextField-root": { m: 1, width: "100%" },
           }}

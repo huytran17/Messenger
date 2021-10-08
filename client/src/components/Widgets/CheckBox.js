@@ -2,12 +2,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import PropTypes from "prop-types";
 
-export default function CheckBox({
-  checked,
-  handleCheck,
-  rememberMeLabel,
-  ...rest
-}) {
+export default function CheckBox({ checked, handler, label, ...rest }) {
   return (
     <FormControlLabel
       sx={{
@@ -17,12 +12,12 @@ export default function CheckBox({
       control={
         <Checkbox
           checked={checked}
-          onChange={() => handleCheck()}
+          onChange={() => handler()}
           inputProps={{ "aria-label": "controlled" }}
           {...rest}
         />
       }
-      label={rememberMeLabel}
+      label={label}
     />
   );
 }

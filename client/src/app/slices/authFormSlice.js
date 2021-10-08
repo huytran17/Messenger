@@ -145,8 +145,6 @@ export const authSlice = createSlice({
 
         _setIsAllValid({ password, re_password });
       }
-
-      console.log({ ...state.data });
     },
     setError: (state, action) => {
       const payload = action.payload;

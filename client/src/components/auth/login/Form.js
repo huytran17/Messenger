@@ -130,14 +130,15 @@ export default function Form(props) {
             label={passwordLabel}
             value={data.password}
             onChange={handleChange(Field.PASSWORD)}
+            type="password"
             required
           />
         </FormGridItem>
         <FormGridItem>
           <CheckBox
             checked={remember_me}
-            handleCheck={handleChecked}
-            rememberMeLabel={rememberMeLabel}
+            handler={handleChecked}
+            label={rememberMeLabel}
           />
         </FormGridItem>
         <FormGridItem sx={{ paddingTop: "0px !important" }}>
