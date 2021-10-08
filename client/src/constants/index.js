@@ -48,6 +48,7 @@ export const Reducer = Object.freeze({
     APPBAR: "APPBAR",
     ALERT: "ALERT",
     UPDATE_INFO: "UPDATE_INFO",
+    BACKDROP: "BACKDROP",
   },
 });
 

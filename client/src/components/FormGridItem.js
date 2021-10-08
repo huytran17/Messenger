@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid";
-import { ErrorHelperText } from "./index";
-import { STRING } from "../constants/index";
 import PropTypes from "prop-types";
+import { ErrorHelperText } from "./index";
 
 export default function FormGridItem({
   children,
@@ -12,11 +11,7 @@ export default function FormGridItem({
   return (
     <Grid item xs={12} {...props}>
       {children}
-      {errorField ? (
-        <ErrorHelperText error={errorField} sx={errSx} />
-      ) : (
-        STRING.EMPTY
-      )}
+      {errorField && <ErrorHelperText error={errorField} sx={errSx} />}
     </Grid>
   );
 }

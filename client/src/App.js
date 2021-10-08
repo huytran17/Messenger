@@ -1,10 +1,13 @@
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import Crypto from "crypto-js";
-import React, { useContext } from "react";
-import { useDispatch } from "react-redux";
+import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { io } from "socket.io-client";
 import { getUserAsync } from "./app/slices/authSlice";
+import { selectIsOpen, toggle } from "./app/slices/backdropSlice";
 import {
   ForgetPwd,
   Login,
@@ -17,9 +20,24 @@ import { CONF } from "./config/app";
 import { Server } from "./constants/index";
 import { AuthContext, SocketContext } from "./ctx/appCtx";
 
+var isOpenBackdrop = false;
+
 axios.interceptors.request.use(
   function (config) {
     config.withCredentials = true;
+
+    isOpenBackdrop = true;
+
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  function (config) {
+    isOpenBackdrop = false;
 
     return config;
   },
@@ -105,48 +123,51 @@ const SocketProvider = ({ children }) => {
   );
 };
 
-class App extends React.Component {
-  // eslint-disable-next-line
-  constructor(props) {
-    super(props);
-  }
+const App = () => {
+  const dispatch = useDispatch();
 
-  componentDidUpdate() {
-    console.log("did update");
-  }
+  const isOpen = useSelector(selectIsOpen);
 
-  render() {
-    return (
-      <div className="App">
-        <AuthProvider>
-          <SocketProvider>
-            <Switch>
-              <ProtectedRoute path="/" exact>
-                <Home />
-              </ProtectedRoute>
-              <ProtectedRoute path="/home">
-                <Home />
-              </ProtectedRoute>
-              <ProtectedRoute path="/profile/:id">
-                <Profile />
-              </ProtectedRoute>
-              <ProtectedRoute path="/settings">
-                <Home />
-              </ProtectedRoute>
-            </Switch>
-          </SocketProvider>
-        </AuthProvider>
-        <Switch>
-          <Route path="/auth/login" component={Login} />
-          <Route path="/auth/register" component={Register} />
-          <Route path="/auth/forget-password" component={ForgetPwd} />
-          <Route path="/auth/verify-code" component={VerifyCode} />
-          <Route path="/auth/reset-password" component={ResetPassword} />
-          <Route path="/auth/logout" component={Login} />
-        </Switch>
-      </div>
-    );
-  }
-}
+  // useEffect(() => {
+  //   dispatch(toggle());
+  // }, [dispatch]);
+
+  return (
+    <div className="App">
+      <AuthProvider>
+        <SocketProvider>
+          <Switch>
+            <ProtectedRoute path="/" exact>
+              <Home />
+            </ProtectedRoute>
+            <ProtectedRoute path="/home">
+              <Home />
+            </ProtectedRoute>
+            <ProtectedRoute path="/profile/:id">
+              <Profile />
+            </ProtectedRoute>
+            <ProtectedRoute path="/settings">
+              <Home />
+            </ProtectedRoute>
+          </Switch>
+        </SocketProvider>
+      </AuthProvider>
+      <Switch>
+        <Route path="/auth/login" component={Login} />
+        <Route path="/auth/register" component={Register} />
+        <Route path="/auth/forget-password" component={ForgetPwd} />
+        <Route path="/auth/verify-code" component={VerifyCode} />
+        <Route path="/auth/reset-password" component={ResetPassword} />
+        <Route path="/auth/logout" component={Login} />
+      </Switch>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isOpenBackdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
+  );
+};
 
 export default App;
