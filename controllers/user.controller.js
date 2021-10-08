@@ -13,7 +13,11 @@ module.exports.getAll = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -27,7 +31,11 @@ module.exports.getById = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -41,7 +49,11 @@ module.exports.edit = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -55,7 +67,11 @@ module.exports.getByEmail = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.NO_CONTENT);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -69,7 +85,11 @@ module.exports.updateInfo = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -79,11 +99,17 @@ module.exports.updateAvatar = async (req, res) => {
 
     const avatar_photo = await req.source.toString("base64");
 
+    // const avatar_photo = new Buffer.from(file, "base64");
+
     const user = await User.updateAvatar(id, avatar_photo);
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -95,7 +121,11 @@ module.exports.updatePassword = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -109,7 +139,11 @@ module.exports.updateCover = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -121,7 +155,11 @@ module.exports.destroy = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 
@@ -135,7 +173,11 @@ module.exports.unfriend = async (req, res) => {
 
     return HttpResponse(res, HttpStatus.OK, user);
   } catch (err) {
-    return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
   }
 };
 

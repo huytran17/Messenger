@@ -7,22 +7,18 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled, useTheme } from "@mui/material/styles";
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatusLeft,
-  toggleStatusLeft,
+  toggleStatusLeft
 } from "../../app/slices/appBarSlice";
 import {
-  getUserAsync,
   selectConvs,
-  selectGrs,
-  selectUser,
+  selectGrs
 } from "../../app/slices/authSlice";
-import { STRING } from "../../constants/index";
-import { AuthContext } from "../../ctx/appCtx";
+import { STRING, View } from "../../constants/index";
 import { ConvAvatar, GrpAvatar } from "../index";
-import { View } from "../../constants/index";
 
 const drawerWidth = View.DRAWER_WIDTH;
 
@@ -90,19 +86,8 @@ export default function DrawerLeft() {
     dispatch(toggleStatusLeft());
   };
 
-  const useAuth = () => {
-    return useContext(AuthContext);
-  };
-
-  const auth = useAuth();
-
-  const user = useSelector(selectUser);
   const convs = useSelector(selectConvs);
   const grs = useSelector(selectGrs);
-
-  useEffect(() => {
-    dispatch(getUserAsync(auth.id));
-  }, [dispatch, auth.id]);
 
   // console.log(user, convs, grs);
 

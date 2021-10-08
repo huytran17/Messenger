@@ -1,8 +1,10 @@
 import axios from "axios";
 import Crypto from "crypto-js";
 import React, { useContext } from "react";
+import { useDispatch } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { io } from "socket.io-client";
+import { getUserAsync } from "./app/slices/authSlice";
 import {
   ForgetPwd,
   Login,
@@ -10,11 +12,10 @@ import {
   ResetPassword,
   VerifyCode,
 } from "./components/auth/index";
-import { Home } from "./components/index";
-import { Profile } from "./components/index";
+import { Home, Profile } from "./components/index";
 import { CONF } from "./config/app";
-import { AuthContext, SocketContext } from "./ctx/appCtx";
 import { Server } from "./constants/index";
+import { AuthContext, SocketContext } from "./ctx/appCtx";
 
 axios.interceptors.request.use(
   function (config) {
@@ -36,6 +37,8 @@ const AuthProvider = ({ children }) => {
 const useProvideAuth = () => {
   var auth = null;
 
+  const dispatch = useDispatch();
+
   const token =
     sessionStorage.getItem("token") || localStorage.getItem("token");
 
@@ -48,6 +51,7 @@ const useProvideAuth = () => {
       auth = JSON.parse(bytes.toString(Crypto.enc.Utf8)) || null;
 
       if (now > auth.eat) localStorage.removeItem("token");
+      else if (auth) dispatch(getUserAsync(auth.id));
     } catch (e) {
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");

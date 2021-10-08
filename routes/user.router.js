@@ -10,7 +10,6 @@ const {
   destroy,
   unfriend,
   updatePassword,
-  edit,
 } = require("../controllers/user.controller");
 const {
   verifyUpdateInfo,
@@ -33,8 +32,6 @@ router
   .put(verifyUpdateCover, updateCover)
   .patch(verifyUpdateInfo, updateInfo)
   .delete(isAdmin, destroy);
-
-router.route("/v2/:id").get(edit);
 
 router.route("/:email").get(getByEmail);
 

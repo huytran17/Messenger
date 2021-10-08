@@ -1,10 +1,7 @@
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { getUserAsync } from "../../../app/slices/updateInfoSlice";
+import React from "react";
 import { AboutTab } from "./index";
 
 const tabItems = [
@@ -53,16 +50,6 @@ export default function ProfileTab({ ...props }) {
   const handleChangeTab = (event, newValue) => {
     setTabValue(newValue);
   };
-
-  const dispatch = useDispatch();
-
-  const location = useLocation();
-
-  useEffect(() => {
-    const uid = location.pathname.split("/").pop();
-
-    dispatch(getUserAsync(uid));
-  }, [location.pathname, dispatch]);
 
   return (
     <Box sx={{ width: "100%" }} {...props}>

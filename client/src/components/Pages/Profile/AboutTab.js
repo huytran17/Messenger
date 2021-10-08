@@ -6,22 +6,27 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import axios from "axios";
 import moment from "moment";
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
   changeData,
-  getUserAsync,
   selectData,
   selectError,
-  validate,
   selectIsAllValid,
-} from "../../../app/slices/updateInfoSlice";
-import { Field } from "../../../constants/index";
-import { CommonFormControl, FormGridItem, CommonTextField } from "../../index";
-import { TabPanel } from "../../index";
+  validate,
+  setData,
+} from "../../../app/slices/authSlice";
+import { Field, Server } from "../../../constants/index";
+import {
+  CommonFormControl,
+  CommonTextField,
+  FormGridItem,
+  TabPanel,
+} from "../../index";
 import { localeMap, maskMap } from "../../utils/index";
 
 const genders = [
@@ -59,13 +64,15 @@ export default function AboutTab({
 }) {
   const isAllValid = useSelector(selectIsAllValid);
 
-  const data = useSelector(selectData);
+  var data = useSelector(selectData);
 
   const error = useSelector(selectError);
 
   const dispatch = useDispatch();
 
   const location = useLocation();
+
+  const uid = location.pathname.split("/").pop();
 
   const handleChangeInput = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
@@ -80,15 +87,37 @@ export default function AboutTab({
     dispatch(changeData({ [prop]: mdyFormat(newValue) }));
   };
 
-  const update = (event) => {
-    console.log(isAllValid);
+  const update = async (event) => {
+    if (isAllValid) {
+      const {
+        username,
+        address,
+        phone,
+        dob,
+        gender,
+        bio,
+        relationship,
+        quote,
+      } = data;
+      await axios
+        .patch(`${Server.URL}:${Server.PORT}/users/${uid}`, {
+          username,
+          address,
+          phone,
+          dob,
+          gender,
+          bio,
+          relationship,
+          quote,
+        })
+        .then((res) => {
+          dispatch(setData(res.data.data));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
-
-  useEffect(() => {
-    const uid = location.pathname.split("/").pop();
-
-    dispatch(getUserAsync(uid));
-  }, [location.pathname, dispatch]);
 
   return (
     <>

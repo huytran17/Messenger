@@ -27,7 +27,7 @@ export default function Action(props) {
         <ShareIcon />
       </IconButton>
       <ExpandMore
-        expand={props.isExpanded}
+        expand={props.expanded}
         onClick={() => props.handleExpandClick()}
         aria-expanded={props.expanded}
         aria-label="show more"

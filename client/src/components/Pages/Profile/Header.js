@@ -1,7 +1,9 @@
 import Avatar from "@mui/material/Avatar";
-import { red } from "@mui/material/colors";
 import CardHeader from "@mui/material/CardHeader";
+import { red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import { selectData } from "../../../app/slices/authSlice";
 
 const avatarSize = 80;
 
@@ -15,6 +17,8 @@ const Header = styled(CardHeader)(({ theme }) => ({
 }));
 
 export default function ProfileHeader({ ...props }) {
+  var user = useSelector(selectData);
+
   return (
     <Header
       avatar={
@@ -25,12 +29,12 @@ export default function ProfileHeader({ ...props }) {
             height: avatarSize,
           }}
           aria-label="recipe"
-        >
-          R
-        </Avatar>
+          src={"data:image/*;base64," + user.avatar_photo}
+          alt={user.username}
+        ></Avatar>
       }
-      title="Shrimp and Chorizo Paella"
-      subheader="September 14, 2016"
+      title={user.username}
+      subheader={user.bio}
       {...props}
     />
   );

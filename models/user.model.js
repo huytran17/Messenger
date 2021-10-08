@@ -172,15 +172,6 @@ userSchema.statics.getById = async function (id) {
   return user;
 };
 
-userSchema.statics.edit = async function (id) {
-  const user = await this.findById(
-    id,
-    "-createdAt -updatedAt -deletedAt -deleted -convs -grs -friends -avatar_photo -cover_photo"
-  ).exec();
-
-  return user;
-};
-
 userSchema.statics.getByEmail = async function (email) {
   const user = await this.findOne({ email })
     .populate("convs")

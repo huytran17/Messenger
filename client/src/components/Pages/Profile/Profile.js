@@ -1,8 +1,10 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Collapse from "@mui/material/Collapse";
 import { styled } from "@mui/material/styles";
-import * as React from "react";
-import { Action, CollapseTab, Content, Media, ProfileHeader } from "./index";
+import React from "react";
+import { Action, Content, Media, ProfileHeader, ProfileTab } from "./index";
 
 const avatarSize = 80;
 
@@ -46,7 +48,11 @@ export default function ProfilePage() {
           <ProfileHeader />
           <Content />
           <Action handleExpandClick={handleExpandClick} expanded={expanded} />
-          <CollapseTab expanded={expanded} />
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <ProfileTab />
+            </CardContent>
+          </Collapse>
         </Card>
       </BoxContainer>
     </Box>
