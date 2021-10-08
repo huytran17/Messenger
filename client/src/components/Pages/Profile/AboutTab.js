@@ -37,6 +37,12 @@ const relationships = [
   { label: "Married", value: 4 },
 ];
 
+const XFormGridItem = ({ errorField, ...rest }) => {
+  return (
+    <FormGridItem errorField={errorField} errSx={{ marginLeft: 1 }} {...rest} />
+  );
+};
+
 export default function AboutTab({
   usernameLabel,
   phoneLabel,
@@ -74,7 +80,9 @@ export default function AboutTab({
     dispatch(changeData({ [prop]: mdyFormat(newValue) }));
   };
 
-  const update = (event) => {};
+  const update = (event) => {
+    console.log(isAllValid);
+  };
 
   useEffect(() => {
     const uid = location.pathname.split("/").pop();
@@ -95,28 +103,28 @@ export default function AboutTab({
           autoComplete="off"
         >
           <Grid container spacing={{ xs: 1, md: 2 }} columns={12}>
-            <FormGridItem errorField={error.username}>
+            <XFormGridItem errorField={error.username}>
               <CommonTextField
                 label={usernameLabel}
                 value={data.username}
                 onChange={handleChangeInput(Field.USERNAME)}
               />
-            </FormGridItem>
-            <FormGridItem errorField={error.address}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.address}>
               <CommonTextField
                 label={addressLabel}
                 value={data.address}
                 onChange={handleChangeInput(Field.ADDRESS)}
               />
-            </FormGridItem>
-            <FormGridItem errorField={error.phone}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.phone}>
               <CommonTextField
                 label={phoneLabel}
                 value={data.phone}
                 onChange={handleChangeInput(Field.PHONE)}
               />
-            </FormGridItem>
-            <FormGridItem errorField={error.dob}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.dob}>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
                 locale={localeMap.en}
@@ -129,8 +137,8 @@ export default function AboutTab({
                   renderInput={(params) => <CommonTextField {...params} />}
                 />
               </LocalizationProvider>
-            </FormGridItem>
-            <FormGridItem errorField={error.gender}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.gender}>
               <CommonFormControl inputLabel={genderLabel}>
                 <Select
                   value={data.gender}
@@ -145,15 +153,15 @@ export default function AboutTab({
                   })}
                 </Select>
               </CommonFormControl>
-            </FormGridItem>
-            <FormGridItem errorField={error.bio}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.bio}>
               <CommonTextField
                 label={bioLabel}
                 value={data.bio}
                 onChange={handleChangeInput(Field.BIO)}
               />
-            </FormGridItem>
-            <FormGridItem errorField={error.relationship}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.relationship}>
               <CommonFormControl inputLabel={relationshipLabel}>
                 <Select
                   value={data.relationship}
@@ -168,15 +176,15 @@ export default function AboutTab({
                   })}
                 </Select>
               </CommonFormControl>
-            </FormGridItem>
-            <FormGridItem errorField={error.quote}>
+            </XFormGridItem>
+            <XFormGridItem errorField={error.quote}>
               <CommonTextField
                 label={quoteLabel}
                 value={data.quote}
                 onChange={handleChangeInput(Field.QUOTE)}
               />
-            </FormGridItem>
-            <FormGridItem xs={12} sm={12} sx={{ textAlign: "right" }}>
+            </XFormGridItem>
+            <XFormGridItem xs={12} sm={12} sx={{ textAlign: "right" }}>
               <Button
                 variant="contained"
                 disableElevation
@@ -185,7 +193,7 @@ export default function AboutTab({
               >
                 {btnSaveLabel}
               </Button>
-            </FormGridItem>
+            </XFormGridItem>
           </Grid>
         </Box>
       </TabPanel>

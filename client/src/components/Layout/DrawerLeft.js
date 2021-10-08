@@ -104,7 +104,7 @@ export default function DrawerLeft() {
     dispatch(getUserAsync(auth.id));
   }, [dispatch, auth.id]);
 
-  console.log(user, convs, grs);
+  // console.log(user, convs, grs);
 
   return (
     <Drawer variant="permanent" open={status}>
