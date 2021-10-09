@@ -3,6 +3,7 @@ import appBarReducer from "./slices/appBarSlice";
 import authReducer from "./slices/authSlice";
 import alertReducer from "./slices/alertSlice";
 import userReducer from "./slices/userSlice";
+import securityReducer from "./slices/securitySlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     auth: authReducer,
     alert: alertReducer,
     user: userReducer,
+    security: securityReducer,
   },
 });

@@ -30,6 +30,7 @@ export const Field = Object.freeze({
   EMAIL: "email",
   PASSWORD: "password",
   RE_PASSWORD: "re_password",
+  NEW_PASSWORD: "new_password",
   VERIFY_CODE: "verify_code",
   RESET_PWD: "RESET_PWD",
   PHONE: "phone",

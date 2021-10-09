@@ -10,3 +10,4 @@ export { default as TabPanel } from "./TabPanel";
 export { default as CommonFormControl } from "./FormControl";
 export { default as FormGridItem } from "./FormGridItem";
 export { default as CommonTextField } from "./TextField";
+export { default as PasswordField } from "./PasswordField";

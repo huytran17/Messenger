@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
-import { AboutTab } from "./index";
+import { AboutTab, SecurityTab } from "./index";
 
 const tabItems = [
   {
@@ -74,17 +74,7 @@ export default function ProfileTab({ ...props }) {
         </Tabs>
       </Box>
       <AboutTab index={tabIndex.frs} value={tabValue} />
-      <TabPanel value={tabValue} index={tabIndex.sec}>
-        <Box
-          value={tabValue}
-          index={tabIndex.sec}
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "100%" },
-          }}
-          noValidate
-          autoComplete="off"
-        ></Box>
-      </TabPanel>
+      <SecurityTab index={tabIndex.sec} value={tabValue} />
     </Box>
   );
 }

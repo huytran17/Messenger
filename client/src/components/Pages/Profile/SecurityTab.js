@@ -23,6 +23,7 @@ import {
 import { Field, Server } from "../../../constants/index";
 import {
   CommonFormControl,
+  PasswordField,
   CommonTextField,
   FormGridItem,
   TabPanel,
@@ -35,6 +36,8 @@ const XFormGridItem = ({ errorField, ...rest }) => {
   );
 };
 
+const errSx = { marginLeft: 1 };
+
 const SecurityTab = ({
   pwdLabel,
   newPwdLabel,
@@ -43,30 +46,53 @@ const SecurityTab = ({
   value,
   ...rest
 }) => {
+  const data = useSelector(selectData);
+
+  const error = useSelector(selectError);
+
+  const dispatch = useDispatch();
+
+  const handleChangeInput = (prop) => (event) => {
+    dispatch(changeData({ [prop]: event.target.value }));
+    dispatch(validate({ path: prop }));
+  };
+
   return (
-    <div>
-      <TabPanel value={value} index={index} {...rest}>
-        <Box
-          value={value}
-          index={index}
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "100%" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <Grid container spacing={{ xs: 1, md: 2 }} columns={12}>
-            {/* <XFormGridItem errorField={error.username}>
-              <CommonTextField
-                label={pwdLabel}
-                value={data.password}
-                onChange={handleChangeInput(Field.USERNAME)}
-              />
-            </XFormGridItem> */}
-          </Grid>
-        </Box>
-      </TabPanel>
-    </div>
+    <TabPanel value={value} index={index} {...rest}>
+      <Box
+        value={value}
+        index={index}
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "100%" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <Grid container spacing={{ xs: 1, md: 2 }} columns={12}>
+          <PasswordField
+            errorField={error.password}
+            errSx={errSx}
+            label={pwdLabel}
+            value={data.password}
+            changeHandler={handleChangeInput(Field.PASSWORD)}
+          />
+          <PasswordField
+            errorField={error.new_password}
+            errSx={errSx}
+            label={newPwdLabel}
+            value={data.new_password}
+            changeHandler={handleChangeInput(Field.NEW_PASSWORD)}
+          />
+          <PasswordField
+            errorField={error.re_password}
+            errSx={errSx}
+            label={rePwdLabel}
+            value={data.re_password}
+            changeHandler={handleChangeInput(Field.RE_PASSWORD)}
+          />
+        </Grid>
+      </Box>
+    </TabPanel>
   );
 };
 

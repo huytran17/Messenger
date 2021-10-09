@@ -11,13 +11,13 @@ const initialState = {
   isAllValid: false,
   data: {
     password: STRING.EMPTY,
-    newPassword: STRING.EMPTY,
-    resetPassword: STRING.EMPTY,
+    new_password: STRING.EMPTY,
+    re_password: STRING.EMPTY,
   },
   error: {
     password: STRING.EMPTY,
-    newPassword: STRING.EMPTY,
-    resetPassword: STRING.EMPTY,
+    new_password: STRING.EMPTY,
+    re_password: STRING.EMPTY,
   },
 };
 
