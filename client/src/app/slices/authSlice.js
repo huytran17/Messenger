@@ -73,7 +73,6 @@ export const authSlice = createSlice({
       else if (path === Field.EMAIL) {
         if (!validateEmail(state.data[path]))
           setErrorState(path, ValidateError.INVALID_EMAIL);
-        //
         else setErrorState(path, STRING.EMPTY);
       }
       //validate for register
@@ -82,10 +81,8 @@ export const authSlice = createSlice({
         if (path === Field.USERNAME) {
           if (state.data.username.length < 6)
             setErrorState(path, ValidateError.USERNAME_MIN_LENGTH);
-          //
           else if (state.data.username.length > 32)
             setErrorState(path, ValidateError.USERNAME_MAX_LENGTH);
-          //
           else setErrorState(path, STRING.EMPTY);
         }
         //validate password & re-password
@@ -94,10 +91,8 @@ export const authSlice = createSlice({
           if (path === Field.PASSWORD) {
             if (state.data.password.length < 8)
               setErrorState(path, ValidateError.PASSWORD_MIN_LENGTH);
-            //
             else if (state.data.password.length > 32)
               setErrorState(path, ValidateError.PASSWORD_MAX_LENGTH);
-            //
             else setErrorState(path, STRING.EMPTY);
           }
 
@@ -107,7 +102,6 @@ export const authSlice = createSlice({
             state.data.re_password !== state.data.password
           )
             setErrorState(Field.RE_PASSWORD, ValidateError.MISMATCH);
-          //
           else setErrorState(Field.RE_PASSWORD, STRING.EMPTY);
         }
       } else setErrorState(path, STRING.EMPTY);
