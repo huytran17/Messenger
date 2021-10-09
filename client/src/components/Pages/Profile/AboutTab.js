@@ -113,6 +113,9 @@ export default function AboutTab({
         .then((res) => {
           dispatch(setData(res.data.data));
         })
+        .then(() => {
+          window.location.reload();
+        })
         .catch((error) => {
           console.error(error);
         });

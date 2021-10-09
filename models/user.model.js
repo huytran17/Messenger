@@ -45,11 +45,13 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
+      trim: true,
       min: [10, "Tối thiểu 10 ký tự."],
       max: [12, "Tối đa 12 ký tự."],
     },
     address: {
       type: String,
+      trim: true,
       min: [2, "Tối thiểu 2 ký tự."],
       max: [255, "Tối đa 255 ký tự."],
     },
@@ -65,11 +67,13 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
+      trim: true,
       min: [2, "Tối thiểu 2 ký tự."],
       max: [255, "Tối đa 255 ký tự."],
     },
     quote: {
       type: String,
+      trim: true,
       min: [2, "Tối thiểu 2 ký tự."],
       max: [255, "Tối đa 255 ký tự."],
     },
