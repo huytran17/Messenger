@@ -185,14 +185,11 @@ userSchema.statics.updateInfo = async function (id, data) {
   })
     .populate({
       path: "convs",
-      select: ["_id", "mems"],
       populate: { path: "mems" },
     })
     .populate({
       path: "grs",
-      select: ["_id", "mems", "name", "background_photo"],
-      populate: { path: "mems" },
-      populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
+      populate: [{ path: "mems" }, { path: "createdBy" }],
     })
     .exec();
 

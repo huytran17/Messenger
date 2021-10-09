@@ -4,6 +4,7 @@ import { red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { selectData } from "../../../app/slices/userSlice";
+import { STRING } from "../../../constants/index";
 
 const avatarSize = 80;
 
@@ -29,7 +30,11 @@ export default function ProfileHeader({ ...props }) {
             height: avatarSize,
           }}
           aria-label="recipe"
-          src={"data:image/*;base64," + user.avatar_photo}
+          src={
+            user.avatar_photo
+              ? "data:image/*;base64," + user.avatar_photo
+              : STRING.EMPTY
+          }
           alt={user.username}
         ></Avatar>
       }

@@ -10,20 +10,7 @@ import {
 
 const initialState = {
   isAllValid: true,
-  convs: null,
-  grs: null,
-  data: {
-    username: STRING.EMPTY,
-    address: STRING.EMPTY,
-    phone: STRING.EMPTY,
-    bio: STRING.EMPTY,
-    quote: STRING.EMPTY,
-    gender: STRING.EMPTY,
-    dob: STRING.EMPTY,
-    relationship: STRING.EMPTY,
-    avatar_photo: STRING.EMPTY,
-    cover_photo: STRING.EMPTY,
-  },
+  data: {},
   error: {
     username: STRING.EMPTY,
     address: STRING.EMPTY,
@@ -42,18 +29,10 @@ export const getUserAsync = createAsyncThunk(
   Reducer.NAME.USER + "/fetchUser",
   async (id) => {
     const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
-    console.log(user.data.data);
-    return user.data.data || null;
+
+    return user.data.data || {};
   }
 );
-
-const filterMems = (arrObj, id) => {
-  arrObj.forEach((item) => {
-    item.mems = item.mems.filter((mem) => {
-      return mem._id !== id;
-    });
-  });
-};
 
 const setStateError = (state) => (path, error) => {
   state.error[path] = error;
@@ -66,7 +45,7 @@ function checkErrorProperties(obj) {
   return true;
 }
 
-export const authSlice = createSlice({
+export const userSlice = createSlice({
   name: Reducer.NAME.USER,
   initialState,
   reducers: {
@@ -127,18 +106,12 @@ export const authSlice = createSlice({
     builder.addCase(getUserAsync.fulfilled, (state, action) => {
       const payload = action.payload;
 
-      filterMems(payload.convs, payload._id);
-
       state.data = payload;
-
-      state.grs = payload.grs;
-
-      state.convs = payload.convs;
     });
   },
 });
 
-export const { changeData, validate, setError, setData } = authSlice.actions;
+export const { changeData, validate, setError, setData } = userSlice.actions;
 
 export const selectIsAllValid = (state) => state.user.isAllValid;
 
@@ -146,8 +119,4 @@ export const selectError = (state) => state.user.error;
 
 export const selectData = (state) => state.user.data;
 
-export const selectConvs = (state) => state.user.convs;
-
-export const selectGrs = (state) => state.user.grs;
-
-export default authSlice.reducer;
+export default userSlice.reducer;

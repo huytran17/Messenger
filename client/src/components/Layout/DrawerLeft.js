@@ -11,12 +11,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatusLeft,
-  toggleStatusLeft
+  toggleStatusLeft,
 } from "../../app/slices/appBarSlice";
-import {
-  selectConvs,
-  selectGrs
-} from "../../app/slices/userSlice";
+import { selectData } from "../../app/slices/userSlice";
 import { STRING, View } from "../../constants/index";
 import { ConvAvatar, GrpAvatar } from "../index";
 
@@ -86,10 +83,7 @@ export default function DrawerLeft() {
     dispatch(toggleStatusLeft());
   };
 
-  const convs = useSelector(selectConvs);
-  const grs = useSelector(selectGrs);
-
-  // console.log(user, convs, grs);
+  const user = useSelector(selectData);
 
   return (
     <Drawer variant="permanent" open={status}>
@@ -106,41 +100,49 @@ export default function DrawerLeft() {
         </ListItem>
       </DrawerHeader>
       <List>
-        {convs
-          ? convs.map((item) => {
-              if (item.mems.length > 0)
-                return (
-                  <ListItem button key={item._id}>
-                    <ListItemIcon>
-                      <ConvAvatar
-                        src={"data:image/*;base64," + item.mems[0].avatar_photo}
-                        alt={item.mems[0].username}
-                        sx={{ width: "30px", height: "30px" }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary={item.mems[0].username} />
-                  </ListItem>
-                );
-              return STRING.EMPTY;
+        {user.convs
+          ? user.convs.map((conv) => {
+              const mem = conv.mems.filter((mem) => mem._id !== user._id).pop();
+
+              return (
+                <ListItem button key={conv._id}>
+                  <ListItemIcon>
+                    <ConvAvatar
+                      src={
+                        mem.avatar_photo
+                          ? "data:image/*;base64," + mem.avatar_photo
+                          : STRING.EMPTY
+                      }
+                      alt={mem.username}
+                      sx={{ width: "30px", height: "30px" }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={mem.username} />
+                </ListItem>
+              );
             })
           : STRING.EMPTY}
       </List>
       <Divider />
       <List>
-        {grs
-          ? grs.map((item) => {
+        {user.grs
+          ? user.grs.map((gr) => {
               return (
-                <ListItem button key={item._id}>
+                <ListItem button key={gr._id}>
                   <ListItemIcon>
                     <GrpAvatar
-                      src={"data:image/*;base64," + item.background_photo}
+                      src={
+                        gr.background_photo
+                          ? "data:image/*;base64," + gr.background_photo
+                          : STRING.EMPTY
+                      }
                       srcSmall={
-                        "data:image/*;base64," + item.createdBy.avatar_photo
+                        "data:image/*;base64," + gr.createdBy.avatar_photo
                       }
                       sx={{ width: "30px", height: "30px" }}
                     />
                   </ListItemIcon>
-                  <ListItemText primary={item.name} />
+                  <ListItemText primary={gr.name} />
                 </ListItem>
               );
             })

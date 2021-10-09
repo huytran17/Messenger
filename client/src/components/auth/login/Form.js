@@ -64,7 +64,7 @@ export default function Form(props) {
 
           if (remember_me) localStorage.setItem("token", token);
           else sessionStorage.setItem("token", token);
-
+            
           window.location.href = "/";
         })
         .catch((e) => {
