@@ -16,7 +16,7 @@ import {
   validate,
 } from "../../../app/slices/authSlice";
 import { Auth, Field, Server } from "../../../constants/index";
-import { CommonTextField, FormGridItem } from "../../index";
+import { CommonTextField, FormGridItem, PasswordField } from "../../index";
 
 export default function Form(props) {
   const error = useSelector(selectError);
@@ -106,25 +106,29 @@ export default function Form(props) {
             label={emailLabel}
             value={data.email}
             onChange={handleChange(Field.EMAIL)}
+            inputProps={{
+              form: {
+                autoComplete: "off",
+                error: true,
+              },
+            }}
             required
           />
         </FormGridItem>
-        <FormGridItem errorField={error.password}>
-          <CommonTextField
-            label={passwordLabel}
-            value={data.password}
-            onChange={handleChange(Field.PASSWORD)}
-            required
-          />
-        </FormGridItem>
-        <FormGridItem errorField={error.re_password}>
-          <CommonTextField
-            label={repasswordLabel}
-            value={data.re_password}
-            onChange={handleChange(Field.RE_PASSWORD)}
-            required
-          />
-        </FormGridItem>
+        <PasswordField
+          errorField={error.password}
+          label={passwordLabel}
+          value={data.password}
+          changeHandler={handleChange(Field.PASSWORD)}
+          tf={{ required: true }}
+        />
+        <PasswordField
+          errorField={error.re_password}
+          label={repasswordLabel}
+          value={data.re_password}
+          changeHandler={handleChange(Field.RE_PASSWORD)}
+          tf={{ required: true }}
+        />
         <FormGridItem>
           <FormLink href="/auth/login" underline="hover">
             {loginLinkLabel}

@@ -20,7 +20,7 @@ import {
 } from "../../../app/slices/authSlice";
 import { CONF } from "../../../config/app";
 import { Auth, Field, Server } from "../../../constants/index";
-import { CommonTextField, FormGridItem } from "../../index";
+import { CommonTextField, FormGridItem, PasswordField } from "../../index";
 import { CheckBox } from "../../Widgets/index";
 
 export default function Form(props) {
@@ -64,7 +64,7 @@ export default function Form(props) {
 
           if (remember_me) localStorage.setItem("token", token);
           else sessionStorage.setItem("token", token);
-            
+
           window.location.href = "/";
         })
         .catch((e) => {
@@ -125,15 +125,13 @@ export default function Form(props) {
             required
           />
         </FormGridItem>
-        <FormGridItem errorField={error.password}>
-          <CommonTextField
-            label={passwordLabel}
-            value={data.password}
-            onChange={handleChange(Field.PASSWORD)}
-            type="password"
-            required
-          />
-        </FormGridItem>
+        <PasswordField
+          errorField={error.password}
+          label={passwordLabel}
+          value={data.password}
+          changeHandler={handleChange(Field.PASSWORD)}
+          tf={{ required: true }}
+        />
         <FormGridItem>
           <CheckBox
             checked={remember_me}

@@ -17,7 +17,13 @@ import {
   validate,
 } from "../../../app/slices/authSlice";
 import { Auth, Server, Field } from "../../../constants/index";
-import { ErrorHelperText, InputLabelForError } from "../../index";
+import {
+  ErrorHelperText,
+  InputLabelForError,
+  PasswordField,
+  FormGridItem,
+  CommonTextField,
+} from "../../index";
 
 export default function Form(props) {
   const error = useSelector(selectError);
@@ -79,64 +85,34 @@ export default function Form(props) {
   return (
     <Box component="form" sx={sxContainerBox}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <FormControl variant="standard">
-            <InputLabelForError
-              for="email"
-              field="email"
-              label={emailLabel}
-              error={error}
-            />
-            <Input
-              id="email"
-              type="text"
-              value={data.email}
-              onChange={handleChange(Field.EMAIL)}
-              inputProps={{
-                form: {
-                  autoComplete: "off",
-                  error: true,
-                },
-              }}
-              required
-            />
-            <ErrorHelperText error={error.email} />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl variant="standard">
-            <InputLabelForError
-              for="password"
-              field="password"
-              label={passwordLabel}
-            />
-            <Input
-              id="password"
-              type="password"
-              value={data.password}
-              onChange={handleChange(Field.PASSWORD)}
-              required
-            />
-            <ErrorHelperText error={error.password} />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl variant="standard">
-            <InputLabelForError
-              for="re_password"
-              field="re_password"
-              label={repasswordLabel}
-            />
-            <Input
-              id="re_password"
-              type="password"
-              value={data.re_password}
-              onChange={handleChange(Field.RE_PASSWORD)}
-              required
-            />
-            <ErrorHelperText error={error.re_password} />
-          </FormControl>
-        </Grid>
+        <FormGridItem errorField={error.email}>
+          <CommonTextField
+            label={emailLabel}
+            value={data.email}
+            onChange={handleChange(Field.EMAIL)}
+            inputProps={{
+              form: {
+                autoComplete: "off",
+                error: true,
+              },
+            }}
+            required
+          />
+        </FormGridItem>
+        <PasswordField
+          errorField={error.password}
+          label={passwordLabel}
+          value={data.password}
+          changeHandler={handleChange(Field.PASSWORD)}
+          tf={{ required: true }}
+        />
+        <PasswordField
+          errorField={error.re_password}
+          label={repasswordLabel}
+          value={data.re_password}
+          changeHandler={handleChange(Field.RE_PASSWORD)}
+          tf={{ required: true }}
+        />
         <Grid item xs={12}>
           <FormControl>
             <ButtonBox>
