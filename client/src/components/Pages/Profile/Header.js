@@ -3,7 +3,7 @@ import CardHeader from "@mui/material/CardHeader";
 import { red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { selectData } from "../../../app/slices/authSlice";
+import { selectData } from "../../../app/slices/userSlice";
 
 const avatarSize = 80;
 

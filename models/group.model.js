@@ -40,7 +40,7 @@ const groupSchema = new Schema(
 );
 
 groupSchema.post("save", async function (doc) {
-  await User.findByIdAndUpdate(doc.created_by, {
+  await User.findByIdAndUpdate(doc.createdBy, {
     $addToSet: { grs: doc._id },
   }).exec();
 });
@@ -65,7 +65,7 @@ groupSchema.post("findOneAndUpdate", async function (doc) {
     await User.findByIdAndUpdate(uid, {
       $addToSet: { grs: doc._id },
     }).exec();
-  } 
+  }
   //
   else if (update.$pull) {
     const uid = update.$pull.mems.toString("hex");

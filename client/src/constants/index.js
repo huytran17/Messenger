@@ -44,11 +44,11 @@ export const Field = Object.freeze({
 export const Reducer = Object.freeze({
   NAME: {
     AUTH: "AUTH",
-    AUTH_FORM: "AUTH_FORM",
     APPBAR: "APPBAR",
     ALERT: "ALERT",
     UPDATE_INFO: "UPDATE_INFO",
-    BACKDROP: "BACKDROP",
+    SECURITY: "SECURITY",
+    USER: "USER",
   },
 });
 

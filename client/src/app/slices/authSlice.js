@@ -1,62 +1,36 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
 import {
   ValidateError,
   STRING,
   Reducer,
+  Auth,
   Field,
-  Server,
 } from "../../constants/index";
 
 const initialState = {
-  isAllValid: true,
-  convs: null,
-  grs: null,
+  isAllValid: false,
+  remember_me: false,
   data: {
     username: STRING.EMPTY,
-    address: STRING.EMPTY,
-    phone: STRING.EMPTY,
-    bio: STRING.EMPTY,
-    quote: STRING.EMPTY,
-    gender: STRING.EMPTY,
-    dob: STRING.EMPTY,
-    relationship: STRING.EMPTY,
-    avatar_photo: STRING.EMPTY,
-    cover_photo: STRING.EMPTY,
+    email: STRING.EMPTY,
+    password: STRING.EMPTY,
+    re_password: STRING.EMPTY,
+    verify_code: STRING.EMPTY,
   },
   error: {
     username: STRING.EMPTY,
-    address: STRING.EMPTY,
-    phone: STRING.EMPTY,
-    bio: STRING.EMPTY,
-    quote: STRING.EMPTY,
-    gender: STRING.EMPTY,
-    dob: STRING.EMPTY,
-    relationship: STRING.EMPTY,
-    avatar_photo: STRING.EMPTY,
-    cover_photo: STRING.EMPTY,
+    email: STRING.EMPTY,
+    password: STRING.EMPTY,
+    re_password: STRING.EMPTY,
+    verify_code: STRING.EMPTY,
   },
 };
 
-export const getUserAsync = createAsyncThunk(
-  Reducer.NAME.AUTH + "/fetchUser",
-  async (id) => {
-    const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
+const validateEmail = (email) => {
+  const pattern =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return user.data.data || null;
-  }
-);
-
-const filterMems = (arrObj, id) => {
-  arrObj.forEach((item) => {
-    item.mems = item.mems.filter((mem) => {
-      return mem._id !== id;
-    });
-  });
-};
-
-const setStateError = (state) => (path, error) => {
-  state.error[path] = error;
+  return pattern.test(email.toLowerCase());
 };
 
 function checkErrorProperties(obj) {
@@ -66,6 +40,16 @@ function checkErrorProperties(obj) {
   return true;
 }
 
+const setStateError =
+  (state) =>
+  (path, value = STRING.EMPTY) => {
+    state.error[path] = value;
+  };
+
+const setIsAllValid = (state) => (obj) => {
+  state.isAllValid = checkErrorProperties(obj);
+};
+
 export const authSlice = createSlice({
   name: Reducer.NAME.AUTH,
   initialState,
@@ -73,73 +57,115 @@ export const authSlice = createSlice({
     changeData: (state, action) => {
       state.data = { ...state.data, ...action.payload };
     },
-    setData: (state, action) => {
-      state.data = { ...action.payload };
-    },
     validate: (state, action) => {
-      let payload = action.payload;
+      const path = action.payload.path.toLowerCase();
 
-      let path = payload.path.toLowerCase();
+      const type = action.payload.type.toUpperCase();
 
-      let setErrorState = setStateError(state);
+      const setErrorState = setStateError(state);
 
-      //validate username
-      if (path === Field.USERNAME) {
-        if (state.data[path] === STRING.EMPTY)
-          setErrorState(path, ValidateError.REQUIRED);
-        else if (state.data[path].length < 6)
-          setErrorState(path, ValidateError.USERNAME_MIN_LENGTH);
-        else if (state.data[path].length > 32)
-          setErrorState(path, ValidateError.USERNAME_MAX_LENGTH);
+      const _setIsAllValid = setIsAllValid(state);
+
+      //validate all data is not empty
+      if (state.data[path] === STRING.EMPTY)
+        setErrorState(path, ValidateError.REQUIRED);
+      //validate email
+      else if (path === Field.EMAIL) {
+        if (!validateEmail(state.data[path]))
+          setErrorState(path, ValidateError.INVALID_EMAIL);
+        //
         else setErrorState(path, STRING.EMPTY);
       }
-      //validate address
-      else if (path === Field.ADDRESS) {
-        if (state.data[path].length > 255)
-          setErrorState(path, ValidateError.ADDRESS_MAX_LENGTH);
-        else setErrorState(path, STRING.EMPTY);
-      }
-      //validate bio
-      else if (path === Field.BIO) {
-        if (state.data[path].length > 255)
-          setErrorState(path, ValidateError.BIO_MAX_LENGTH);
-        else setErrorState(path, STRING.EMPTY);
-      }
-      //validate quote
-      else if (path === Field.QUOTE) {
-        if (state.data[path].length > 255)
-          setErrorState(path, ValidateError.QUOTE_MAX_LENGTH);
-        else setErrorState(path, STRING.EMPTY);
-      }
+      //validate for register
+      else if (type === Auth.TYPE.REGISTER || type === Auth.TYPE.RESET_PWD) {
+        //validate username
+        if (path === Field.USERNAME) {
+          if (state.data.username.length < 6)
+            setErrorState(path, ValidateError.USERNAME_MIN_LENGTH);
+          //
+          else if (state.data.username.length > 32)
+            setErrorState(path, ValidateError.USERNAME_MAX_LENGTH);
+          //
+          else setErrorState(path, STRING.EMPTY);
+        }
+        //validate password & re-password
+        else if (path === Field.RE_PASSWORD || path === Field.PASSWORD) {
+          //password length
+          if (path === Field.PASSWORD) {
+            if (state.data.password.length < 8)
+              setErrorState(path, ValidateError.PASSWORD_MIN_LENGTH);
+            //
+            else if (state.data.password.length > 32)
+              setErrorState(path, ValidateError.PASSWORD_MAX_LENGTH);
+            //
+            else setErrorState(path, STRING.EMPTY);
+          }
 
-      //set is all valid
-      state.isAllValid = checkErrorProperties(state.error);
+          //match re-pasword
+          if (
+            state.data.re_password &&
+            state.data.re_password !== state.data.password
+          )
+            setErrorState(Field.RE_PASSWORD, ValidateError.MISMATCH);
+          //
+          else setErrorState(Field.RE_PASSWORD, STRING.EMPTY);
+        }
+      } else setErrorState(path, STRING.EMPTY);
+
+      //validate
+      //validate login
+      if (type === Auth.TYPE.LOGIN) {
+        const { email, password } = state.error;
+
+        _setIsAllValid({ email, password });
+      }
+      //validate register
+      else if (type === Auth.TYPE.REGISTER) {
+        const { email, username, password, re_password } = state.error;
+
+        _setIsAllValid({ email, username, password, re_password });
+      }
+      //validate find account
+      else if (type === Auth.TYPE.FORGET_PWD) {
+        const { email } = state.error;
+
+        _setIsAllValid({ email });
+      }
+      //validate verify code
+      else if (type === Auth.TYPE.VERIFY_CODE) {
+        const { verify_code } = state.error;
+
+        _setIsAllValid({ verify_code });
+      }
+      //validate reset password
+      else if (type === Auth.TYPE.RESET_PWD) {
+        const { password, re_password } = state.error;
+
+        _setIsAllValid({ password, re_password });
+      }
     },
-    setError: (state, action) => {},
-  },
-  extraReducers: (builder) => {
-    builder.addCase(getUserAsync.fulfilled, (state, action) => {
+    setError: (state, action) => {
       const payload = action.payload;
 
-      filterMems(payload.convs, payload._id);
+      state.error[payload.path] = payload.error;
 
-      state.data = payload;
-      state.grs = payload.grs;
-      state.convs = payload.convs;
-    });
+      state.isAllValid = false;
+    },
+    rememberMeCheck: (state) => {
+      state.remember_me = !state.remember_me;
+    },
   },
 });
 
-export const { changeData, validate, setError, setData } = authSlice.actions;
-
-export const selectIsAllValid = (state) => state.auth.isAllValid;
-
-export const selectError = (state) => state.auth.error;
+export const { changeData, validate, setError, rememberMeCheck } =
+  authSlice.actions;
 
 export const selectData = (state) => state.auth.data;
 
-export const selectConvs = (state) => state.auth.convs;
+export const selectError = (state) => state.auth.error;
 
-export const selectGrs = (state) => state.auth.grs;
+export const selectIsAllValid = (state) => state.auth.isAllValid;
+
+export const selectRememberMe = (state) => state.auth.remember_me;
 
 export default authSlice.reducer;

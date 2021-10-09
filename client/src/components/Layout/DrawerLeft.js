@@ -16,7 +16,7 @@ import {
 import {
   selectConvs,
   selectGrs
-} from "../../app/slices/authSlice";
+} from "../../app/slices/userSlice";
 import { STRING, View } from "../../constants/index";
 import { ConvAvatar, GrpAvatar } from "../index";
 

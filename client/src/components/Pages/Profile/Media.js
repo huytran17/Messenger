@@ -2,7 +2,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CoverPhoto from "../../../static/images/loginPanel.jpg";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { selectData } from "../../../app/slices/authSlice";
+import { selectData } from "../../../app/slices/userSlice";
 
 export default function Media({ cover, ...props }) {
   var user = useSelector(selectData);

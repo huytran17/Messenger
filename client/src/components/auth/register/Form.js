@@ -14,7 +14,7 @@ import {
   selectIsAllValid,
   setError,
   validate,
-} from "../../../app/slices/authFormSlice";
+} from "../../../app/slices/authSlice";
 import { Auth, Field, Server } from "../../../constants/index";
 import { CommonTextField, FormGridItem } from "../../index";
 

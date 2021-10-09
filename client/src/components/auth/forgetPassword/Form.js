@@ -16,7 +16,7 @@ import {
   selectIsAllValid,
   setError,
   validate,
-} from "../../../app/slices/authFormSlice";
+} from "../../../app/slices/authSlice";
 import { Auth, Message, Server, STRING, Field } from "../../../constants/index";
 import { ErrorHelperText, InputLabelForError } from "../../index";
 

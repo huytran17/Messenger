@@ -4,13 +4,13 @@ import React, { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { io } from "socket.io-client";
-import { getUserAsync } from "./app/slices/authSlice";
+import { getUserAsync } from "./app/slices/userSlice";
 import {
   ForgetPwd,
   Login,
   Register,
   ResetPassword,
-  VerifyCode
+  VerifyCode,
 } from "./components/auth/index";
 import { Home, Profile } from "./components/index";
 import { CONF } from "./config/app";

@@ -19,7 +19,7 @@ import {
   selectIsAllValid,
   validate,
   setData,
-} from "../../../app/slices/authSlice";
+} from "../../../app/slices/userSlice";
 import { Field, Server } from "../../../constants/index";
 import {
   CommonFormControl,
@@ -114,7 +114,8 @@ export default function AboutTab({
           dispatch(setData(res.data.data));
         })
         .then(() => {
-          window.location.reload();
+          console.log(data);
+          // window.location.reload();
         })
         .catch((error) => {
           console.error(error);
@@ -251,6 +252,8 @@ AboutTab.propTypes = {
   relationship: PropTypes.string,
   bio: PropTypes.string,
   quote: PropTypes.string,
+  index: PropTypes.number,
+  value: PropTypes.number,
 };
 
 AboutTab.defaultProps = {
@@ -263,4 +266,6 @@ AboutTab.defaultProps = {
   quoteLabel: "Quote",
   dobLabel: "Birthday",
   btnSaveLabel: "Save",
+  index: 0,
+  value: 0,
 };

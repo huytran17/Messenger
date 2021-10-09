@@ -10,10 +10,14 @@ module.exports.storeValidator = (data) => {
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
     }),
-    mems: Joi.required().messages({
+    mems: Joi.string().required().messages({
+      "string.base": ValidationMessage.STRING_BASE,
+      "string.empty": ValidationMessage.REQUIRED,
       "any.required": ValidationMessage.REQUIRED,
     }),
-    created_by: Joi.required().messages({
+    createdBy: Joi.string().required().messages({
+      "string.base": ValidationMessage.STRING_BASE,
+      "string.empty": ValidationMessage.REQUIRED,
       "any.required": ValidationMessage.REQUIRED,
     }),
   });
@@ -38,7 +42,6 @@ module.exports.updateInfoValidator = (data) => {
       "string.empty": ValidationMessage.REQUIRED,
       "any.required": ValidationMessage.REQUIRED,
     }),
-    
   });
 
   return schema.validate(data, {

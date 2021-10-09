@@ -156,20 +156,14 @@ userSchema.statics.getAll = async function () {
 };
 
 userSchema.statics.getById = async function (id) {
-  const user = await this.findById(
-    id,
-    "-createdAt -updatedAt -deletedAt -deleted"
-  )
+  const user = await this.findById(id)
     .populate({
       path: "convs",
-      select: ["_id", "mems"],
-      populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
+      populate: { path: "mems" },
     })
     .populate({
       path: "grs",
-      select: ["_id", "mems", "name", "background_photo"],
-      populate: { path: "mems", select: ["_id", "avatar_photo", "username"] },
-      populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
+      populate: [{ path: "mems" }, { path: "createdBy" }],
     })
     .exec();
 
@@ -186,9 +180,21 @@ userSchema.statics.getByEmail = async function (email) {
 };
 
 userSchema.statics.updateInfo = async function (id, data) {
-  const user = await this.findOneAndUpdate({ _id: id }, data, {
+  const user = await this.findByIdAndUpdate(id, data, {
     new: true,
-  }).exec();
+  })
+    .populate({
+      path: "convs",
+      select: ["_id", "mems"],
+      populate: { path: "mems" },
+    })
+    .populate({
+      path: "grs",
+      select: ["_id", "mems", "name", "background_photo"],
+      populate: { path: "mems" },
+      populate: { path: "createdBy", select: ["_id", "avatar_photo"] },
+    })
+    .exec();
 
   return user;
 };
