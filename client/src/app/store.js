@@ -3,7 +3,6 @@ import appBarReducer from "./slices/appBarSlice";
 import authFormReducer from "./slices/authFormSlice";
 import alertReducer from "./slices/alertSlice";
 import authReducer from "./slices/authSlice";
-import backropReducer from "./slices/backdropSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +10,5 @@ export const store = configureStore({
     authForm: authFormReducer,
     alert: alertReducer,
     auth: authReducer,
-    backdrop: backropReducer,
   },
 });

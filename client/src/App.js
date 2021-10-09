@@ -1,32 +1,25 @@
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import Crypto from "crypto-js";
-import React, { useContext, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useContext } from "react";
+import { useDispatch } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { io } from "socket.io-client";
 import { getUserAsync } from "./app/slices/authSlice";
-import { selectIsOpen, toggle } from "./app/slices/backdropSlice";
 import {
   ForgetPwd,
   Login,
   Register,
   ResetPassword,
-  VerifyCode,
+  VerifyCode
 } from "./components/auth/index";
 import { Home, Profile } from "./components/index";
 import { CONF } from "./config/app";
 import { Server } from "./constants/index";
 import { AuthContext, SocketContext } from "./ctx/appCtx";
 
-var isOpenBackdrop = false;
-
 axios.interceptors.request.use(
   function (config) {
     config.withCredentials = true;
-
-    isOpenBackdrop = true;
 
     return config;
   },
@@ -36,10 +29,8 @@ axios.interceptors.request.use(
 );
 
 axios.interceptors.response.use(
-  function (config) {
-    isOpenBackdrop = false;
-
-    return config;
+  function (response) {
+    return response;
   },
   function (error) {
     return Promise.reject(error);
@@ -124,14 +115,6 @@ const SocketProvider = ({ children }) => {
 };
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  const isOpen = useSelector(selectIsOpen);
-
-  // useEffect(() => {
-  //   dispatch(toggle());
-  // }, [dispatch]);
-
   return (
     <div className="App">
       <AuthProvider>
@@ -160,12 +143,6 @@ const App = () => {
         <Route path="/auth/reset-password" component={ResetPassword} />
         <Route path="/auth/logout" component={Login} />
       </Switch>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isOpenBackdrop}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </div>
   );
 };
