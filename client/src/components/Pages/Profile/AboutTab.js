@@ -11,21 +11,19 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import {
   changeData,
   selectData,
   selectError,
   selectIsAllValid,
-  validate,
-  setData,
+  validate
 } from "../../../app/slices/userSlice";
 import { Field, Server } from "../../../constants/index";
 import {
   CommonFormControl,
   CommonTextField,
   FormGridItem,
-  TabPanel,
+  TabPanel
 } from "../../index";
 import { localeMap, maskMap } from "../../utils/index";
 
@@ -64,15 +62,11 @@ export default function AboutTab({
 }) {
   const isAllValid = useSelector(selectIsAllValid);
 
-  var data = useSelector(selectData);
+  const user = useSelector(selectData);
 
   const error = useSelector(selectError);
 
   const dispatch = useDispatch();
-
-  const location = useLocation();
-
-  const uid = location.pathname.split("/").pop();
 
   const handleChangeInput = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
@@ -98,9 +92,9 @@ export default function AboutTab({
         bio,
         relationship,
         quote,
-      } = data;
+      } = user;
       await axios
-        .patch(`${Server.URL}:${Server.PORT}/users/${uid}`, {
+        .patch(`${Server.URL}:${Server.PORT}/users/${user._id}`, {
           username,
           address,
           phone,
@@ -109,9 +103,6 @@ export default function AboutTab({
           bio,
           relationship,
           quote,
-        })
-        .then((res) => {
-          dispatch(setData(res.data.data));
         })
         .then(() => {
           window.location.reload();
@@ -138,21 +129,21 @@ export default function AboutTab({
             <XFormGridItem errorField={error.username}>
               <CommonTextField
                 label={usernameLabel}
-                value={data.username}
+                value={user.username}
                 onChange={handleChangeInput(Field.USERNAME)}
               />
             </XFormGridItem>
             <XFormGridItem errorField={error.address}>
               <CommonTextField
                 label={addressLabel}
-                value={data.address}
+                value={user.address}
                 onChange={handleChangeInput(Field.ADDRESS)}
               />
             </XFormGridItem>
             <XFormGridItem errorField={error.phone}>
               <CommonTextField
                 label={phoneLabel}
-                value={data.phone}
+                value={user.phone}
                 onChange={handleChangeInput(Field.PHONE)}
               />
             </XFormGridItem>
@@ -164,7 +155,7 @@ export default function AboutTab({
                 <DatePicker
                   mask={maskMap.en}
                   label={dobLabel}
-                  value={data.dob}
+                  value={user.dob}
                   onChange={handleChangeDatePicker(Field.DOB)}
                   renderInput={(params) => <CommonTextField {...params} />}
                 />
@@ -173,7 +164,7 @@ export default function AboutTab({
             <XFormGridItem errorField={error.gender}>
               <CommonFormControl inputLabel={genderLabel}>
                 <Select
-                  value={data.gender}
+                  value={user.gender}
                   onChange={handleChangeInput(Field.GENDER)}
                 >
                   {genders.map((item, index) => {
@@ -189,14 +180,14 @@ export default function AboutTab({
             <XFormGridItem errorField={error.bio}>
               <CommonTextField
                 label={bioLabel}
-                value={data.bio}
+                value={user.bio}
                 onChange={handleChangeInput(Field.BIO)}
               />
             </XFormGridItem>
             <XFormGridItem errorField={error.relationship}>
               <CommonFormControl inputLabel={relationshipLabel}>
                 <Select
-                  value={data.relationship}
+                  value={user.relationship}
                   onChange={handleChangeInput(Field.RELATIONSHIP)}
                 >
                   {relationships.map((item, index) => {
@@ -212,7 +203,7 @@ export default function AboutTab({
             <XFormGridItem errorField={error.quote}>
               <CommonTextField
                 label={quoteLabel}
-                value={data.quote}
+                value={user.quote}
                 onChange={handleChangeInput(Field.QUOTE)}
               />
             </XFormGridItem>

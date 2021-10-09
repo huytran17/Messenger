@@ -56,13 +56,13 @@ const SecurityTab = ({
           autoComplete="off"
         >
           <Grid container spacing={{ xs: 1, md: 2 }} columns={12}>
-            <XFormGridItem errorField={error.username}>
-              {/* <CommonTextField
+            {/* <XFormGridItem errorField={error.username}>
+              <CommonTextField
                 label={pwdLabel}
                 value={data.password}
                 onChange={handleChangeInput(Field.USERNAME)}
-              /> */}
-            </XFormGridItem>
+              />
+            </XFormGridItem> */}
           </Grid>
         </Box>
       </TabPanel>

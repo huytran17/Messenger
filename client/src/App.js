@@ -123,13 +123,13 @@ const App = () => {
             <ProtectedRoute path="/" exact>
               <Home />
             </ProtectedRoute>
-            <ProtectedRoute path="/home">
+            <ProtectedRoute path="/home" exact>
               <Home />
             </ProtectedRoute>
-            <ProtectedRoute path="/profile/:id">
+            <ProtectedRoute path="/profile" exact>
               <Profile />
             </ProtectedRoute>
-            <ProtectedRoute path="/settings">
+            <ProtectedRoute path="/settings" exact>
               <Home />
             </ProtectedRoute>
           </Switch>

@@ -6,13 +6,11 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import { View } from "../../constants/index";
-import Crypto from "crypto-js";
-import { CONF } from "../../config/app";
 
 const bottomNavHeight = View.BOTTOM_NAV_HEIGHT;
 
@@ -23,18 +21,10 @@ export default function BottomNav(props) {
 
   const location = useLocation();
 
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-
-  const bytes = Crypto.AES.decrypt(token, CONF.TOKEN_SECRET);
-
-  const originalData = JSON.parse(bytes.toString(Crypto.enc.Utf8));
-
-  const uid = originalData.id;
-
   const urlValue = {
     "": homeValue,
     home: homeValue,
-    [`profile/${uid}`]: profileValue,
+    profile: profileValue,
     settings: settingValue,
     logout: logoutValue,
   };
