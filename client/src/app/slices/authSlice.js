@@ -33,10 +33,19 @@ const validateEmail = (email) => {
   return pattern.test(email.toLowerCase());
 };
 
+function checkDataProperties(obj) {
+  for (var key in obj) {
+    if (obj[key].length === 0) return false;
+  }
+
+  return true;
+}
+
 function checkErrorProperties(obj) {
   for (var key in obj) {
-    if (obj[key] !== null && obj[key] !== STRING.EMPTY) return false;
+    if (obj[key].length > 0) return false;
   }
+
   return true;
 }
 
@@ -47,7 +56,8 @@ const setStateError =
   };
 
 const setIsAllValid = (state) => (obj) => {
-  state.isAllValid = checkErrorProperties(obj);
+  state.isAllValid =
+    checkDataProperties(obj) && checkErrorProperties(state.error);
 };
 
 export const authSlice = createSlice({
@@ -86,7 +96,7 @@ export const authSlice = createSlice({
           else setErrorState(path, STRING.EMPTY);
         }
         //validate password & re-password
-        else if (path === Field.RE_PASSWORD || path === Field.PASSWORD) {
+        else if (path === Field.PASSWORD || path === Field.RE_PASSWORD) {
           //password length
           if (path === Field.PASSWORD) {
             if (state.data.password.length < 8)
@@ -109,31 +119,31 @@ export const authSlice = createSlice({
       //validate
       //validate login
       if (type === Auth.TYPE.LOGIN) {
-        const { email, password } = state.error;
+        const { email, password } = state.data;
 
         _setIsAllValid({ email, password });
       }
       //validate register
       else if (type === Auth.TYPE.REGISTER) {
-        const { email, username, password, re_password } = state.error;
+        const { email, username, password, re_password } = state.data;
 
         _setIsAllValid({ email, username, password, re_password });
       }
       //validate find account
       else if (type === Auth.TYPE.FORGET_PWD) {
-        const { email } = state.error;
+        const { email } = state.data;
 
         _setIsAllValid({ email });
       }
       //validate verify code
       else if (type === Auth.TYPE.VERIFY_CODE) {
-        const { verify_code } = state.error;
+        const { verify_code } = state.data;
 
         _setIsAllValid({ verify_code });
       }
       //validate reset password
       else if (type === Auth.TYPE.RESET_PWD) {
-        const { password, re_password } = state.error;
+        const { password, re_password } = state.data;
 
         _setIsAllValid({ password, re_password });
       }

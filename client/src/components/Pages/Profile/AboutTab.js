@@ -131,6 +131,7 @@ export default function AboutTab({
                 label={usernameLabel}
                 value={user.username}
                 onChange={handleChangeInput(Field.USERNAME)}
+                required
               />
             </XFormGridItem>
             <XFormGridItem errorField={error.address}>

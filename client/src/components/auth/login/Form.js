@@ -122,6 +122,7 @@ export default function Form(props) {
                 error: true,
               },
             }}
+            type="email"
             required
           />
         </FormGridItem>

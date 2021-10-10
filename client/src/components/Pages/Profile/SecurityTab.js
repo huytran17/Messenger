@@ -10,7 +10,8 @@ import {
   validate,
 } from "../../../app/slices/securitySlice";
 import { Field } from "../../../constants/index";
-import { PasswordField, TabPanel } from "../../index";
+import { PasswordField, TabPanel, FormGridItem } from "../../index";
+import Button from "@mui/material/Button";
 
 const errSx = { marginLeft: 1 };
 
@@ -18,6 +19,7 @@ const SecurityTab = ({
   pwdLabel,
   newPwdLabel,
   rePwdLabel,
+  btnSaveLabel,
   index,
   value,
   ...rest
@@ -32,6 +34,8 @@ const SecurityTab = ({
     dispatch(changeData({ [prop]: event.target.value }));
     dispatch(validate({ path: prop }));
   };
+
+  const update = () => {};
 
   return (
     <TabPanel value={value} index={index} {...rest}>
@@ -51,6 +55,7 @@ const SecurityTab = ({
             label={pwdLabel}
             value={data.password}
             changeHandler={handleChangeInput(Field.PASSWORD)}
+            tf={{ required: true }}
           />
           <PasswordField
             errorField={error.new_password}
@@ -58,6 +63,7 @@ const SecurityTab = ({
             label={newPwdLabel}
             value={data.new_password}
             changeHandler={handleChangeInput(Field.NEW_PASSWORD)}
+            tf={{ required: true }}
           />
           <PasswordField
             errorField={error.re_password}
@@ -65,7 +71,18 @@ const SecurityTab = ({
             label={rePwdLabel}
             value={data.re_password}
             changeHandler={handleChangeInput(Field.RE_PASSWORD)}
+            tf={{ required: true }}
           />
+          <FormGridItem xs={12} sm={12} sx={{ textAlign: "right" }}>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={update}
+              sx={{ float: "right" }}
+            >
+              {btnSaveLabel}
+            </Button>
+          </FormGridItem>
         </Grid>
       </Box>
     </TabPanel>
@@ -76,6 +93,7 @@ SecurityTab.propTypes = {
   pwdLabel: PropTypes.string,
   newPwdLabel: PropTypes.string,
   rePwdLabel: PropTypes.string,
+  btnSaveLabel: PropTypes.string,
   index: PropTypes.number,
   value: PropTypes.number,
 };
@@ -84,6 +102,7 @@ SecurityTab.defaultProps = {
   pwdLabel: "Current password",
   newPwdLabel: "New password",
   rePwdLabel: "Re-type new password",
+  btnSaveLabel: "Save",
   index: 1,
   value: 1,
 };

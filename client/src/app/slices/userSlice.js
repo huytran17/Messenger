@@ -40,8 +40,9 @@ const setStateError = (state) => (path, error) => {
 
 function checkErrorProperties(obj) {
   for (var key in obj) {
-    if (obj[key] !== null && obj[key] !== STRING.EMPTY) return false;
+    if (obj[key].length > 0) return false;
   }
+
   return true;
 }
 
