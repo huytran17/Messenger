@@ -36,6 +36,11 @@ module.exports.updateInfoValidator = (data) => {
       "string.min": ValidationMessage.MIN,
       "string.max": ValidationMessage.MAX,
     }),
+    nickname: Joi.string().allow("").min(2).max(20).messages({
+      "string.base": ValidationMessage.STRING_BASE,
+      "string.min": ValidationMessage.MIN,
+      "string.max": ValidationMessage.MAX,
+    }),
     dob: Joi.date().messages({
       "date.base": ValidationMessage.DATE_BASE,
     }),

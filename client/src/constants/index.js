@@ -102,4 +102,5 @@ export const View = Object.freeze({
   DRAWER_WIDTH: 220,
   BOTTOM_NAV_HEIGHT: 56,
   APPBAR_HEIGHT: 56,
+  AVATAR_SIZE: 80,
 });

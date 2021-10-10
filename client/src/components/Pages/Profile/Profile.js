@@ -5,8 +5,7 @@ import Collapse from "@mui/material/Collapse";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { Action, Content, Media, ProfileHeader, ProfileTab } from "./index";
-
-const avatarSize = 80;
+import { View } from "../../../constants/index";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -23,7 +22,7 @@ const BoxContainer = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   width: "100%",
   "& .MuiCardHeader-avatar": {
-    margin: `-${avatarSize / 2.2}px 0 ${avatarSize / 4.8}px 0`,
+    margin: `-${View.AVATAR_SIZE / 2.2}px 0 ${View.AVATAR_SIZE / 4.8}px 0`,
   },
   "& .MuiCardHeader-root": {
     paddingTop: 0,

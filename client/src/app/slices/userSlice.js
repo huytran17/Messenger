@@ -10,6 +10,7 @@ import {
 } from "../../constants/index";
 
 const initialState = {
+  isLoading: false,
   isAllValid: true,
   data: {},
   error: {
@@ -104,7 +105,13 @@ export const userSlice = createSlice({
     setError: (state, action) => {},
   },
   extraReducers: (builder) => {
+    builder.addCase(getUserAsync.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
     builder.addCase(getUserAsync.fulfilled, (state, action) => {
+      state.isLoading = false;
+
       const payload = action.payload;
 
       state.data = payload;
@@ -119,5 +126,7 @@ export const selectIsAllValid = (state) => state.user.isAllValid;
 export const selectError = (state) => state.user.error;
 
 export const selectData = (state) => state.user.data;
+
+export const selectIsLoading = (state) => state.user.isLoading;
 
 export default userSlice.reducer;

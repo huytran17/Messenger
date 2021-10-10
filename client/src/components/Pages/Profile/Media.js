@@ -10,9 +10,9 @@ export default function Media({ cover, ...props }) {
   return (
     <CardMedia
       component="img"
-      height="200"
+      height={200}
       image={user.cover_photo || CoverPhoto}
-      alt="Paella dish"
+      alt={user.username}
       {...props}
     />
   );

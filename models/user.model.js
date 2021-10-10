@@ -43,6 +43,12 @@ const userSchema = new Schema(
       unique: [true, "Đã tồn tại."],
       required: [true, "Không được để trống."],
     },
+    nickname: {
+      type: String,
+      trim: true,
+      min: [2, "Tối thiểu 2 ký tự."],
+      max: [20, "Tối đa 20 ký tự."],
+    },
     phone: {
       type: String,
       trim: true,
