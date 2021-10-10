@@ -6,6 +6,7 @@ import {
   Reducer,
   Field,
   Server,
+  HttpStatus,
 } from "../../constants/index";
 
 const initialState = {
@@ -28,7 +29,12 @@ const initialState = {
 export const getUserAsync = createAsyncThunk(
   Reducer.NAME.USER + "/fetchUser",
   async (id) => {
-    const user = await axios.get(`${Server.URL}:${Server.PORT}/users/${id}`);
+    const user = await axios
+      .get(`${Server.URL}:${Server.PORT}/users/${id}`)
+      .catch((error) => {
+        if (error.response.status !== HttpStatus.OK)
+          window.location.href = "/auth/login";
+      });
 
     return user.data.data || {};
   }

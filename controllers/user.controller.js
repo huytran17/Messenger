@@ -119,6 +119,13 @@ module.exports.updatePassword = async (req, res) => {
 
     const user = await User.updatePassword(id, new_password);
 
+    await req.session.destroy((err) => {
+      if (err)
+        return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    });
+
+    await res.clearCookie("token");
+
     return HttpResponse(res, HttpStatus.CREATED, user);
   } catch (err) {
     return HttpResponseError(

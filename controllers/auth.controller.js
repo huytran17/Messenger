@@ -17,7 +17,9 @@ module.exports.login = async (req, res) => {
     const token = jwt.sign({ uid: user._id }, _CONF.TOKEN_SECRET);
 
     if (data.remember_me === true) {
-      const expires = new Date(new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES);
+      const expires = new Date(
+        new Date().getTime() + _CONF.COOKIE_TOKEN_EXPIRES
+      );
 
       await res.cookie("token", token, {
         signed: true,

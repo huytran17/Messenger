@@ -1,17 +1,21 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeData,
   selectData,
   selectError,
+  selectIsAllValid,
   validate,
+  setError,
 } from "../../../app/slices/securitySlice";
-import { Field } from "../../../constants/index";
+import { AuthContext } from "../../../ctx/appCtx";
+import { Field, Server } from "../../../constants/index";
 import { PasswordField, TabPanel, FormGridItem } from "../../index";
 import Button from "@mui/material/Button";
+import axios from "axios";
 
 const errSx = { marginLeft: 1 };
 
@@ -30,12 +34,46 @@ const SecurityTab = ({
 
   const dispatch = useDispatch();
 
+  const isAllValid = useSelector(selectIsAllValid);
+
   const handleChangeInput = (prop) => (event) => {
     dispatch(changeData({ [prop]: event.target.value }));
     dispatch(validate({ path: prop }));
   };
 
-  const update = () => {};
+  const useAuth = () => {
+    return useContext(AuthContext);
+  };
+
+  const auth = useAuth();
+
+  const update = async () => {
+    const { password, re_password, new_password } = data;
+
+    if (isAllValid) {
+      await axios
+        .patch(`${Server.URL}:${Server.PORT}/users`, {
+          id: auth.id,
+          ...{ password, re_password, new_password },
+        })
+        .then(() => {
+          localStorage.removeItem("token");
+
+          sessionStorage.removeItem("token");
+
+          window.location.reload();
+        })
+        .catch((error) => {
+          if (error.response)
+            dispatch(
+              setError({
+                path: error.response.data.path,
+                error: error.response.data.errors,
+              })
+            );
+        });
+    }
+  };
 
   return (
     <TabPanel value={value} index={index} {...rest}>
