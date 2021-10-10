@@ -16,6 +16,7 @@ import { Field, Server } from "../../../constants/index";
 import { PasswordField, TabPanel, FormGridItem } from "../../index";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { deleteAllStorage } from "../../../utils/auth";
 
 const errSx = { marginLeft: 1 };
 
@@ -57,11 +58,7 @@ const SecurityTab = ({
           ...{ password, re_password, new_password },
         })
         .then(() => {
-          localStorage.removeItem("token");
-
-          sessionStorage.removeItem("token");
-
-          window.location.reload();
+          deleteAllStorage();
         })
         .catch((error) => {
           if (error.response)

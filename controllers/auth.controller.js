@@ -57,12 +57,20 @@ module.exports.register = async (req, res) => {
 };
 
 module.exports.logout = async (req, res) => {
-  await req.session.destroy((err) => {
-    if (err)
-      return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
-  });
+  try {
+    await req.session.destroy((err) => {
+      if (err)
+        return HttpResponseError(res, HttpStatus.INTERNAL_SERVER_ERROR, err);
+    });
 
-  await res.clearCookie("token");
+    await res.clearCookie("token");
 
-  return res.redirect("/auth/login");
+    return HttpResponse(res, HttpStatus.OK);
+  } catch (err) {
+    return HttpResponseError(
+      res,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      err.message
+    );
+  }
 };

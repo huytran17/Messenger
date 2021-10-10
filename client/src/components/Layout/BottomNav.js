@@ -10,7 +10,9 @@ import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { View } from "../../constants/index";
+import { View, Server } from "../../constants/index";
+import { deleteAllStorage } from "../../utils/auth";
+import axios from "axios";
 
 const bottomNavHeight = View.BOTTOM_NAV_HEIGHT;
 
@@ -40,14 +42,33 @@ export default function BottomNav(props) {
   const handleChange = (event, newValue) => {
     const urlPart = getKeyByValue(urlValue, newValue);
 
-    history.push(`/${urlPart}`);
+    if (urlValue[urlPart] !== urlValue.logout) {
+      history.push(`/${urlPart}`);
 
-    setValue(newValue);
+      setValue(newValue);
+    } else {
+      localStorage.removeItem("token");
+
+      sessionStorage.removeItem("token");
+
+      window.location.reload();
+    }
   };
 
   const BoxContainer = styled(Box)(({ theme }) => ({
     zIndex: theme.zIndex.drawer,
   }));
+
+  const logout = async () => {
+    await axios
+      .post(`${Server.URL}:${Server.PORT}/auth/logout`)
+      .then(() => {
+        deleteAllStorage();
+      })
+      .catch((err) => {
+        window.location.reload();
+      });
+  };
 
   return (
     <BoxContainer sx={{ pb: 7 }}>
@@ -76,7 +97,11 @@ export default function BottomNav(props) {
             value={settingValue}
             icon={<SettingsIcon />}
           />
-          <BottomNavigationAction value={logoutValue} icon={<LogoutIcon />} />
+          <BottomNavigationAction
+            value={logoutValue}
+            icon={<LogoutIcon />}
+            onClick={logout}
+          />
         </BottomNavigation>
       </Paper>
     </BoxContainer>

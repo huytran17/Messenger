@@ -95,7 +95,7 @@ export default function Form(props) {
             />
             <Input
               id="email"
-              type="text"
+              type="email"
               value={data.email}
               onChange={handleChange(Field.EMAIL)}
               inputProps={{

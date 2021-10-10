@@ -141,7 +141,6 @@ const App = () => {
         <Route path="/auth/forget-password" component={ForgetPwd} />
         <Route path="/auth/verify-code" component={VerifyCode} />
         <Route path="/auth/reset-password" component={ResetPassword} />
-        <Route path="/auth/logout" component={Login} />
       </Switch>
     </div>
   );
