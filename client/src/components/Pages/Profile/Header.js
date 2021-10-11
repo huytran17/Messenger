@@ -20,17 +20,9 @@ const Header = styled(CardHeader)(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const SmallCamera = styled(CameraAltIcon)(({ theme }) => ({
-  display: "none",
-}));
-
-const BadgeContainer = styled(Badge)(({ theme }) => ({
-  "&:hover": {
-    "& .MuiSvgIcon-root": {
-      display: "block",
-    },
-  },
-}));
+const SmallCamera = styled(CameraAltIcon)({
+  cursor: "pointer",
+});
 
 export default function ProfileHeader({ ...props }) {
   const user = useSelector(selectData);
@@ -50,7 +42,7 @@ export default function ProfileHeader({ ...props }) {
               height={View.AVATAR_SIZE}
             />
           ) : (
-            <BadgeContainer
+            <Badge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               badgeContent={
@@ -70,7 +62,7 @@ export default function ProfileHeader({ ...props }) {
                 }
                 alt={user.username}
               ></Avatar>
-            </BadgeContainer>
+            </Badge>
           )
         }
         title={
