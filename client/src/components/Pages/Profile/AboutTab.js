@@ -16,14 +16,14 @@ import {
   selectData,
   selectError,
   selectIsAllValid,
-  validate
+  validate,
 } from "../../../app/slices/userSlice";
 import { Field, Server } from "../../../constants/index";
 import {
   CommonFormControl,
   CommonTextField,
   FormGridItem,
-  TabPanel
+  TabPanel,
 } from "../../index";
 import { localeMap, maskMap } from "../../utils/index";
 
@@ -55,6 +55,7 @@ export default function AboutTab({
   bioLabel,
   dobLabel,
   quoteLabel,
+  nicknameLabel,
   btnSaveLabel,
   index,
   value,
@@ -90,6 +91,7 @@ export default function AboutTab({
         dob,
         gender,
         bio,
+        nickname,
         relationship,
         quote,
       } = user;
@@ -100,6 +102,7 @@ export default function AboutTab({
           phone,
           dob,
           gender,
+          nickname,
           bio,
           relationship,
           quote,
@@ -132,6 +135,13 @@ export default function AboutTab({
                 value={user.username}
                 onChange={handleChangeInput(Field.USERNAME)}
                 required
+              />
+            </XFormGridItem>
+            <XFormGridItem errorField={error.nickname}>
+              <CommonTextField
+                label={nicknameLabel}
+                value={user.nickname}
+                onChange={handleChangeInput(Field.NICKNAME)}
               />
             </XFormGridItem>
             <XFormGridItem errorField={error.address}>
@@ -242,6 +252,7 @@ AboutTab.propTypes = {
   dob: PropTypes.string,
   relationship: PropTypes.string,
   bio: PropTypes.string,
+  nicknameLabel: PropTypes.string,
   quote: PropTypes.string,
   index: PropTypes.number,
   value: PropTypes.number,
@@ -252,6 +263,7 @@ AboutTab.defaultProps = {
   phoneLabel: "Phone number",
   addressLabel: "Address",
   genderLabel: "Gender",
+  nicknameLabel: "Nickname",
   relationshipLabel: "Relationship",
   bioLabel: "Bio",
   quoteLabel: "Quote",
