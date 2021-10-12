@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectData, selectIsLoading } from "../../../app/slices/userSlice";
 import { STRING, View } from "../../../constants/index";
+import { CommonTextField } from "../../index";
 
 const Header = styled(CardHeader)(({ theme }) => ({
   display: "flex",
@@ -38,6 +39,8 @@ const BadgeContainer = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const skeletonWidth = 200;
+
 export default function ProfileHeader({
   submitBtnLabel,
   cancelBtnLabel,
@@ -49,6 +52,8 @@ export default function ProfileHeader({
   const isLoading = useSelector(selectIsLoading);
 
   const [isShowFormUpload, setShowFormUpload] = useState(false);
+
+  const [filePath, setFilePath] = useState(STRING.EMPTY);
 
   const handleOpenFormUpload = () => {
     setShowFormUpload(true);
@@ -96,7 +101,7 @@ export default function ProfileHeader({
         }
         title={
           isLoading ? (
-            <Skeleton variant="text" width={200} />
+            <Skeleton variant="text" width={skeletonWidth} />
           ) : (
             <Typography variant="h6" gutterBottom component="div">
               {user.username +
@@ -105,14 +110,18 @@ export default function ProfileHeader({
           )
         }
         subheader={
-          isLoading ? <Skeleton variant="text" width={200} /> : user.bio
+          isLoading ? (
+            <Skeleton variant="text" width={skeletonWidth} />
+          ) : (
+            user.bio
+          )
         }
         {...props}
       />
 
       <Dialog open={isShowFormUpload} onClose={handleCloseFormUpload}>
         <DialogTitle>{uploadTitle}</DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
           <Avatar
             sx={{
               width: View.AVATAR_SIZE * 2,
@@ -120,16 +129,17 @@ export default function ProfileHeader({
             }}
             variant="square"
             aria-label="recipe"
-            src={
-              user.avatar_photo
-                ? "data:image/*;base64," + user.avatar_photo
-                : STRING.EMPTY
-            }
+            src={filePath}
             alt={user.username}
           ></Avatar>
         </DialogContent>
         <DialogContent>
-          <TextField margin="dense" type="file" onChange={onChange} fullWidth />
+          <CommonTextField
+            margin="dense"
+            type="file"
+            onChange={onChange}
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseFormUpload}>{cancelBtnLabel}</Button>

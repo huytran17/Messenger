@@ -22,8 +22,6 @@ const initialState = {
     gender: STRING.EMPTY,
     dob: STRING.EMPTY,
     relationship: STRING.EMPTY,
-    avatar_photo: STRING.EMPTY,
-    cover_photo: STRING.EMPTY,
   },
 };
 
@@ -102,7 +100,13 @@ export const userSlice = createSlice({
       //set is all valid
       state.isAllValid = checkErrorProperties(state.error);
     },
-    setError: (state, action) => {},
+    setError: (state, action) => {
+      const payload = action.payload;
+
+      state.error[payload.path] = payload.error;
+
+      state.isAllValid = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserAsync.pending, (state, action) => {

@@ -17,6 +17,7 @@ import {
   selectError,
   selectIsAllValid,
   validate,
+  setError,
 } from "../../../app/slices/userSlice";
 import { Field, Server } from "../../../constants/index";
 import {
@@ -110,8 +111,14 @@ export default function AboutTab({
         .then(() => {
           window.location.reload();
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((e) => {
+          if (e.response)
+            dispatch(
+              setError({
+                path: e.response.data.path,
+                error: e.response.data.errors,
+              })
+            );
         });
     }
   };

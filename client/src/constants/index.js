@@ -6,6 +6,7 @@ export const ValidateCond = Object.freeze({
   ADDRESS_MAX_LENGTH: 255,
   BIO_MAX_LENGTH: 255,
   QUOTE_MAX_LENGTH: 255,
+  IMG_MAX_SIZE: 1048576,
 });
 
 export const ValidateError = Object.freeze({
@@ -19,6 +20,7 @@ export const ValidateError = Object.freeze({
   ADDRESS_MAX_LENGTH: `Tối đa ${ValidateCond.ADDRESS_MAX_LENGTH} ký tự.`,
   BIO_MAX_LENGTH: `Tối đa ${ValidateCond.BIO_MAX_LENGTH} ký tự.`,
   QUOTE_MAX_LENGTH: `Tối đa ${ValidateCond.QUOTE_MAX_LENGTH} ký tự.`,
+  IMG_MAX_SIZE: `Tối đa ${ValidateCond.IMG_MAX_SIZE} ký tự.`,
 });
 
 export const STRING = Object.freeze({
@@ -50,6 +52,7 @@ export const Reducer = Object.freeze({
     UPDATE_INFO: "UPDATE_INFO",
     SECURITY: "SECURITY",
     USER: "USER",
+    UPLOAD_IMG: "UPLOAD_IMG",
   },
 });
 
