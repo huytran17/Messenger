@@ -8,9 +8,15 @@ import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectData, selectIsLoading } from "../../../app/slices/userSlice";
-import { STRING, View } from "../../../constants/index";
+import {
+  selectData,
+  selectIsLoading,
+  setError,
+} from "../../../app/slices/userSlice";
+import { STRING, View, Server } from "../../../constants/index";
 import { FormUploadImg } from "./index";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const Header = styled(CardHeader)(({ theme }) => ({
   display: "flex",
@@ -41,6 +47,8 @@ export default function ProfileHeader({
   uploadTitle,
   ...props
 }) {
+  const dispatch = useDispatch();
+
   const user = useSelector(selectData);
 
   const isLoading = useSelector(selectIsLoading);
@@ -53,6 +61,30 @@ export default function ProfileHeader({
 
   const handleCloseFormUpload = () => {
     setShowFormUpload(false);
+  };
+
+  const changeAvatar = async (fileChoosen) => {
+    const bodyFormData = new FormData();
+
+    bodyFormData.append("avatar_photo", fileChoosen);
+
+    await axios({
+      method: "post",
+      url: `${Server.URL}:${Server.PORT}/users/${user._id}`,
+      data: bodyFormData,
+    })
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((e) => {
+        if (e.response)
+          dispatch(
+            setError({
+              path: e.response.data.path,
+              error: e.response.data.errors,
+            })
+          );
+      });
   };
 
   return (
@@ -109,6 +141,7 @@ export default function ProfileHeader({
       <FormUploadImg
         isOpen={isShowFormUpload}
         handleClose={handleCloseFormUpload}
+        changeImg={changeAvatar}
       />
     </>
   );

@@ -29,6 +29,7 @@ export default function FormUploadImg({
   uploadTitle,
   isOpen,
   handleClose,
+  changeImg,
   ...props
 }) {
   const dispatch = useDispatch();
@@ -61,30 +62,8 @@ export default function FormUploadImg({
     }
   };
 
-  const changeAvatar = async (event) => {
-    if (fileChoosen && !fileError.hasError) {
-      const bodyFormData = new FormData();
-
-      bodyFormData.append("avatar_photo", fileChoosen);
-
-      await axios({
-        method: "post",
-        url: `${Server.URL}:${Server.PORT}/users/${user._id}`,
-        data: bodyFormData,
-      })
-        .then((res) => {
-          window.location.reload();
-        })
-        .catch((e) => {
-          if (e.response)
-            dispatch(
-              setError({
-                path: e.response.data.path,
-                error: e.response.data.errors,
-              })
-            );
-        });
-    }
+  const updateImg = (event) => {
+    if (fileChoosen && !fileError.hasError) changeImg(fileChoosen);
   };
 
   return (
@@ -113,7 +92,7 @@ export default function FormUploadImg({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseFormUpload}>{cancelBtnLabel}</Button>
-        <Button onClick={changeAvatar}>{submitBtnLabel}</Button>
+        <Button onClick={updateImg}>{submitBtnLabel}</Button>
       </DialogActions>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -132,10 +111,14 @@ FormUploadImg.propTypes = {
   uploadTitle: PropTypes.string,
   cancelBtnLabel: PropTypes.string,
   submitBtnLabel: PropTypes.string,
+  isOpen: PropTypes.bool,
+  handleClose: PropTypes.func,
+  changeImg: PropTypes.func,
 };
 
 FormUploadImg.defaultProps = {
   uploadTitle: "Upload your avatar",
   cancelBtnLabel: "Cancel",
   submitBtnLabel: "Okay",
+  isOpen: false,
 };
