@@ -12,11 +12,25 @@ import Skeleton from "@mui/material/Skeleton";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectData, selectIsLoading } from "../../../app/slices/userSlice";
-import { STRING, View } from "../../../constants/index";
+import { useState, forwardRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectData,
+  selectIsLoading,
+  setData,
+  setError,
+} from "../../../app/slices/userSlice";
+import { STRING, View, Server } from "../../../constants/index";
 import { CommonTextField } from "../../index";
+import {
+  resetFileError,
+  setFileError,
+  selectFileError,
+  validateFile,
+} from "../../../app/slices/uploadImgSlice";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import axios from "axios";
 
 const Header = styled(CardHeader)(({ theme }) => ({
   display: "flex",
@@ -39,6 +53,10 @@ const BadgeContainer = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const skeletonWidth = 200;
 
 export default function ProfileHeader({
@@ -47,13 +65,17 @@ export default function ProfileHeader({
   uploadTitle,
   ...props
 }) {
+  const dispatch = useDispatch();
+
   const user = useSelector(selectData);
 
   const isLoading = useSelector(selectIsLoading);
 
+  const fileError = useSelector(selectFileError);
+
   const [isShowFormUpload, setShowFormUpload] = useState(false);
 
-  const [filePath, setFilePath] = useState(STRING.EMPTY);
+  const [fileChoosen, setFileChoosen] = useState(null);
 
   const handleOpenFormUpload = () => {
     setShowFormUpload(true);
@@ -61,10 +83,46 @@ export default function ProfileHeader({
 
   const handleCloseFormUpload = () => {
     setShowFormUpload(false);
+
+    dispatch(resetFileError());
   };
 
   const onChange = (event) => {
-    console.log(event.target.files[0]);
+    const file = event.target.files[0];
+
+    if (file) {
+      setFileChoosen(file);
+
+      dispatch(validateFile({ type: file.type, size: file.size }));
+    } else dispatch(validateFile(null));
+  };
+
+  const changeAvatar = async (event) => {
+    if (fileChoosen && !fileError.hasError) {
+      console.log(fileChoosen);
+      console.log(fileError.hasError);
+      const bodyFormData = new FormData();
+
+      bodyFormData.append("avatar_photo", fileChoosen);
+
+      await axios({
+        method: "post",
+        url: `${Server.URL}:${Server.PORT}/users/${user._id}`,
+        data: bodyFormData,
+      })
+        .then((res) => {
+          window.location.reload();
+        })
+        .catch((e) => {
+          if (e.response)
+            dispatch(
+              setError({
+                path: e.response.data.path,
+                error: e.response.data.errors,
+              })
+            );
+        });
+    }
   };
 
   return (
@@ -129,7 +187,7 @@ export default function ProfileHeader({
             }}
             variant="square"
             aria-label="recipe"
-            src={filePath}
+            src={fileChoosen ? URL.createObjectURL(fileChoosen) : STRING.EMPTY}
             alt={user.username}
           ></Avatar>
         </DialogContent>
@@ -139,12 +197,22 @@ export default function ProfileHeader({
             type="file"
             onChange={onChange}
             fullWidth
+            required
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseFormUpload}>{cancelBtnLabel}</Button>
-          <Button onClick={handleCloseFormUpload}>{submitBtnLabel}</Button>
+          <Button onClick={changeAvatar}>{submitBtnLabel}</Button>
         </DialogActions>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={fileError.hasError}
+          key="topcenter"
+        >
+          <Alert severity="error" sx={{ width: "100%" }}>
+            {fileError.error}
+          </Alert>
+        </Snackbar>
       </Dialog>
     </>
   );

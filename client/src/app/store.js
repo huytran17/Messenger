@@ -4,6 +4,7 @@ import authReducer from "./slices/authSlice";
 import alertReducer from "./slices/alertSlice";
 import userReducer from "./slices/userSlice";
 import securityReducer from "./slices/securitySlice";
+import uploadImgReducer from "./slices/uploadImgSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     alert: alertReducer,
     user: userReducer,
     security: securityReducer,
+    uploadImg: uploadImgReducer,
   },
 });

@@ -20,7 +20,8 @@ export const ValidateError = Object.freeze({
   ADDRESS_MAX_LENGTH: `Tối đa ${ValidateCond.ADDRESS_MAX_LENGTH} ký tự.`,
   BIO_MAX_LENGTH: `Tối đa ${ValidateCond.BIO_MAX_LENGTH} ký tự.`,
   QUOTE_MAX_LENGTH: `Tối đa ${ValidateCond.QUOTE_MAX_LENGTH} ký tự.`,
-  IMG_MAX_SIZE: `Tối đa ${ValidateCond.IMG_MAX_SIZE} ký tự.`,
+  IMG_MAX_SIZE: `Tối đa ${ValidateCond.IMG_MAX_SIZE / 1024 / 1024}MB.`,
+  FILE_INVALID_TYPE: "File không đúng định dạng.",
 });
 
 export const STRING = Object.freeze({
