@@ -72,6 +72,7 @@ export default function ProfileHeader({
       method: "post",
       url: `${Server.URL}:${Server.PORT}/users/${user._id}`,
       data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
     })
       .then((res) => {
         window.location.reload();
