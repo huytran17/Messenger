@@ -6,7 +6,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from "@mui/material/Snackbar";
-import axios from "axios";
 import PropTypes from "prop-types";
 import { forwardRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +14,8 @@ import {
   selectFileError,
   validateFile,
 } from "../../../app/slices/uploadImgSlice";
-import { selectData, setError } from "../../../app/slices/userSlice";
-import { Server, STRING, View } from "../../../constants/index";
+import { selectData } from "../../../app/slices/userSlice";
+import { STRING, View } from "../../../constants/index";
 import { CommonTextField } from "../../index";
 
 const Alert = forwardRef(function Alert(props, ref) {
