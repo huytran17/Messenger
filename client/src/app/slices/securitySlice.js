@@ -1,11 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  ValidateError,
-  STRING,
-  Reducer,
-  Auth,
-  Field,
-} from "../../constants/index";
+import { Field, Reducer, STRING, ValidateError } from "../../constants/index";
 
 const initialState = {
   isAllValid: false,

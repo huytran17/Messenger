@@ -54,6 +54,7 @@ export const Reducer = Object.freeze({
     SECURITY: "SECURITY",
     USER: "USER",
     UPLOAD_IMG: "UPLOAD_IMG",
+    CONVERSATION: "CONVERSATION",
   },
 });
 
@@ -107,4 +108,5 @@ export const View = Object.freeze({
   BOTTOM_NAV_HEIGHT: 56,
   APPBAR_HEIGHT: 56,
   AVATAR_SIZE: 80,
+  DRAWERHEADER_HEIGHT: 64,
 });

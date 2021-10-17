@@ -14,6 +14,10 @@ import {
   toggleStatusLeft,
 } from "../../app/slices/appBarSlice";
 import { selectData } from "../../app/slices/userSlice";
+import {
+  selectConversation,
+  getConversationAsync,
+} from "../../app/slices/conversationSlice";
 import { STRING, View } from "../../constants/index";
 import { ConvAvatar, GrpAvatar } from "../index";
 
@@ -85,6 +89,16 @@ export default function DrawerLeft() {
 
   const user = useSelector(selectData);
 
+  const conversation = useSelector(selectConversation);
+
+  const openConversation = (event) => {
+    const cid = event.currentTarget.getAttribute("data-cid");
+
+    dispatch(getConversationAsync(cid));
+  };
+
+  console.log(conversation);
+
   return (
     <Drawer variant="permanent" open={status}>
       <DrawerHeader sx={{ justifyContent: "start", padding: 0 }}>
@@ -105,7 +119,12 @@ export default function DrawerLeft() {
               const mem = conv.mems.filter((mem) => mem._id !== user._id).pop();
 
               return (
-                <ListItem button key={conv._id}>
+                <ListItem
+                  button
+                  key={conv._id}
+                  data-cid={conv._id}
+                  onClick={openConversation}
+                >
                   <ListItemIcon>
                     <ConvAvatar
                       src={
